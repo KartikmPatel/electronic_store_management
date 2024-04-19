@@ -6,6 +6,7 @@ package EntityPackage;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -87,10 +88,12 @@ public class CategoryDetails implements Serializable {
         this.companyId = companyId;
     }
 
+    @JsonbTransient
     public Collection<ProductDetails> getProductDetailsCollection() {
         return productDetailsCollection;
     }
 
+    @JsonbTransient
     public void setProductDetailsCollection(Collection<ProductDetails> productDetailsCollection) {
         this.productDetailsCollection = productDetailsCollection;
     }
