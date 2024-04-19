@@ -4,8 +4,8 @@
  */
 package ServletPackage;
 
-import EJBPackage.companyDetailsEJB;
-import EntityPackage.CompanyDetails;
+import EJBPackage.electronicStoreDetailsEJB;
+import EntityPackage.ElectronicStoreDetails;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
@@ -20,10 +20,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Admin
  */
-@WebServlet(name = "companyDetailsServlet", urlPatterns = {"/companyDetailsServlet"})
-public class companyDetailsServlet extends HttpServlet {
-    @EJB companyDetailsEJB cde;
-
+@WebServlet(name = "electronicStoreDetailsServlet", urlPatterns = {"/electronicStoreDetailsServlet"})
+public class electronicStoreDetailsServlet extends HttpServlet {
+    @EJB electronicStoreDetailsEJB esd;
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,22 +41,20 @@ public class companyDetailsServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet companyDetailsServlet</title>");            
+            out.println("<title>Servlet electronicStoreDetailsServlet</title>");            
             out.println("</head>");
-            
-            
             out.println("<body>");
-            out.println("<h1>Servlet companyDetailsServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet electronicStoreDetailsServlet at " + request.getContextPath() + "</h1>");
             
-//            cde.addCompanyDetails("Ramson", "r@gmail.com", 45454545, "ramson@123", "trsrrrr", "India");
-            
-//            cde.updateCompanyDetails(1, "fffeefe", "ffffefe", 42434324, "ffff", "ffffrf", "frfrferf");
+//            esd.addElectronicStoreDetails("vvebrgbrgb", "sdfdsfsdf", 65363364, "fffgfg", "grggtgt", "fefefef", "dsfssgrg");
 
-//            cde.deleteCompanyDetails(1);
-            Collection<CompanyDetails> companyDetailsList = cde.displayCompanyDetails();
+//            esd.updateElectronicStoreDetails(1, "fffgff", "ffgffgfgf", 323213, "xvcvcvxcv", "dfsfdf", "vbvbvxbvxb", "SSDADS");
+
+//            esd.deleteElectronicStoreDetails(1);
+            Collection<ElectronicStoreDetails> electronicStoreDetails = esd.displayElectronicStoreDetails();
             
-            for(CompanyDetails company : companyDetailsList){
-                out.println(company.getCompanyName() + " " + company.getEmail() + " " + company.getContactNo() + " " + company.getPassword() + " " + company.getCompanyLogo() + " " + company.getCountry());
+            for(ElectronicStoreDetails ed: electronicStoreDetails){
+                out.println(ed.getStoreName() + " " + ed.getEmail() + " " + ed.getContactNo() + " " + ed.getPassword() + " " + ed.getStoreLogo() + " " + ed.getAddress() + " " + ed.getCountry());
             }
             
             out.println("</body>");
