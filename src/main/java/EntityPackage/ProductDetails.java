@@ -7,6 +7,7 @@ package EntityPackage;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -164,34 +165,42 @@ public class ProductDetails implements Serializable {
         this.warranty = warranty;
     }
 
+    @JsonbTransient
     public Collection<ElectronicStoreSellingProduct> getElectronicStoreSellingProductCollection() {
         return electronicStoreSellingProductCollection;
     }
 
+    @JsonbTransient
     public void setElectronicStoreSellingProductCollection(Collection<ElectronicStoreSellingProduct> electronicStoreSellingProductCollection) {
         this.electronicStoreSellingProductCollection = electronicStoreSellingProductCollection;
     }
 
+    @JsonbTransient
     public Collection<ElectronicStoreProductStock> getElectronicStoreProductStockCollection() {
         return electronicStoreProductStockCollection;
     }
 
+    @JsonbTransient
     public void setElectronicStoreProductStockCollection(Collection<ElectronicStoreProductStock> electronicStoreProductStockCollection) {
         this.electronicStoreProductStockCollection = electronicStoreProductStockCollection;
     }
 
+    @JsonbTransient
     public Collection<CompanyProductStock> getCompanyProductStockCollection() {
         return companyProductStockCollection;
     }
 
+    @JsonbTransient
     public void setCompanyProductStockCollection(Collection<CompanyProductStock> companyProductStockCollection) {
         this.companyProductStockCollection = companyProductStockCollection;
     }
 
+    @JsonbTransient
     public Collection<ElectronicStoreOrder> getElectronicStoreOrderCollection() {
         return electronicStoreOrderCollection;
     }
 
+    @JsonbTransient
     public void setElectronicStoreOrderCollection(Collection<ElectronicStoreOrder> electronicStoreOrderCollection) {
         this.electronicStoreOrderCollection = electronicStoreOrderCollection;
     }
