@@ -50,7 +50,7 @@ public class companyProductStockServlet extends HttpServlet {
             
 //            cps.updateCompanyProductStock(1, 15, 1);
 
-            cps.deleteCompanyProductStock(1);
+//            cps.deleteCompanyProductStock(1);
             Collection<CompanyProductStock> companyProductStocks = cps.displayCompanyProductStock();
             for(CompanyProductStock c: companyProductStocks){
                 out.println(c.getQuantity() + " " + c.getProductId().getProductName());
