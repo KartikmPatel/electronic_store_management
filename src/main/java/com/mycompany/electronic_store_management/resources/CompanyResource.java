@@ -4,8 +4,10 @@
  */
 package com.mycompany.electronic_store_management.resources;
 
+import EJBPackage.companyProductStockEJB;
 import EntityPackage.CategoryDetails;
 import EntityPackage.CompanyDetails;
+import EntityPackage.CompanyProductStock;
 import EntityPackage.ProductDetails;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -36,6 +38,7 @@ public class CompanyResource {
     @EJB EJBPackage.companyDetailsEJB cde;
     @EJB EJBPackage.categoryDetailsEJB catobj;
     @EJB EJBPackage.productDetailsEJB prodobj;
+    @EJB EJBPackage.companyProductStockEJB cpsobj;
     
     @POST
     @Path("addcompany/{com_name}/{email}/{cno}/{password}/{clogo}/{country}")
@@ -161,5 +164,38 @@ public class CompanyResource {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    @GET
+    @Path("displayCompanyProStock")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<CompanyProductStock> displayCompanyProductStock(){
+        return cpsobj.displayCompanyProductStock();
+    }
+    
+    @POST
+    @Path("addCompanyProStock/{quan}/{prodid}")
+    public void addCompanyProductStock(@PathParam("quan") Integer quan, @PathParam("prodid") Integer prodid){
+        cpsobj.addCompanyProductStock(quan, prodid);
+    }
+    
+    @GET
+    @Path("getaddCompanyProStockById/{companyStokeId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Collection<CompanyProductStock> getCompanyStockById(@PathParam("companyStokeId") Integer companyStokeId){
+        return cpsobj.getDataByIdForUpdate(companyStokeId);
+    }
+    
+    @POST
+    @Path("updateCompanyProStock/{companyStokeId}/{quan}/{prodid}")
+    public void updateCompanyProductStock(@PathParam("companyStokeId") Integer companyStokeId, @PathParam("quan") Integer quan, @PathParam("prodid") Integer prodid){
+        cpsobj.updateCompanyProductStock(companyStokeId, quan, prodid);
+    }
+    
+    @DELETE
+    @Path("deleteCompanyProStock/{companyStokeId}")
+    public void deleteCompanyProductStock(@PathParam("companyStokeId") Integer companyStokeId){
+        cpsobj.deleteCompanyProductStock(companyStokeId);
     }
 }
