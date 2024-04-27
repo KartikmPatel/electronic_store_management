@@ -2,6 +2,8 @@ package com.mycompany.electronic_store_management.resources;
 
 import EntityPackage.ElectronicStoreDetails;
 import EJBPackage.electronicStoreDetailsEJB;
+import EJBPackage.electronicStoreProductStockEJB;
+import EntityPackage.ElectronicStoreProductStock;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -14,6 +16,7 @@ import java.util.Collection;
 public class ElectronicStoreResource {
     @EJB
     electronicStoreDetailsEJB stoobj;
+    @EJB electronicStoreProductStockEJB stockobj;
 
     @GET
     @Path("displayStore")
@@ -46,4 +49,21 @@ public class ElectronicStoreResource {
     public void deleteElectronicStore(@PathParam("storeId") Integer storeId) {
         stoobj.deleteElectronicStoreDetails(storeId);
     }
+    
+    // Electronic Store Product Store
+    @POST
+    @Path("addstock/{pid}/{qty}")
+    public void addStock(@PathParam("pid") Integer pid,@PathParam("qty") Integer qty)
+    {
+        stockobj.addStock(pid, qty);
+    }
+    
+    @GET
+    @Path("displaystock")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<ElectronicStoreProductStock> getAllStock()
+    {
+        return stockobj.getAllStock();
+    }
+    
 }
