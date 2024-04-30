@@ -2,21 +2,25 @@ package com.mycompany.electronic_store_management.resources;
 
 import EntityPackage.ElectronicStoreDetails;
 import EJBPackage.electronicStoreDetailsEJB;
+import EJBPackage.electronicStoreFestivalEJB;
 import EJBPackage.electronicStoreProductStockEJB;
+import EntityPackage.ElectronicStoreFestival;
 import EntityPackage.ElectronicStoreProductStock;
+import java.text.SimpleDateFormat;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.Collection;
+import java.util.Date;
 
 @Path("ElectronicStore")
 @RequestScoped
 public class ElectronicStoreResource {
-    @EJB
-    electronicStoreDetailsEJB stoobj;
+    @EJB electronicStoreDetailsEJB stoobj;
     @EJB electronicStoreProductStockEJB stockobj;
+    @EJB electronicStoreFestivalEJB festobj;
 
     @GET
     @Path("displayStore")
@@ -34,6 +38,7 @@ public class ElectronicStoreResource {
     @GET
     @Path("getStoreById/{storeId}")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Collection<ElectronicStoreDetails> getStoreById(@PathParam("storeId") Integer storeId) {
         return stoobj.getDataByIdForUpdate(storeId);
     }
@@ -66,4 +71,48 @@ public class ElectronicStoreResource {
         return stockobj.getAllStock();
     }
     
+    @GET
+    @Path("displayFestival")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<ElectronicStoreFestival> displayFestival(){
+        return festobj.displayFestival();
+    }
+    
+    @POST
+    @Path("addFestival/{festivalName}/{festivalDate}/{festivalDiscount}")
+    public void addFestival(@PathParam("festivalName") String festivalName, @PathParam("festivalDate") String festivalDate, @PathParam("festivalDiscount") Integer festivalDiscount){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date mdate = sdf.parse(festivalDate);
+            festobj.addFestival(festivalName, mdate, festivalDiscount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } 
+    }
+    
+    @GET
+    @Path("getFestivalById/{festivalId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Collection<ElectronicStoreFestival> getFestivalById(@PathParam("festivalId") Integer festivalId){
+        return festobj.getDataByIdForUpdate(festivalId);
+    }
+    
+    @POST
+    @Path("updateFestival/{festivalId}/{festivalName}/{festivalDate}/{festivalDiscount}")
+    public void updateFestival(@PathParam("festivalId") Integer festivalId,@PathParam("festivalName") String festivalName, @PathParam("festivalDate") String festivalDate, @PathParam("festivalDiscount") Integer festivalDiscount){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date mdate = sdf.parse(festivalDate);
+            festobj.updateFestival(festivalId, festivalName, mdate, festivalDiscount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @DELETE
+    @Path("deleteFestival/{festivalId}")
+    public void deleteFestival(@PathParam("festivalId") Integer festivalId){
+        festobj.deleteFestival(festivalId);
+    }
 }
