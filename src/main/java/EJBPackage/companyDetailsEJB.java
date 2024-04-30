@@ -6,9 +6,11 @@ package EJBPackage;
 
 import EntityPackage.CompanyDetails;
 import java.util.Collection;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -53,6 +55,21 @@ public class companyDetailsEJB {
         CompanyDetails model = em.find(CompanyDetails.class, companyId);
         em.remove(model);
     }
+    
+    public boolean checkLogin(String email, String password){
+        Query chklog = em.createQuery("SELECT c FROM CompanyDetails c WHERE c.email = :email AND c.password = :password")
+                         .setParameter("email", email)
+                         .setParameter("password", password);
+
+        List<CompanyDetails> resultList = chklog.getResultList();
+
+        if(resultList != null && !resultList.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

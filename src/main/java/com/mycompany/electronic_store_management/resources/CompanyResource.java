@@ -48,6 +48,14 @@ public class CompanyResource {
     }
     
     @GET
+    @Path("companyLogin/{email}/{password}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean checkCompanyLogin(@PathParam("email") String email, @PathParam("password") String password){
+        return cde.checkLogin(email, password);
+    }
+    
+    @GET
     @Path("getallcompany")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<CompanyDetails> getAllCompany()

@@ -18,7 +18,7 @@ import javax.ws.rs.client.WebTarget;
  *        client.close();
  * </pre>
  *
- * @author Kartik Patel
+ * @author Admin
  */
 public class companyClient {
 
@@ -80,6 +80,12 @@ public class companyClient {
     public <T> T getCompanyStockById(Class<T> responseType, String companyStokeId) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("getaddCompanyProStockById/{0}", new Object[]{companyStokeId}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T checkCompanyLogin(Class<T> responseType, String email, String password) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("companyLogin/{0}/{1}", new Object[]{email, password}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 

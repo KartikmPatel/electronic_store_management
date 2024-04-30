@@ -13,6 +13,8 @@ import java.io.OutputStream;
 import java.security.SecureRandom;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import org.primefaces.model.file.UploadedFile;
 
 /**
@@ -25,12 +27,29 @@ public class companyCDIBean {
 //    String captchaCode; // Change to String
     CompanyDetails cd = new CompanyDetails();
     RestClientPackage.companyClient cc;
+    private String email, password;
     UploadedFile file;
     
     public companyCDIBean()
     {
         cc = new companyClient();
 //        generateCaptcha();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
     
 //    public String getCaptchaCode() {
@@ -75,7 +94,7 @@ public class companyCDIBean {
         if (file != null) {
             try (InputStream input = file.getInputStream()) {
                 fileName = file.getFileName();
-                OutputStream output = new FileOutputStream("C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
+                OutputStream output = new FileOutputStream("electronic_store_management/src/main/webapp/public/uploads/" + fileName);
                 try {
                     byte[] buffer = new byte[1024];
                     int bytesRead;
@@ -91,7 +110,18 @@ public class companyCDIBean {
             }
         }
         
-        cc.addCompany(cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), fileName, cd.getPassword(), cd.getCountry());
+        cc.addCompany(cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()),cd.getPassword(), fileName, cd.getCountry());
         
+    }
+    
+    public String checkLogin() {
+        boolean chk = cc.checkCompanyLogin(Boolean.class,email, password);
+
+        if (chk) {
+            return "companyRegister.jsf";
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed", "Invalid email or password"));
+            return null;
+        }
     }
 }

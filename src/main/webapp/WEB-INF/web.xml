@@ -19,6 +19,6 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>companyPages/companyRegister.jsf</welcome-file>
+        <welcome-file>companyPages/companyLogin.jsf</welcome-file>
     </welcome-file-list>
 </web-app>
