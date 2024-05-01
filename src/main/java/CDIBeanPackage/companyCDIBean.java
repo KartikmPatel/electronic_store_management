@@ -115,12 +115,17 @@ public class companyCDIBean {
     }
     
     public String checkLogin() {
-        boolean chk = cc.checkCompanyLogin(Boolean.class,email, password);
-
-        if (chk) {
-            return "companyRegister.jsf";
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed", "Invalid email or password"));
+        try {
+            boolean chk = cc.checkCompanyLogin(Boolean.class,email, password);
+            if (chk) {
+                return "companyRegister?faces-redirect=true";
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed", "Invalid email or password"));
+                return null;
+            }
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "An error occurred during login"));
+            e.printStackTrace();
             return null;
         }
     }
