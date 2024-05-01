@@ -29,10 +29,12 @@ public class companyCDIBean {
     RestClientPackage.companyClient cc;
     private String email, password;
     UploadedFile file;
+    String errorStatus;
     
     public companyCDIBean()
     {
         cc = new companyClient();
+        this.errorStatus = "";
 //        generateCaptcha();
     }
 
@@ -87,8 +89,16 @@ public class companyCDIBean {
     public void setFile(UploadedFile file) {
         this.file = file;
     }
+
+    public String getErrorStatus() {
+        return errorStatus;
+    }
+
+    public void setErrorStatus(String errorStatus) {
+        this.errorStatus = errorStatus;
+    }
     
-    public void addCompany()
+    public String addCompany()
     {
         String fileName = "";
         if (file != null) {
@@ -111,7 +121,7 @@ public class companyCDIBean {
         }
         
         cc.addCompany(cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()),cd.getPassword(), fileName, cd.getCountry());
-        
+        return "companyLogin?faces-redirect=true";
     }
     
     public String checkLogin() {
@@ -120,7 +130,8 @@ public class companyCDIBean {
             if (chk) {
                 return "companyRegister?faces-redirect=true";
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed", "Invalid email or password"));
+                //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed", "Invalid email or password"));
+                this.errorStatus = "Invalid email or password";
                 return null;
             }
         } catch (Exception e) {
