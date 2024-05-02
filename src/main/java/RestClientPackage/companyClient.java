@@ -18,7 +18,7 @@ import javax.ws.rs.client.WebTarget;
  *        client.close();
  * </pre>
  *
- * @author Admin
+ * @author Kartik Patel
  */
 public class companyClient {
 
@@ -117,9 +117,9 @@ public class companyClient {
         webTarget.path(java.text.MessageFormat.format("addCompanyProStock/{0}/{1}", new Object[]{quan, prodid})).request().post(null);
     }
 
-    public <T> T getAllCategory(Class<T> responseType) throws ClientErrorException {
+    public <T> T getAllCategory(Class<T> responseType, String com_id) throws ClientErrorException {
         WebTarget resource = webTarget;
-        resource = resource.path("getallcategory");
+        resource = resource.path(java.text.MessageFormat.format("getallcategory/{0}", new Object[]{com_id}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
@@ -131,6 +131,10 @@ public class companyClient {
 
     public void deleteProduct(String prod_id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("deleteproduct/{0}", new Object[]{prod_id})).request().delete();
+    }
+
+    public <T> T getUserId(Class<T> responseType, String email) throws ClientErrorException {
+        return webTarget.path(java.text.MessageFormat.format("getuserid/{0}", new Object[]{email})).request().post(null, responseType);
     }
 
     public void close() {

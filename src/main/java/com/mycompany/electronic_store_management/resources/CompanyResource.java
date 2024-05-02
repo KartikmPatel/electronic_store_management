@@ -87,6 +87,13 @@ public class CompanyResource {
     }
     
     @POST
+    @Path("getuserid/{email}")
+    public Collection<CompanyDetails> getUserId(@PathParam("email") String email)
+    {
+        return cde.getUserId(email);
+    }
+    
+    @POST
     @Path("addcategory/{cat_name}/{com_id}")
     public void addCategory(@PathParam("cat_name") String cname,@PathParam("com_id") Integer cid)
     {
@@ -94,11 +101,12 @@ public class CompanyResource {
     }
     
     @GET
-    @Path("getallcategory")
+    @Path("getallcategory/{com_id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<CategoryDetails> getAllCategory()
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Collection<CategoryDetails> getAllCategory(@PathParam("com_id") Integer com_id)
     {
-        return catobj.getAllCategory();
+        return catobj.getAllCategory(com_id);
     }
     
     @DELETE

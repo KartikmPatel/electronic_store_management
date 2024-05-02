@@ -48,10 +48,10 @@ public class categoryDetailsServlet extends HttpServlet {
             out.println("<body>");
 
 //            cde.addcategorydetails("Mobile", 1);
-            Collection<CategoryDetails> categorydetails = cde.getAllCategory();
-            for (CategoryDetails cd : categorydetails) {
-                out.println(cd.getCategoryName() + " " + cd.getCompanyId().getCompanyName());
-            }
+//            Collection<CategoryDetails> categorydetails = cde.getAllCategory();
+//            for (CategoryDetails cd : categorydetails) {
+//                out.println(cd.getCategoryName() + " " + cd.getCompanyId().getCompanyName());
+//            }
 
 //            Collection<CompanyDetails> cd = cde.getAllCompany();
 //            out.println("<select>");

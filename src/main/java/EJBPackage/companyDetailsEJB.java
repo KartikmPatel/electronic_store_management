@@ -70,7 +70,12 @@ public class companyDetailsEJB {
         }
     }
 
-
+    // get UserId
+    public Collection<CompanyDetails> getUserId(String email)
+    {
+        return em.createNamedQuery("CompanyDetails.findByEmail").setParameter("email", email).getResultList();
+    }
+    
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
 }

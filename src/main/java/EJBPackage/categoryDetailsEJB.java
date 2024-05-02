@@ -20,48 +20,43 @@ public class categoryDetailsEJB {
 
     @PersistenceContext(unitName = "my_persistence_unit")
     EntityManager em;
-    
+
     // Add Category
-    public void addcategorydetails(String cname,Integer comid)
-    {
+    public void addcategorydetails(String cname, Integer comid) {
         CompanyDetails cd = (CompanyDetails) em.find(CompanyDetails.class, comid);
         CategoryDetails cm = new CategoryDetails();
         cm.setCategoryName(cname);
         cm.setCompanyId(cd);
         em.persist(cm);
     }
-    
+
     // Get All the Category
-    public Collection<CategoryDetails> getAllCategory()
-    {
-        Collection<CategoryDetails> cm = em.createNamedQuery("CategoryDetails.findAll").getResultList();
+    public Collection<CategoryDetails> getAllCategory(Integer catid) {
+        CompanyDetails cd = (CompanyDetails) em.find(CompanyDetails.class, catid);
+        Collection<CategoryDetails> cm = em.createQuery("SELECT c FROM CategoryDetails c WHERE c.companyId = :companyId", CategoryDetails.class).setParameter("companyId", cd).getResultList();
         return cm;
     }
-    
+
     // Get All the Company details
-    public Collection<CompanyDetails> getAllCompany()
-    {
+    public Collection<CompanyDetails> getAllCompany() {
         Collection<CompanyDetails> cd = em.createNamedQuery("CompanyDetails.findAll").getResultList();
         return cd;
     }
-    
+
     // delete the category
-    public void deleteCategory(Integer catid)
-    {
+    public void deleteCategory(Integer catid) {
         CategoryDetails cm = (CategoryDetails) em.find(CategoryDetails.class, catid);
         em.remove(cm);
     }
-    
+
     // get the category by the category Id
-    public Collection<CategoryDetails> getCategoryByCatid(Integer catid)
-    {
+    public Collection<CategoryDetails> getCategoryByCatid(Integer catid) {
         Collection<CategoryDetails> cm = em.createNamedQuery("CategoryDetails.findByCategoryId").setParameter("categoryId", catid).getResultList();
         return cm;
     }
-    
+
     // update the category
-    public void updateCategory(Integer catid,String cname,Integer comid)
-    {
+    public void updateCategory(Integer catid, String cname, Integer comid) {
         CompanyDetails cd = (CompanyDetails) em.find(CompanyDetails.class, comid);
         CategoryDetails cm = (CategoryDetails) em.find(CategoryDetails.class, catid);
         cm.setCategoryName(cname);
