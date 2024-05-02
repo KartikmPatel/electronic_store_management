@@ -2,10 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
@@ -22,7 +20,7 @@
                 </div>
             </c:if>
             <h:form>
-                <h:commandLink class="btn btn-info" action="addCategory.jsf" value="Add New Category" />
+                <h:commandLink class="btn btn-info" action="addProduct.jsf" value="Add New Product" />
             </h:form>
 
             <div class="card" style="margin-top: 20px;">
@@ -31,19 +29,31 @@
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Category Name</th>
-                                <th>Company Name</th>
+                                <th>Product Name</th>
+                                <th>Discount</th>
+                                <th>Price</th>
+                                <th>Image</th>
+                                <th>Manufacture Date</th>
+                                <th>Warranty</th>
+                                <th>Category</th>
+                                <th>Company</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach items="#{companyCDIBean.catdt}" var="c">
+                            <c:forEach items="#{companyCDIBean.prodt}" var="p">
                                 <tr>
-                                    <td>#{c.categoryName}</td>
-                                    <td>#{c.companyId.companyName}</td>
+                                    <td>#{p.productName}</td>
+                                    <td>#{p.discount}</td>
+                                    <td>#{p.price}</td>
+                                    <td>#{p.productImage}</td>
+                                    <td>#{p.mfgDate}</td>
+                                    <td>#{p.warranty}</td>
+                                    <td>#{p.categoryId.categoryName}</td>
+                                    <td>#{p.companyId.companyName}</td>
                                     <td>
                                         <h:form>
-                                            <h:commandButton value="Edit" action="#{companyCDIBean.editCategoryForm(c)}" class="btn btn-success"/>
+                                            <h:commandButton value="Edit" action="#{companyCDIBean.editProductForm(p)}" class="btn btn-success"/>
                                         </h:form>
                                     </td>
                                 </tr>

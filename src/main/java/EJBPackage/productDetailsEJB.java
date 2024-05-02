@@ -40,8 +40,9 @@ public class productDetailsEJB {
     }
 
     // get All the products
-    public Collection<ProductDetails> getAllProducts() {
-        Collection<ProductDetails> pd = em.createNamedQuery("ProductDetails.findAll").getResultList();
+    public Collection<ProductDetails> getAllProducts(Integer companyId) {
+        CompanyDetails cd = (CompanyDetails) em.find(CompanyDetails.class, companyId);
+        Collection<ProductDetails> pd = em.createQuery("SELECT p FROM ProductDetails p WHERE p.companyId = :companyId").setParameter("companyId", cd).getResultList();
         return pd;
     }
 

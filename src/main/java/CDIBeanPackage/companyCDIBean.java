@@ -6,12 +6,15 @@ package CDIBeanPackage;
 
 import EntityPackage.CategoryDetails;
 import EntityPackage.CompanyDetails;
+import EntityPackage.ProductDetails;
 import RestClientPackage.companyClient;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.ejb.EJB;
@@ -41,6 +44,12 @@ public class companyCDIBean {
     private String email, password;
     UploadedFile file;
     String errorStatus;
+    
+    private String addCategoryToProduct;
+    
+    ProductDetails prodetail = new ProductDetails();
+    Collection<ProductDetails> prodt;
+    GenericType<Collection<ProductDetails>> gprodt;
 
     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
@@ -55,9 +64,39 @@ public class companyCDIBean {
         this.errorStatus = "";
 //        generateCaptcha();
         catdt = new ArrayList<>();
-        gcatdt = new GenericType<Collection<CategoryDetails>>() {
-        };
+        gcatdt = new GenericType<Collection<CategoryDetails>>(){};
         session.removeAttribute("successmessage");
+        
+        prodt = new ArrayList<>();
+        gprodt = new GenericType<Collection<ProductDetails>>(){};
+    }
+
+    public ProductDetails getProdetail() {
+        return prodetail;
+    }
+
+    public void setProdetail(ProductDetails prodetail) {
+        this.prodetail = prodetail;
+    }
+
+    public String getAddCategoryToProduct() {
+        return addCategoryToProduct;
+    }
+
+    public void setAddCategoryToProduct(String addCategoryToProduct) {
+        this.addCategoryToProduct = addCategoryToProduct;
+    }
+    
+    //display Product
+    public Collection<ProductDetails> getProdt() {
+        Integer companyId = (Integer) session.getAttribute("comId");
+        rs = cc.getAllProduct(Response.class, companyId.toString());
+        prodt = rs.readEntity(gprodt);
+        return prodt;
+    }
+
+    public void setProdt(Collection<ProductDetails> prodt) {
+        this.prodt = prodt;
     }
 
     public String getEmail() {
@@ -192,16 +231,86 @@ public class companyCDIBean {
         this.cdetail = cdetail;
     }
 
+    //Add Product   
+    public String addProduct(){
+        String fileName = "";
+        if (file != null) {
+            try (InputStream input = file.getInputStream()) {
+                fileName = file.getFileName();
+                OutputStream output = new FileOutputStream("electronic_store_management/src/main/webapp/public/uploads/" + fileName);
+                try {
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = input.read(buffer)) != -1) {
+                        output.write(buffer, 0, bytesRead);
+                    }
+                } finally {
+                    output.close();
+                }
+            } catch (IOException e) {
+                // Handle the error
+                e.printStackTrace();
+            }
+        }
+        session.setAttribute("successmessage", "Category Successfully Inserted");
+        Integer companyId = (Integer) session.getAttribute("comId");
+        
+        // Format manufacture date
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = dateFormat.format(prodetail.getMfgDate());
+        
+        cc.addProduct(prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), fileName, formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, companyId.toString());
+        return "displayProduct";
+    }
+    
     // Add Category
     public String addCategory() {
-        session.setAttribute("successmessage", "Category Successfully Inserted");
+        session.setAttribute("successmessage", "Product Successfully Inserted");
         Integer companyId = (Integer) session.getAttribute("comId");
         cc.addCategory(cdetail.getCategoryName(), companyId.toString());
         return "displayCategory";
     }
     
-    // edit form
-    public String editForm(CategoryDetails catd)
+    // edit product
+    public String editProductForm(ProductDetails prod){
+        this.prodetail = prod;
+        this.addCategoryToProduct = prod.getCategoryId().getCategoryId().toString();
+        return "editProduct";
+    }
+    
+    // Update or Edit Product
+    public String editProduct(){
+        String fileName = "";
+        if (file != null) {
+            try (InputStream input = file.getInputStream()) {
+                fileName = file.getFileName();
+                OutputStream output = new FileOutputStream("electronic_store_management/src/main/webapp/public/uploads/" + fileName);
+                try {
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = input.read(buffer)) != -1) {
+                        output.write(buffer, 0, bytesRead);
+                    }
+                } finally {
+                    output.close();
+                }
+            } catch (IOException e) {
+                // Handle the error
+                e.printStackTrace();
+            }
+        }
+        session.setAttribute("successmessage", "Product Successfully Edited");
+        Integer companyId = (Integer) session.getAttribute("comId");
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = dateFormat.format(prodetail.getMfgDate());
+        
+        cc.updateProduct(prodetail.getProductId().toString(), prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), fileName, formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, companyId.toString());
+        return "displayProduct";
+    }
+    
+    // edit category
+    public String editCategoryForm(CategoryDetails catd)
     {
         this.cdetail = catd;
         return "editCategory";

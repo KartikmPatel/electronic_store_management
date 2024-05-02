@@ -59,7 +59,7 @@ public class productDetailsServlet extends HttpServlet {
 //                e.printStackTrace();
 //            }
 
-            Collection<ProductDetails> pd = pde.getAllProducts();
+            Collection<ProductDetails> pd = pde.getAllProducts(2);
             for(ProductDetails p:pd)
             {
                 out.println(p.getProductName() + " " + p.getDiscount() + " " + p.getPrice() + " " + p.getProductImage() + " " + p.getMfgDate() + " " + p.getWarranty() + " " + p.getCategoryId().getCategoryName() + " " + p.getCompanyId().getCompanyName());

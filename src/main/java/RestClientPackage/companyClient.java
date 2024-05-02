@@ -18,7 +18,7 @@ import javax.ws.rs.client.WebTarget;
  *        client.close();
  * </pre>
  *
- * @author Kartik Patel
+ * @author Admin
  */
 public class companyClient {
 
@@ -123,9 +123,9 @@ public class companyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
-    public <T> T getAllProduct(Class<T> responseType) throws ClientErrorException {
+    public <T> T getAllProduct(Class<T> responseType, String companyId) throws ClientErrorException {
         WebTarget resource = webTarget;
-        resource = resource.path("getallproduct");
+        resource = resource.path(java.text.MessageFormat.format("getallproduct/{0}", new Object[]{companyId}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 

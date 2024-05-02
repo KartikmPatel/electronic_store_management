@@ -146,11 +146,11 @@ public class CompanyResource {
     }
     
     @GET
-    @Path("getallproduct")
+    @Path("getallproduct/{companyId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<ProductDetails> getAllProduct()
+    public Collection<ProductDetails> getAllProduct(@PathParam("companyId") Integer companyId)
     {
-        return prodobj.getAllProducts();
+        return prodobj.getAllProducts(companyId);
     }
     
     @DELETE
