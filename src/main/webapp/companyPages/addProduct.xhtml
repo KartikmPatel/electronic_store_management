@@ -35,11 +35,11 @@
                                         <p:inputText class="form-control" id="exampleInputPrice" value="#{companyCDIBean.prodetail.price}" placeholder="Enter the Price" />
                                         
                                         <label for="exampleInputImage">Image</label>
-                                        <p:fileUpload id="logo" value="#{companyCDIBean.file}" mode="simple" />
+                                        <p:fileUpload class="form-control" id="exampleInputImage" value="#{companyCDIBean.file}" mode="simple" />
                                         
                                         <label for="exampleInputDate">Manufacture Date</label>
-                                        <p:datePicker class="form-control" id="exampleInputDate" value="#{companyCDIBean.prodetail.mfgDate}" placeholder="Enter the Manufacture Date" />
-                                        
+                                        <p:calendar id="exampleInputDate" value="#{companyCDIBean.prodetail.mfgDate}" placeholder="Enter the Manufacture Date" /><br></br>
+
                                         <label for="exampleInputWarranty">Warranty</label>
                                         <p:inputText class="form-control" id="exampleInputWarranty" value="#{companyCDIBean.prodetail.warranty}" placeholder="Enter the Warranty" />
                                         

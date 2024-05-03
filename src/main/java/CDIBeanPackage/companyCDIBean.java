@@ -164,7 +164,7 @@ public class companyCDIBean {
         if (file != null) {
             try (InputStream input = file.getInputStream()) {
                 fileName = file.getFileName();
-                OutputStream output = new FileOutputStream("electronic_store_management/src/main/webapp/public/uploads/" + fileName);
+                OutputStream output = new FileOutputStream("C:/Users/Admin/Desktop/electronic_store_management/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
                 try {
                     byte[] buffer = new byte[1024];
                     int bytesRead;
@@ -231,13 +231,13 @@ public class companyCDIBean {
         this.cdetail = cdetail;
     }
 
-    //Add Product   
-    public String addProduct(){
+    //Add Product  
+    public String addProduct() {
         String fileName = "";
         if (file != null) {
             try (InputStream input = file.getInputStream()) {
                 fileName = file.getFileName();
-                OutputStream output = new FileOutputStream("electronic_store_management/src/main/webapp/public/uploads/" + fileName);
+                OutputStream output = new FileOutputStream("C:/Users/Admin/Desktop/electronic_store_management/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
                 try {
                     byte[] buffer = new byte[1024];
                     int bytesRead;
@@ -252,16 +252,49 @@ public class companyCDIBean {
                 e.printStackTrace();
             }
         }
-        session.setAttribute("successmessage", "Category Successfully Inserted");
+
+        session.setAttribute("successmessage", "Product Successfully Inserted");
         Integer companyId = (Integer) session.getAttribute("comId");
-        
+
         // Format manufacture date
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = dateFormat.format(prodetail.getMfgDate());
-        
+
         cc.addProduct(prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), fileName, formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, companyId.toString());
         return "displayProduct";
     }
+//    public String addProduct(){
+//        String fileName = "";
+//        if (file != null) {
+//            try (InputStream input = file.getInputStream()) {
+//                fileName = file.getFileName();
+//                OutputStream output = new FileOutputStream("C:/Users/Admin/Desktop/electronic_store_management/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
+//                try {
+//                    byte[] buffer = new byte[1024];
+//                    int bytesRead;
+//                    while ((bytesRead = input.read(buffer)) != -1) {
+//                        output.write(buffer, 0, bytesRead);
+//                    }
+//                } finally {
+//                    output.close();
+//                }
+//            } catch (IOException e) {
+//                // Handle the error
+//                e.printStackTrace();
+//            }
+//        }
+//        
+//        session.setAttribute("successmessage", "Product Successfully Inserted");
+//        Integer companyId = (Integer) session.getAttribute("comId");
+//        
+//        // Format manufacture date
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        String formattedDate = dateFormat.format(prodetail.getMfgDate());
+//        
+//        cc.addProduct(prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), fileName, "2024-03-07", String.valueOf(prodetail.getWarranty()), addCategoryToProduct, companyId.toString());
+////        cc.addProduct("fsfsfgd", "4", "343244", "ddssgs.jpg", "2024-03-07", "5", "2", "4");
+//        return "displayProduct";
+//    }
     
     // Add Category
     public String addCategory() {
