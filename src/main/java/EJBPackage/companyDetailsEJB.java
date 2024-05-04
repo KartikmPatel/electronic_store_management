@@ -4,7 +4,10 @@
  */
 package EJBPackage;
 
+import EntityPackage.CategoryDetails;
 import EntityPackage.CompanyDetails;
+import EntityPackage.CompanyProductStock;
+import EntityPackage.ProductDetails;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -18,14 +21,15 @@ import javax.persistence.Query;
  */
 @Stateless
 public class companyDetailsEJB {
+
     @PersistenceContext(unitName = "my_persistence_unit")
     EntityManager em;
-    
-    public Collection<CompanyDetails> displayCompanyDetails(){
+
+    public Collection<CompanyDetails> displayCompanyDetails() {
         return em.createNamedQuery("CompanyDetails.findAll").getResultList();
     }
-    
-    public void addCompanyDetails(String companyName, String email, Integer contactNo, String password, String companyLogo, String country){
+
+    public void addCompanyDetails(String companyName, String email, Integer contactNo, String password, String companyLogo, String country) {
         CompanyDetails model = new CompanyDetails();
         model.setCompanyName(companyName);
         model.setEmail(email);
@@ -35,12 +39,12 @@ public class companyDetailsEJB {
         model.setCountry(country);
         em.persist(model);
     }
-    
-    public Collection<CompanyDetails> getDataByIdForUpdate(Integer companyId){
+
+    public Collection<CompanyDetails> getDataByIdForUpdate(Integer companyId) {
         return em.createNamedQuery("CompanyDetails.findByCompanyId").setParameter("companyId", companyId).getResultList();
     }
-    
-    public void updateCompanyDetails(Integer companyId, String companyName, String email, Integer contactNo, String password, String companyLogo, String country){
+
+    public void updateCompanyDetails(Integer companyId, String companyName, String email, Integer contactNo, String password, String companyLogo, String country) {
         CompanyDetails model = em.find(CompanyDetails.class, companyId);
         model.setCompanyName(companyName);
         model.setEmail(email);
@@ -50,20 +54,20 @@ public class companyDetailsEJB {
         model.setCountry(country);
         em.merge(model);
     }
-    
-    public void deleteCompanyDetails(Integer companyId){
+
+    public void deleteCompanyDetails(Integer companyId) {
         CompanyDetails model = em.find(CompanyDetails.class, companyId);
         em.remove(model);
     }
-    
-    public boolean checkLogin(String email, String password){
+
+    public boolean checkLogin(String email, String password) {
         Query chklog = em.createQuery("SELECT c FROM CompanyDetails c WHERE c.email = :email AND c.password = :password")
-                         .setParameter("email", email)
-                         .setParameter("password", password);
+                .setParameter("email", email)
+                .setParameter("password", password);
 
         List<CompanyDetails> resultList = chklog.getResultList();
 
-        if(resultList != null && !resultList.isEmpty()) {
+        if (resultList != null && !resultList.isEmpty()) {
             return true;
         } else {
             return false;
@@ -71,11 +75,34 @@ public class companyDetailsEJB {
     }
 
     // get UserId
-    public Collection<CompanyDetails> getUserId(String email)
-    {
+    public Collection<CompanyDetails> getUserId(String email) {
         return em.createNamedQuery("CompanyDetails.findByEmail").setParameter("email", email).getResultList();
     }
-    
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+
+    // count category for the company Dashboard
+    public Integer getCategoryCount(Integer catid) {
+        CompanyDetails cd = em.find(CompanyDetails.class, catid);
+        Long count = (Long) em.createQuery("SELECT COUNT(c.categoryId) FROM CategoryDetails c WHERE c.companyId = :companyId")
+                .setParameter("companyId", cd)
+                .getSingleResult();
+        return count.intValue();
+    }
+
+    // count product for the company Dashboard
+    public Integer getProductsCount(Integer companyId) {
+        CompanyDetails cd = em.find(CompanyDetails.class, companyId);
+        Long count = (Long) em.createQuery("SELECT COUNT(p.productId) FROM ProductDetails p WHERE p.companyId = :companyId")
+                .setParameter("companyId", cd)
+                .getSingleResult();
+        return count.intValue();
+    }
+
+    // count company product stock for the company dashboard
+    public Integer getCompanyProductStockCount(Integer comId) {
+        CompanyDetails cd = em.find(CompanyDetails.class, comId);
+        Long count = (Long) em.createQuery("SELECT COUNT(c.companyStockId) FROM CompanyProductStock c WHERE c.productId = (SELECT p.productId FROM ProductDetails p WHERE p.companyId = :companyId)")
+                .setParameter("companyId", cd)
+                .getSingleResult();
+        return count.intValue();
+    }
 }

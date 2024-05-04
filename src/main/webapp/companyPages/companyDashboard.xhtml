@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:include src="../companyPages/companyHeader.xhtml" />
+
+        <div class="container" style="margin-top: 1%;">
+            <div class="container-fluid">
+                <!-- Small boxes (Stat box) -->
+                <div class="row">
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>${companyCDIBean.catCount}</h3>
+
+                                <p style="font-size: 20px;">Categories</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-laptop"></i>
+                            </div>
+                            <a href="../companyPages/displayCategory.jsf" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3>${companyCDIBean.prodCount}</h3>
+
+                                <p style="font-size: 20px;">Products</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <a href="../companyPages/displayProduct.jsf" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3>44</h3>
+
+                                <p style="font-size: 20px;">Store Orders</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-list-alt"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-danger">
+                            <div class="inner">
+                                <h3>${companyCDIBean.stockCount}</h3>
+
+                                <p style="font-size: 20px;">Stocks</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-cubes"></i>
+                            </div>
+                            <a href="../companyPages/displayProductStock.jsf" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>

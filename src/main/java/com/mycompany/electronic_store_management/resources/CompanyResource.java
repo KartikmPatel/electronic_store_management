@@ -101,7 +101,7 @@ public class CompanyResource {
     // add category
     @POST
     @Path("addcategory/{cat_name}/{com_id}")
-    public void addCategory(@PathParam("cat_name") String cname,@PathParam("com_id") Integer cid)
+    public void addCategory1(@PathParam("cat_name") String cname,@PathParam("com_id") Integer cid)
     {
         catobj.addcategorydetails(cname, cid);
     }
@@ -236,5 +236,32 @@ public class CompanyResource {
     @Path("deleteCompanyProStock/{companyStokeId}")
     public void deleteCompanyProductStock(@PathParam("companyStokeId") Integer companyStokeId){
         cpsobj.deleteCompanyProductStock(companyStokeId);
+    }
+    
+    // count Category for the company dashboard
+    @GET
+    @Path("getcategorycount/{comid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Integer getCategoryCount(@PathParam("comid") Integer comid)
+    {
+        return cde.getCategoryCount(comid);
+    }
+    
+    // count Product for the company dashboard
+    @GET
+    @Path("getproductcount/{comid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Integer getProductCount(@PathParam("comid") Integer comid)
+    {
+        return cde.getProductsCount(comid);
+    }
+    
+    // count company product stock for the company dashboard
+    @GET
+    @Path("getcompanyproductstockcount/{comid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Integer getCompanyProductStockCount(@PathParam("comid") Integer comid)
+    {
+        return cde.getCompanyProductStockCount(comid);
     }
 }

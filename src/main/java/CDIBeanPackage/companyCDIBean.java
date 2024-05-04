@@ -56,7 +56,7 @@ public class companyCDIBean {
     
     Collection<CompanyProductStock> cpsdt;
     GenericType<Collection<CompanyProductStock>> gcpsdt;
-
+    
     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
 
@@ -64,7 +64,17 @@ public class companyCDIBean {
     Response rs;
     Collection<CategoryDetails> catdt;
     GenericType<Collection<CategoryDetails>> gcatdt;
-
+    
+    // Variables for counting category,product,stocks
+    Integer catCount;
+    GenericType<Integer> gcatCount;
+    
+    Integer prodCount;
+    GenericType<Integer> gprodCount;
+    
+    Integer stockCount;
+    GenericType<Integer> gstockCount;
+    
     public companyCDIBean() {
         cc = new companyClient();
         this.errorStatus = "";
@@ -78,6 +88,10 @@ public class companyCDIBean {
         
         cpsdt = new ArrayList<>();
         gcpsdt = new GenericType<Collection<CompanyProductStock>>() {};
+        
+        gcatCount = new GenericType<Integer>(){};
+        gprodCount = new GenericType<Integer>(){};
+        gstockCount = new GenericType<Integer>(){};
     }
 
     public ProductDetails getProdetail() {
@@ -214,7 +228,7 @@ public class companyCDIBean {
                     comId = cd.getCompanyId();
                 }
                 session.setAttribute("comId", comId);
-                return "displayCategory?faces-redirect=true";
+                return "companyDashboard?faces-redirect=true";
             } else {
                 //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed", "Invalid email or password"));
                 this.errorStatus = "Invalid email or password";
@@ -271,7 +285,7 @@ public class companyCDIBean {
     public String addCategory() {
         session.setAttribute("successmessage", "Product Successfully Inserted");
         Integer companyId = (Integer) session.getAttribute("comId");
-        cc.addCategory(cdetail.getCategoryName(), companyId.toString());
+        cc.addCategory1(cdetail.getCategoryName(), companyId.toString());
         return "displayCategory";
     }
 
@@ -309,4 +323,41 @@ public class companyCDIBean {
         cc.updateCategory(String.valueOf(cdetail.getCategoryId()), cdetail.getCategoryName(), companyId.toString());
         return "displayCategory";
     }
+
+    // get category count
+    public Integer getCatCount() {
+        Integer companyId = (Integer) session.getAttribute("comId");
+        rs = cc.getCategoryCount(Response.class, companyId.toString());
+        catCount = rs.readEntity(gcatCount);
+        return catCount;
+    }
+
+    public void setCatCount(Integer catCount) {
+        this.catCount = catCount;
+    }
+    
+    // get Product Count
+    public Integer getProdCount() {
+        Integer companyId = (Integer) session.getAttribute("comId");
+        rs = cc.getProductCount(Response.class, companyId.toString());
+        prodCount = rs.readEntity(gprodCount);
+        return prodCount;
+    }
+
+    public void setProdCount(Integer prodCount) {
+        this.prodCount = prodCount;
+    }
+    
+    // get company product stock count
+    public Integer getStockCount() {
+        Integer companyId = (Integer) session.getAttribute("comId");
+        rs = cc.getCompanyProductStockCount(Response.class, companyId.toString());
+        stockCount = rs.readEntity(gstockCount);
+        return stockCount;
+    }
+
+    public void setStockCount(Integer stockCount) {
+        this.stockCount = stockCount;
+    }
+    
 }
