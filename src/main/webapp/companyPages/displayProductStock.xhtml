@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:include src="../companyPages/companyHeader.xhtml" />
+
+        <div class="container" style="margin-top: 2%;margin-left: 250px;">
+            <c:if test="${not empty sessionScope.successmessage}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    ${sessionScope.successmessage}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </c:if>
+
+            <div class="card" style="margin-top: 20px;">
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="#{companyCDIBean.cpsdt}" var="c">
+                                <tr>             
+                                    <td>#{c.productId.productName}</td>
+                                    <td>#{c.quantity}</td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $("#example1").DataTable({
+                    "responsive": true,
+                    "lengthChange": false,
+                    "autoWidth": false,
+                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                });
+            });
+        </script>
+    </h:body>
+</html>

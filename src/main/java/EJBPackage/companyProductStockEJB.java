@@ -23,7 +23,7 @@ public class companyProductStockEJB {
     
     public Collection<CompanyProductStock> displayCompanyProductStock(Integer comId){
         CompanyDetails cd = (CompanyDetails) em.find(CompanyDetails.class, comId);
-        return em.createQuery("SELECT c FROM CompanyProductStock c WHERE c.companyId = :companyId",CompanyProductStock.class).setParameter("companyId", cd).getResultList();
+        return em.createQuery("SELECT c FROM CompanyProductStock c WHERE c.productId = (SELECT p.productId FROM ProductDetails p WHERE p.companyId = :companyId)",CompanyProductStock.class).setParameter("companyId", cd).getResultList();
     }
     
     public void addCompanyProductStock(Integer quantity, Integer productId){

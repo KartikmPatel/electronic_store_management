@@ -53,6 +53,9 @@ public class companyCDIBean {
 
     Collection<ProductDetails> prodt;
     GenericType<Collection<ProductDetails>> gprodt;
+    
+    Collection<CompanyProductStock> cpsdt;
+    GenericType<Collection<CompanyProductStock>> gcpsdt;
 
     HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
     HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
@@ -67,13 +70,14 @@ public class companyCDIBean {
         this.errorStatus = "";
 //        generateCaptcha();
         catdt = new ArrayList<>();
-        gcatdt = new GenericType<Collection<CategoryDetails>>() {
-        };
+        gcatdt = new GenericType<Collection<CategoryDetails>>() {};
         session.removeAttribute("successmessage");
 
         prodt = new ArrayList<>();
-        gprodt = new GenericType<Collection<ProductDetails>>() {
-        };
+        gprodt = new GenericType<Collection<ProductDetails>>() {};
+        
+        cpsdt = new ArrayList<>();
+        gcpsdt = new GenericType<Collection<CompanyProductStock>>() {};
     }
 
     public ProductDetails getProdetail() {
@@ -90,6 +94,17 @@ public class companyCDIBean {
 
     public void setAddCategoryToProduct(String addCategoryToProduct) {
         this.addCategoryToProduct = addCategoryToProduct;
+    }
+
+    public Collection<CompanyProductStock> getCpsdt() {
+        Integer companyId = (Integer) session.getAttribute("comId");
+        rs = cc.displayCompanyProductStock(Response.class, companyId.toString());
+        cpsdt = rs.readEntity(gcpsdt);
+        return cpsdt;
+    }
+
+    public void setCpsdt(Collection<CompanyProductStock> cpsdt) {
+        this.cpsdt = cpsdt;
     }
 
     //display Product
