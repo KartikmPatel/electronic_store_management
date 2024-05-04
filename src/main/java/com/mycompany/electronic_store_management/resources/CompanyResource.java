@@ -39,7 +39,8 @@ public class CompanyResource {
     @EJB EJBPackage.categoryDetailsEJB catobj;
     @EJB EJBPackage.productDetailsEJB prodobj;
     @EJB EJBPackage.companyProductStockEJB cpsobj;
-    
+  
+    // add company
     @POST
     @Path("addcompany/{com_name}/{email}/{cno}/{password}/{clogo}/{country}")
     public void addCompany(@PathParam("com_name") String cname,@PathParam("email") String email,@PathParam("cno") Integer cno,@PathParam("password") String password,@PathParam("clogo") String clogo,@PathParam("country") String country)
@@ -47,6 +48,7 @@ public class CompanyResource {
         cde.addCompanyDetails(cname, email, cno, password, clogo, country);
     }
     
+    // company login
     @GET
     @Path("companyLogin/{email}/{password}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -55,6 +57,7 @@ public class CompanyResource {
         return cde.checkLogin(email, password);
     }
     
+    // get all company
     @GET
     @Path("getallcompany")
     @Produces(MediaType.APPLICATION_JSON)
@@ -79,6 +82,7 @@ public class CompanyResource {
         return cde.getDataByIdForUpdate(com_id);
     }
     
+    // update company
     @POST
     @Path("updatecompany/{com_id}/{com_name}/{email}/{cno}/{password}/{clogo}/{country}")
     public void updateCompany(@PathParam("com_id") Integer com_id,@PathParam("com_name") String cname,@PathParam("email") String email,@PathParam("cno") Integer cno,@PathParam("password") String password,@PathParam("clogo") String clogo,@PathParam("country") String country)
@@ -86,6 +90,7 @@ public class CompanyResource {
         cde.updateCompanyDetails(com_id, cname, email, cno, password, clogo, country);
     }
     
+    // get user id by email
     @POST
     @Path("getuserid/{email}")
     public Collection<CompanyDetails> getUserId(@PathParam("email") String email)
@@ -93,6 +98,7 @@ public class CompanyResource {
         return cde.getUserId(email);
     }
     
+    // add category
     @POST
     @Path("addcategory/{cat_name}/{com_id}")
     public void addCategory(@PathParam("cat_name") String cname,@PathParam("com_id") Integer cid)
@@ -100,6 +106,7 @@ public class CompanyResource {
         catobj.addcategorydetails(cname, cid);
     }
     
+    // get all category by company id
     @GET
     @Path("getallcategory/{com_id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -125,6 +132,7 @@ public class CompanyResource {
         return catobj.getCategoryByCatid(cat_id);
     }
     
+    // update category
     @POST
     @Path("updatecategory/{cat_id}/{cat_name}/{com_id}")
     public void updateCategory(@PathParam("cat_id") Integer cat_id,@PathParam("cat_name") String cname,@PathParam("com_id") Integer cid)
@@ -132,6 +140,7 @@ public class CompanyResource {
         catobj.updateCategory(cat_id, cname, cid);
     }
     
+    // add product
     @POST
     @Path("addproduct/{prod_name}/{discount}/{price}/{pimage}/{mfg_date}/{warranty}/{cat_id}/{com_id}")
     public void addProduct(@PathParam("prod_name") String pname,@PathParam("discount") Integer dis,@PathParam("price") Integer price,@PathParam("pimage") String pimage,@PathParam("mfg_date") String mfg_date,@PathParam("warranty") String war,@PathParam("cat_id") Integer cat_id,@PathParam("com_id") Integer com_id)
@@ -145,12 +154,22 @@ public class CompanyResource {
         }   
     }
     
+    // get all product by company id
     @GET
     @Path("getallproduct/{companyId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<ProductDetails> getAllProduct(@PathParam("companyId") Integer companyId)
     {
         return prodobj.getAllProducts(companyId);
+    }
+    
+    // get prod id by name and company id
+    @GET
+    @Path("getprodidbynameandcomid/{pname}/{comid}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ProductDetails getProdIdByNameAndComId(@PathParam("pname") String pname,@PathParam("comid") Integer comid)
+    {
+        return cpsobj.getProdIdByNameAndCompanyId(pname, comid);
     }
     
     @DELETE
@@ -169,6 +188,7 @@ public class CompanyResource {
         return prodobj.getProductById(prod_id);
     }
     
+    // update product
     @POST
     @Path("updateproduct/{pid}/{prod_name}/{discount}/{price}/{pimage}/{mfg_date}/{warranty}/{cat_id}/{com_id}")
     public void updateProduct(@PathParam("pid") Integer pid,@PathParam("prod_name") String pname,@PathParam("discount") Integer dis,@PathParam("price") Integer price,@PathParam("pimage") String pimage,@PathParam("mfg_date") String mfg_date,@PathParam("warranty") String war,@PathParam("cat_id") Integer cat_id,@PathParam("com_id") Integer com_id)
@@ -182,13 +202,15 @@ public class CompanyResource {
         }
     }
     
+    // get stock by company id
     @GET
-    @Path("displayCompanyProStock")
+    @Path("displayCompanyProStock/{comid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<CompanyProductStock> displayCompanyProductStock(){
-        return cpsobj.displayCompanyProductStock();
+    public Collection<CompanyProductStock> displayCompanyProductStock(@PathParam("comid") Integer comid){
+        return cpsobj.displayCompanyProductStock(comid);
     }
     
+    // add company stock
     @POST
     @Path("addCompanyProStock/{quan}/{prodid}")
     public void addCompanyProductStock(@PathParam("quan") Integer quan, @PathParam("prodid") Integer prodid){
@@ -203,6 +225,7 @@ public class CompanyResource {
         return cpsobj.getDataByIdForUpdate(companyStokeId);
     }
     
+    // update the company stock
     @POST
     @Path("updateCompanyProStock/{companyStokeId}/{quan}/{prodid}")
     public void updateCompanyProductStock(@PathParam("companyStokeId") Integer companyStokeId, @PathParam("quan") Integer quan, @PathParam("prodid") Integer prodid){

@@ -18,7 +18,7 @@ import javax.ws.rs.client.WebTarget;
  *        client.close();
  * </pre>
  *
- * @author Admin
+ * @author Kartik Patel
  */
 public class companyClient {
 
@@ -41,6 +41,12 @@ public class companyClient {
         webTarget.path(java.text.MessageFormat.format("deletecompany/{0}", new Object[]{com_id})).request().delete();
     }
 
+    public <T> T getProdIdByNameAndComId(Class<T> responseType, String pname, String comid) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("getprodidbynameandcomid/{0}/{1}", new Object[]{pname, comid}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
     public void addProduct(String prod_name, String discount, String price, String pimage, String mfg_date, String warranty, String cat_id, String com_id) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("addproduct/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}", new Object[]{prod_name, discount, price, pimage, mfg_date, warranty, cat_id, com_id})).request().post(null);
     }
@@ -57,9 +63,9 @@ public class companyClient {
         webTarget.path(java.text.MessageFormat.format("updatecompany/{0}/{1}/{2}/{3}/{4}/{5}/{6}", new Object[]{com_id, com_name, email, cno, password, clogo, country})).request().post(null);
     }
 
-    public <T> T displayCompanyProductStock(Class<T> responseType) throws ClientErrorException {
+    public <T> T displayCompanyProductStock(Class<T> responseType, String comid) throws ClientErrorException {
         WebTarget resource = webTarget;
-        resource = resource.path("displayCompanyProStock");
+        resource = resource.path(java.text.MessageFormat.format("displayCompanyProStock/{0}", new Object[]{comid}));
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
@@ -129,9 +135,9 @@ public class companyClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
-    public void deleteProduct(String prod_id) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("deleteproduct/{0}", new Object[]{prod_id})).request().delete();
-    }
+//    public void deleteProduct(Class<T> responseType, String prod_id) throws ClientErrorException {
+//        webTarget.path(java.text.MessageFormat.format("deleteproduct/{0}", new Object[]{prod_id})).request().delete();
+//    }
 
     public <T> T getUserId(Class<T> responseType, String email) throws ClientErrorException {
         return webTarget.path(java.text.MessageFormat.format("getuserid/{0}", new Object[]{email})).request().post(null, responseType);

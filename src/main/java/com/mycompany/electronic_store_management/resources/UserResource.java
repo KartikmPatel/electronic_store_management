@@ -32,7 +32,7 @@ public class UserResource {
     
     @EJB EJBPackage.userFeedBackEJB ufe;
     
-    // UserFeedback
+    // add feedback
     @POST
     @Path("addfeedback/{message}/{fdate}/{uid}")
     public void addFeedback(@PathParam("message") String message,@PathParam("fdate") String fdate,@PathParam("uid") Integer uid)
@@ -46,6 +46,7 @@ public class UserResource {
         }
     }
     
+    // display feedback
     @GET
     @Path("displayallfeedback")
     @Produces(MediaType.APPLICATION_JSON)

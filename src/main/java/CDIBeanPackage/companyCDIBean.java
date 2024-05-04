@@ -6,6 +6,7 @@ package CDIBeanPackage;
 
 import EntityPackage.CategoryDetails;
 import EntityPackage.CompanyDetails;
+import EntityPackage.CompanyProductStock;
 import EntityPackage.ProductDetails;
 import RestClientPackage.companyClient;
 import java.io.File;
@@ -39,7 +40,10 @@ public class companyCDIBean {
 //    String captchaCode; // Change to String
 
     CompanyDetails cd = new CompanyDetails();
+    ProductDetails prodetail = new ProductDetails();
     CategoryDetails cdetail = new CategoryDetails();
+    CompanyProductStock cpsdetails = new CompanyProductStock();
+    
     RestClientPackage.companyClient cc;
     private String email, password;
     UploadedFile file;
@@ -47,7 +51,6 @@ public class companyCDIBean {
 
     private String addCategoryToProduct;
 
-    ProductDetails prodetail = new ProductDetails();
     Collection<ProductDetails> prodt;
     GenericType<Collection<ProductDetails>> gprodt;
 
@@ -117,25 +120,6 @@ public class companyCDIBean {
         this.password = password;
     }
 
-//    public String getCaptchaCode() {
-//        return captchaCode;
-//    }
-//
-//    public void setCaptchaCode(String captchaCode) {
-//        this.captchaCode = captchaCode;
-//    }
-//
-//    private void generateCaptcha() {
-//        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-//        StringBuilder captchaCodeBuilder = new StringBuilder();
-//        SecureRandom random = new SecureRandom();
-//
-//        for (int i = 0; i < 6; i++) {
-//            int index = random.nextInt(characters.length());
-//            captchaCodeBuilder.append(characters.charAt(index));
-//        }
-//        captchaCode = captchaCodeBuilder.toString();
-//    }
     public CompanyDetails getCd() {
         return cd;
     }
@@ -160,6 +144,14 @@ public class companyCDIBean {
         this.errorStatus = errorStatus;
     }
 
+    public CompanyProductStock getCpsdetails() {
+        return cpsdetails;
+    }
+
+    public void setCpsdetails(CompanyProductStock cpsdetails) {
+        this.cpsdetails = cpsdetails;
+    }
+    
     // file uploading function
     private String uploadImage() {
         String fileName = "";
@@ -243,6 +235,8 @@ public class companyCDIBean {
     //Add Product  
     public String addProduct() {
         String fileName = uploadImage();
+        ProductDetails pd1 = new ProductDetails();
+        GenericType<ProductDetails> gpd1 = new GenericType<ProductDetails>(){};
         
         session.setAttribute("successmessage", "Product Successfully Inserted");
         Integer companyId = (Integer) session.getAttribute("comId");
@@ -252,6 +246,9 @@ public class companyCDIBean {
         String formattedDate = dateFormat.format(prodetail.getMfgDate());
 
         cc.addProduct(prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), fileName, formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, companyId.toString());
+        rs = cc.getProdIdByNameAndComId(Response.class,prodetail.getProductName(), companyId.toString());
+        pd1 = rs.readEntity(gpd1);
+        cc.addCompanyProductStock(String.valueOf(cpsdetails.getQuantity()),pd1.getProductId().toString());
         return "displayProduct";
     }
 

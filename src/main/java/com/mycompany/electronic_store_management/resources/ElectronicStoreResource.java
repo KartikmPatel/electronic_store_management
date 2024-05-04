@@ -22,6 +22,7 @@ public class ElectronicStoreResource {
     @EJB electronicStoreProductStockEJB stockobj;
     @EJB electronicStoreFestivalEJB festobj;
 
+    // get all store
     @GET
     @Path("displayStore")
     @Produces(MediaType.APPLICATION_JSON)
@@ -29,6 +30,7 @@ public class ElectronicStoreResource {
         return stoobj.displayElectronicStoreDetails();
     }
 
+    // add store
     @POST
     @Path("addStore/{name}/{email}/{contactNo}/{password}/{storeLogo}/{address}/{country}")
     public void addElectronicStore(@PathParam("name") String name, @PathParam("email") String email, @PathParam("contactNo") Integer contact, @PathParam("password") String password, @PathParam("storeLogo") String logo, @PathParam("address") String address, @PathParam("country") String country) {
@@ -43,6 +45,7 @@ public class ElectronicStoreResource {
         return stoobj.getDataByIdForUpdate(storeId);
     }
 
+    // update store
     @POST
     @Path("updateStore/{storeId}/{name}/{email}/{contactNo}/{password}/{storeLogo}/{address}/{country}")
     public void updateElectronicStore(@PathParam("storeId") Integer storeId, @PathParam("name") String name, @PathParam("email") String email, @PathParam("contactNo") Integer contact, @PathParam("password") String password, @PathParam("storeLogo") String logo, @PathParam("address") String address, @PathParam("country") String country) {
@@ -71,6 +74,7 @@ public class ElectronicStoreResource {
         return stockobj.getAllStock();
     }
     
+    // display festival
     @GET
     @Path("displayFestival")
     @Produces(MediaType.APPLICATION_JSON)
@@ -78,6 +82,7 @@ public class ElectronicStoreResource {
         return festobj.displayFestival();
     }
     
+    // add festival
     @POST
     @Path("addFestival/{festivalName}/{festivalDate}/{festivalDiscount}")
     public void addFestival(@PathParam("festivalName") String festivalName, @PathParam("festivalDate") String festivalDate, @PathParam("festivalDiscount") Integer festivalDiscount){
@@ -98,6 +103,7 @@ public class ElectronicStoreResource {
         return festobj.getDataByIdForUpdate(festivalId);
     }
     
+    // update festival
     @POST
     @Path("updateFestival/{festivalId}/{festivalName}/{festivalDate}/{festivalDiscount}")
     public void updateFestival(@PathParam("festivalId") Integer festivalId,@PathParam("festivalName") String festivalName, @PathParam("festivalDate") String festivalDate, @PathParam("festivalDiscount") Integer festivalDiscount){

@@ -4,6 +4,7 @@
  */
 package EJBPackage;
 
+import EntityPackage.CompanyDetails;
 import EntityPackage.CompanyProductStock;
 import EntityPackage.ProductDetails;
 import java.util.Collection;
@@ -20,8 +21,9 @@ public class companyProductStockEJB {
     @PersistenceContext(unitName = "my_persistence_unit")
     EntityManager em;
     
-    public Collection<CompanyProductStock> displayCompanyProductStock(){
-        return em.createNamedQuery("CompanyProductStock.findAll").getResultList();
+    public Collection<CompanyProductStock> displayCompanyProductStock(Integer comId){
+        CompanyDetails cd = (CompanyDetails) em.find(CompanyDetails.class, comId);
+        return em.createQuery("SELECT c FROM CompanyProductStock c WHERE c.companyId = :companyId",CompanyProductStock.class).setParameter("companyId", cd).getResultList();
     }
     
     public void addCompanyProductStock(Integer quantity, Integer productId){
@@ -52,6 +54,11 @@ public class companyProductStockEJB {
         CompanyProductStock model = em.find(CompanyProductStock.class, companyStokeId);
         em.remove(model);
     }
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    
+    // get prodId by name & company
+    public ProductDetails getProdIdByNameAndCompanyId(String pname,Integer comid)
+    {
+        CompanyDetails cd = (CompanyDetails) em.find(CompanyDetails.class, comid);
+        return em.createQuery("SELECT p FROM ProductDetails p WHERE p.productName = :productName AND p.companyId = :companyId",ProductDetails.class).setParameter("productName", pname).setParameter("companyId", cd).getSingleResult();
+    }
 }
