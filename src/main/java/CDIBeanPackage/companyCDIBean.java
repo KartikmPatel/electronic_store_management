@@ -44,9 +44,9 @@ public class companyCDIBean {
     private String email, password;
     UploadedFile file;
     String errorStatus;
-    
+
     private String addCategoryToProduct;
-    
+
     ProductDetails prodetail = new ProductDetails();
     Collection<ProductDetails> prodt;
     GenericType<Collection<ProductDetails>> gprodt;
@@ -64,11 +64,13 @@ public class companyCDIBean {
         this.errorStatus = "";
 //        generateCaptcha();
         catdt = new ArrayList<>();
-        gcatdt = new GenericType<Collection<CategoryDetails>>(){};
+        gcatdt = new GenericType<Collection<CategoryDetails>>() {
+        };
         session.removeAttribute("successmessage");
-        
+
         prodt = new ArrayList<>();
-        gprodt = new GenericType<Collection<ProductDetails>>(){};
+        gprodt = new GenericType<Collection<ProductDetails>>() {
+        };
     }
 
     public ProductDetails getProdetail() {
@@ -86,7 +88,7 @@ public class companyCDIBean {
     public void setAddCategoryToProduct(String addCategoryToProduct) {
         this.addCategoryToProduct = addCategoryToProduct;
     }
-    
+
     //display Product
     public Collection<ProductDetails> getProdt() {
         Integer companyId = (Integer) session.getAttribute("comId");
@@ -158,13 +160,13 @@ public class companyCDIBean {
         this.errorStatus = errorStatus;
     }
 
-    // Register Company
-    public String addCompany() {
+    // file uploading function
+    private String uploadImage() {
         String fileName = "";
         if (file != null) {
             try (InputStream input = file.getInputStream()) {
                 fileName = file.getFileName();
-                OutputStream output = new FileOutputStream("C:/Users/Admin/Desktop/electronic_store_management/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
+                OutputStream output = new FileOutputStream("C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
                 try {
                     byte[] buffer = new byte[1024];
                     int bytesRead;
@@ -179,6 +181,12 @@ public class companyCDIBean {
                 e.printStackTrace();
             }
         }
+        return fileName;
+    }
+
+    // Register Company
+    public String addCompany() {
+        String fileName = uploadImage();
 
         cc.addCompany(cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), cd.getPassword(), fileName, cd.getCountry());
         return "companyLogin?faces-redirect=true";
@@ -190,7 +198,8 @@ public class companyCDIBean {
             boolean chk = cc.checkCompanyLogin(Boolean.class, email, password);
             if (chk) {
                 Collection<CompanyDetails> comdetil = new ArrayList<>();
-                GenericType<Collection<CompanyDetails>> gcomdetil = new GenericType<Collection<CompanyDetails>>(){};
+                GenericType<Collection<CompanyDetails>> gcomdetil = new GenericType<Collection<CompanyDetails>>() {
+                };
                 Integer comId = 0;
                 rs = cc.getUserId(Response.class, email);
                 comdetil = rs.readEntity(gcomdetil);
@@ -233,26 +242,8 @@ public class companyCDIBean {
 
     //Add Product  
     public String addProduct() {
-        String fileName = "";
-        if (file != null) {
-            try (InputStream input = file.getInputStream()) {
-                fileName = file.getFileName();
-                OutputStream output = new FileOutputStream("C:/Users/Admin/Desktop/electronic_store_management/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
-                try {
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = input.read(buffer)) != -1) {
-                        output.write(buffer, 0, bytesRead);
-                    }
-                } finally {
-                    output.close();
-                }
-            } catch (IOException e) {
-                // Handle the error
-                e.printStackTrace();
-            }
-        }
-
+        String fileName = uploadImage();
+        
         session.setAttribute("successmessage", "Product Successfully Inserted");
         Integer companyId = (Integer) session.getAttribute("comId");
 
@@ -263,39 +254,7 @@ public class companyCDIBean {
         cc.addProduct(prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), fileName, formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, companyId.toString());
         return "displayProduct";
     }
-//    public String addProduct(){
-//        String fileName = "";
-//        if (file != null) {
-//            try (InputStream input = file.getInputStream()) {
-//                fileName = file.getFileName();
-//                OutputStream output = new FileOutputStream("C:/Users/Admin/Desktop/electronic_store_management/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
-//                try {
-//                    byte[] buffer = new byte[1024];
-//                    int bytesRead;
-//                    while ((bytesRead = input.read(buffer)) != -1) {
-//                        output.write(buffer, 0, bytesRead);
-//                    }
-//                } finally {
-//                    output.close();
-//                }
-//            } catch (IOException e) {
-//                // Handle the error
-//                e.printStackTrace();
-//            }
-//        }
-//        
-//        session.setAttribute("successmessage", "Product Successfully Inserted");
-//        Integer companyId = (Integer) session.getAttribute("comId");
-//        
-//        // Format manufacture date
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        String formattedDate = dateFormat.format(prodetail.getMfgDate());
-//        
-//        cc.addProduct(prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), fileName, "2024-03-07", String.valueOf(prodetail.getWarranty()), addCategoryToProduct, companyId.toString());
-////        cc.addProduct("fsfsfgd", "4", "343244", "ddssgs.jpg", "2024-03-07", "5", "2", "4");
-//        return "displayProduct";
-//    }
-    
+
     // Add Category
     public String addCategory() {
         session.setAttribute("successmessage", "Product Successfully Inserted");
@@ -303,55 +262,36 @@ public class companyCDIBean {
         cc.addCategory(cdetail.getCategoryName(), companyId.toString());
         return "displayCategory";
     }
-    
+
     // edit product
-    public String editProductForm(ProductDetails prod){
+    public String editProductForm(ProductDetails prod) {
         this.prodetail = prod;
         this.addCategoryToProduct = prod.getCategoryId().getCategoryId().toString();
         return "editProduct";
     }
-    
+
     // Update or Edit Product
-    public String editProduct(){
-        String fileName = "";
-        if (file != null) {
-            try (InputStream input = file.getInputStream()) {
-                fileName = file.getFileName();
-                OutputStream output = new FileOutputStream("electronic_store_management/src/main/webapp/public/uploads/" + fileName);
-                try {
-                    byte[] buffer = new byte[1024];
-                    int bytesRead;
-                    while ((bytesRead = input.read(buffer)) != -1) {
-                        output.write(buffer, 0, bytesRead);
-                    }
-                } finally {
-                    output.close();
-                }
-            } catch (IOException e) {
-                // Handle the error
-                e.printStackTrace();
-            }
-        }
+    public String editProduct() {
+        String fileName = uploadImage();
+                
         session.setAttribute("successmessage", "Product Successfully Edited");
         Integer companyId = (Integer) session.getAttribute("comId");
-        
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = dateFormat.format(prodetail.getMfgDate());
-        
+
         cc.updateProduct(prodetail.getProductId().toString(), prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), fileName, formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, companyId.toString());
         return "displayProduct";
     }
-    
+
     // edit category
-    public String editCategoryForm(CategoryDetails catd)
-    {
+    public String editCategoryForm(CategoryDetails catd) {
         this.cdetail = catd;
         return "editCategory";
     }
-    
+
     // Update or Edit Category
-    public String editCategory()
-    {
+    public String editCategory() {
         session.setAttribute("successmessage", "Category Successfully Edited");
         Integer companyId = (Integer) session.getAttribute("comId");
         cc.updateCategory(String.valueOf(cdetail.getCategoryId()), cdetail.getCategoryName(), companyId.toString());

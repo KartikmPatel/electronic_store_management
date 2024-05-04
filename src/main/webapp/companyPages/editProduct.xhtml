@@ -22,7 +22,7 @@
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <h:form>
+                            <h:form enctype="multipart/form-data">
                                 <div class="card-body">
                                     <div class="form-group">
                                         <h:inputHidden value="#{companyCDIBean.prodetail.productId}"/>
@@ -36,15 +36,15 @@
                                         <p:inputText class="form-control" id="exampleInputPrice" value="#{companyCDIBean.prodetail.price}" placeholder="Enter the Price" />
                                         
                                         <label for="exampleInputImage">Image</label>
-                                        <p:fileUpload id="logo" value="#{companyCDIBean.file}" mode="simple" />
+                                        <p:fileUpload class="form-control" id="logo" value="#{companyCDIBean.file}" mode="simple" />
                                         
-                                        <label for="exampleInputDate">Manufacture Date</label>
-                                        <p:datePicker class="form-control" id="exampleInputDate" value="#{companyCDIBean.prodetail.mfgDate}" placeholder="Enter the Manufacture Date" />
+                                        <label for="exampleInputDate">Manufacture Date </label>
+                                        <p:calendar id="exampleInputDate" value="#{companyCDIBean.prodetail.mfgDate}" placeholder="Enter the Manufacture Date" /><br></br>
                                         
                                         <label for="exampleInputWarranty">Warranty</label>
-                                        <p:inputText class="form-control" id="exampleInputWarranty" value="#{companyCDIBean.prodetail.warranty}" placeholder="Enter the Warranty" />
+                                        <p:inputText class="form-control" id="exampleInputWarranty" value="#{companyCDIBean.prodetail.warranty}" placeholder="Enter the Warranty" /><br/>
                                         
-                                        <label for="exampleInputWarranty">Category</label>
+                                        <label for="exampleInputWarranty">Category </label>
                                         <p:selectOneMenu value="#{companyCDIBean.addCategoryToProduct}">
                                             <f:selectItems value="#{companyCDIBean.catdt}" var="c" itemLabel="#{c.categoryName}" itemValue="#{c.categoryId}"></f:selectItems>
                                         </p:selectOneMenu>
@@ -53,7 +53,7 @@
                                 <!-- /.card-body -->
 
                                 <div class="card-footer">
-                                    <h:commandButton class="btn btn-primary" action="#{companyCDIBean.editProduct()}" style="background:#17a2b8" value="Update Product"/>
+                                    <h:commandButton class="btn btn-primary" action="#{companyCDIBean.editProduct()}" style="background:#17a2b8" value="Edit Product"/>
                                 </div>
                             </h:form>
                         </div>

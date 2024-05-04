@@ -22,7 +22,7 @@
                             </div>
                             <!-- /.card-header -->
                             <!-- form start -->
-                            <h:form>
+                            <h:form enctype="multipart/form-data">
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="exampleInputPoduct">Product Name</label>
@@ -41,7 +41,7 @@
                                         <p:calendar id="exampleInputDate" value="#{companyCDIBean.prodetail.mfgDate}" placeholder="Enter the Manufacture Date" /><br></br>
 
                                         <label for="exampleInputWarranty">Warranty</label>
-                                        <p:inputText class="form-control" id="exampleInputWarranty" value="#{companyCDIBean.prodetail.warranty}" placeholder="Enter the Warranty" />
+                                        <p:inputText class="form-control" id="exampleInputWarranty" value="#{companyCDIBean.prodetail.warranty}" placeholder="Enter the Warranty" /><br/>
                                         
                                         <label for="exampleInputWarranty">Category</label>
                                         <p:selectOneMenu value="#{companyCDIBean.addCategoryToProduct}">
