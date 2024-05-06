@@ -75,10 +75,19 @@ public class companyDetailsEJB {
     }
 
     // get UserId
-    public Collection<CompanyDetails> getUserId(String email) {
-        return em.createNamedQuery("CompanyDetails.findByEmail").setParameter("email", email).getResultList();
+    public Integer getCompanyId(String email) {
+        Integer comId = (Integer) em.createQuery("SELECT c.companyId FROM CompanyDetails c WHERE c.email = :email")
+                                    .setParameter("email", email)
+                                    .getSingleResult();
+        return comId;
     }
-
+//    public <T> T getCompanyId(Class<T> responseType, String email) {
+//        T comId = em.createQuery("SELECT c.companyId FROM CompanyDetails c WHERE c.email = :email", responseType)
+//                    .setParameter("email", email)
+//                    .getSingleResult();
+//        return comId;
+//    }
+    
     // count category for the company Dashboard
     public Integer getCategoryCount(Integer catid) {
         CompanyDetails cd = em.find(CompanyDetails.class, catid);

@@ -9,6 +9,7 @@ import EntityPackage.CompanyDetails;
 import EntityPackage.CompanyProductStock;
 import EntityPackage.ProductDetails;
 import RestClientPackage.companyClient;
+import RestClientPackage.userGroupClient;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -38,6 +40,9 @@ import org.primefaces.model.file.UploadedFile;
 @RequestScoped
 public class companyCDIBean {
 //    String captchaCode; // Change to String
+    
+    userGroupClient ugc;
+    @Inject LoginBean lb;
 
     CompanyDetails cd = new CompanyDetails();
     ProductDetails prodetail = new ProductDetails();
@@ -77,6 +82,8 @@ public class companyCDIBean {
     
     public companyCDIBean() {
         cc = new companyClient();
+        ugc = new userGroupClient();
+        
         this.errorStatus = "";
 //        generateCaptcha();
         catdt = new ArrayList<>();
@@ -111,8 +118,8 @@ public class companyCDIBean {
     }
 
     public Collection<CompanyProductStock> getCpsdt() {
-        Integer companyId = (Integer) session.getAttribute("comId");
-        rs = cc.displayCompanyProductStock(Response.class, companyId.toString());
+//        Integer companyId = (Integer) session.getAttribute("comId");
+        rs = cc.displayCompanyProductStock(Response.class, String.valueOf(lb.getComId()));
         cpsdt = rs.readEntity(gcpsdt);
         return cpsdt;
     }
@@ -123,8 +130,8 @@ public class companyCDIBean {
 
     //display Product
     public Collection<ProductDetails> getProdt() {
-        Integer companyId = (Integer) session.getAttribute("comId");
-        rs = cc.getAllProduct(Response.class, companyId.toString());
+//        Integer companyId = (Integer) session.getAttribute("comId");
+        rs = cc.getAllProduct(Response.class, String.valueOf(lb.getComId()));
         prodt = rs.readEntity(gprodt);
         return prodt;
     }
@@ -187,7 +194,7 @@ public class companyCDIBean {
         if (file != null) {
             try (InputStream input = file.getInputStream()) {
                 fileName = file.getFileName();
-                OutputStream output = new FileOutputStream("C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
+                OutputStream output = new FileOutputStream("C:/Users/Admin/Desktop/electronic_store_management/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
                 try {
                     byte[] buffer = new byte[1024];
                     int bytesRead;
@@ -210,6 +217,8 @@ public class companyCDIBean {
         String fileName = uploadImage();
 
         cc.addCompany(cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), cd.getPassword(), fileName, cd.getCountry());
+        ugc.addUser(cd.getEmail(), cd.getPassword());
+        ugc.addGroup("Company", cd.getEmail());
         return "companyLogin?faces-redirect=true";
     }
 
@@ -222,12 +231,12 @@ public class companyCDIBean {
                 GenericType<Collection<CompanyDetails>> gcomdetil = new GenericType<Collection<CompanyDetails>>() {
                 };
                 Integer comId = 0;
-                rs = cc.getUserId(Response.class, email);
+//                rs = cc.getUserId(Response.class, email);
                 comdetil = rs.readEntity(gcomdetil);
                 for (CompanyDetails cd : comdetil) {
                     comId = cd.getCompanyId();
                 }
-                session.setAttribute("comId", comId);
+//                session.setAttribute("comId", comId);
                 return "companyDashboard?faces-redirect=true";
             } else {
                 //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login failed", "Invalid email or password"));
@@ -243,8 +252,8 @@ public class companyCDIBean {
 
     // display Category
     public Collection<CategoryDetails> getCatdt() {
-        Integer companyId = (Integer) session.getAttribute("comId");
-        rs = cc.getAllCategory(Response.class, companyId.toString());
+//        Integer companyId = (Integer) session.getAttribute("comId");
+        rs = cc.getAllCategory(Response.class, String.valueOf(lb.getComId()));
         catdt = rs.readEntity(gcatdt);
         return catdt;
     }
@@ -268,14 +277,14 @@ public class companyCDIBean {
         GenericType<ProductDetails> gpd1 = new GenericType<ProductDetails>(){};
         
         session.setAttribute("successmessage", "Product Successfully Inserted");
-        Integer companyId = (Integer) session.getAttribute("comId");
+//        Integer companyId = (Integer) session.getAttribute("comId");
 
         // Format manufacture date
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = dateFormat.format(prodetail.getMfgDate());
 
-        cc.addProduct(prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), fileName, formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, companyId.toString());
-        rs = cc.getProdIdByNameAndComId(Response.class,prodetail.getProductName(), companyId.toString());
+        cc.addProduct(prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), fileName, formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, String.valueOf(lb.getComId()));
+        rs = cc.getProdIdByNameAndComId(Response.class,prodetail.getProductName(), String.valueOf(lb.getComId()));
         pd1 = rs.readEntity(gpd1);
         cc.addCompanyProductStock(String.valueOf(cpsdetails.getQuantity()),pd1.getProductId().toString());
         return "displayProduct";
@@ -284,8 +293,8 @@ public class companyCDIBean {
     // Add Category
     public String addCategory() {
         session.setAttribute("successmessage", "Product Successfully Inserted");
-        Integer companyId = (Integer) session.getAttribute("comId");
-        cc.addCategory1(cdetail.getCategoryName(), companyId.toString());
+//        Integer companyId = (Integer) session.getAttribute("comId");
+        cc.addCategory1(cdetail.getCategoryName(), String.valueOf(lb.getComId()));
         return "displayCategory";
     }
 
@@ -301,12 +310,13 @@ public class companyCDIBean {
         String fileName = uploadImage();
                 
         session.setAttribute("successmessage", "Product Successfully Edited");
-        Integer companyId = (Integer) session.getAttribute("comId");
+//        Integer companyId = (Integer) session.getAttribute("comId");
+        
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = dateFormat.format(prodetail.getMfgDate());
 
-        cc.updateProduct(prodetail.getProductId().toString(), prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), fileName, formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, companyId.toString());
+        cc.updateProduct(prodetail.getProductId().toString(), prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), fileName, formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, String.valueOf(lb.getComId()));
         return "displayProduct";
     }
 
@@ -319,15 +329,15 @@ public class companyCDIBean {
     // Update or Edit Category
     public String editCategory() {
         session.setAttribute("successmessage", "Category Successfully Edited");
-        Integer companyId = (Integer) session.getAttribute("comId");
-        cc.updateCategory(String.valueOf(cdetail.getCategoryId()), cdetail.getCategoryName(), companyId.toString());
+//        Integer companyId = (Integer) session.getAttribute("comId");
+        cc.updateCategory(String.valueOf(cdetail.getCategoryId()), cdetail.getCategoryName(), String.valueOf(lb.getComId()));
         return "displayCategory";
     }
 
     // get category count
     public Integer getCatCount() {
-        Integer companyId = (Integer) session.getAttribute("comId");
-        rs = cc.getCategoryCount(Response.class, companyId.toString());
+//        Integer companyId = (Integer) session.getAttribute("comId");
+        rs = cc.getCategoryCount(Response.class, String.valueOf(lb.getComId()));
         catCount = rs.readEntity(gcatCount);
         return catCount;
     }
@@ -338,8 +348,8 @@ public class companyCDIBean {
     
     // get Product Count
     public Integer getProdCount() {
-        Integer companyId = (Integer) session.getAttribute("comId");
-        rs = cc.getProductCount(Response.class, companyId.toString());
+//        Integer companyId = (Integer) session.getAttribute("comId");
+        rs = cc.getProductCount(Response.class, String.valueOf(lb.getComId()));
         prodCount = rs.readEntity(gprodCount);
         return prodCount;
     }
@@ -350,8 +360,8 @@ public class companyCDIBean {
     
     // get company product stock count
     public Integer getStockCount() {
-        Integer companyId = (Integer) session.getAttribute("comId");
-        rs = cc.getCompanyProductStockCount(Response.class, companyId.toString());
+//        Integer companyId = (Integer) session.getAttribute("comId");
+        rs = cc.getCompanyProductStockCount(Response.class, String.valueOf(lb.getComId()));
         stockCount = rs.readEntity(gstockCount);
         return stockCount;
     }

@@ -7,32 +7,32 @@
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" />
         <!-- Font Awesome -->
-        <link rel="stylesheet" href="#{request.contextPath}/public/plugins/fontawesome-free/css/all.min.css" />
+        <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/plugins/fontawesome-free/css/all.min.css" />
         <!-- Ionicons -->
         <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
         <!-- Tempusdominus Bootstrap 4 -->
-        <link rel="stylesheet" href="#{request.contextPath}/public/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css" />
+        <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css" />
         <!-- iCheck -->
-        <link rel="stylesheet" href="#{request.contextPath}/public/plugins/icheck-bootstrap/icheck-bootstrap.min.css" />
+        <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/plugins/icheck-bootstrap/icheck-bootstrap.min.css" />
         <!-- JQVMap -->
-        <link rel="stylesheet" href="#{request.contextPath}/public/plugins/jqvmap/jqvmap.min.css"/>
+        <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/plugins/jqvmap/jqvmap.min.css"/>
         <!-- Theme style -->
-        <link rel="stylesheet" href="#{request.contextPath}/public/dist/css/adminlte.min.css" />
+        <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/dist/css/adminlte.min.css" />
         <!-- overlayScrollbars -->
-        <link rel="stylesheet" href="#{request.contextPath}/public/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" />
+        <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" />
         <!-- Daterange picker -->
-        <link rel="stylesheet" href="#{request.contextPath}/public/plugins/daterangepicker/daterangepicker.css" />
+        <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/plugins/daterangepicker/daterangepicker.css" />
         <!-- summernote -->
-        <link rel="stylesheet" href="#{request.contextPath}/public/plugins/summernote/summernote-bs4.min.css" />
+        <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/plugins/summernote/summernote-bs4.min.css" />
         <!--datatable-->
-        <link rel="stylesheet" href="#{request.contextPath}/public/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" />
-        <link rel="stylesheet" href="#{request.contextPath}/public/plugins/datatables-responsive/css/responsive.bootstrap4.min.css" />
-        <link rel="stylesheet" href="#{request.contextPath}/public/plugins/datatables-buttons/css/buttons.bootstrap4.min.css" />
+        <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" />
+        <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/plugins/datatables-responsive/css/responsive.bootstrap4.min.css" />
+        <link rel="stylesheet" href="#{facesContext.externalContext.requestContextPath}/public/plugins/datatables-buttons/css/buttons.bootstrap4.min.css" />
     </h:head>
     <h:body>
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="#{request.contextPath}/public/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
+            <img class="animation__shake" src="#{facesContext.externalContext.requestContextPath}/public/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60" />
         </div>
 
         <!-- Navbar -->
@@ -55,7 +55,7 @@
                 <div class="dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                        <img src="#{request.contextPath}/public/uploads/Screenshot (12).png" class="img-circle elevation-2" alt="User Image" style="width: 30px; height: 30px; cursor:pointer;" />
+                        <img src="#{facesContext.externalContext.requestContextPath}/public/uploads/Screenshot (12).png" class="img-circle elevation-2" alt="User Image" style="width: 30px; height: 30px; cursor:pointer;" />
 
                     </a>
 
@@ -65,7 +65,10 @@
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item">
-                            <i class="fas fa-sign-out-alt"></i> Logout
+                            <i class="fas fa-sign-out-alt"></i> 
+                            <h:form>
+                                <h:commandButton action="#{loginBean.logout()}" value="Logout"></h:commandButton>
+                            </h:form>
                         </a>
                     </div>
                 </div>
@@ -139,7 +142,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
                         <li class="nav-item menu-open">
-                            <a class="nav-link active" style="background:#17a2b8" href="../companyPages/companyDashboard.jsf">
+                            <a class="nav-link active" style="background:#17a2b8" href="http://localhost:8080/electronic_store_management/companyPages/companyDashboard.jsf">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -151,7 +154,7 @@
                         </li>
                         
                         <li class="nav-item" style="cursor: pointer">
-                            <a class="nav-link" href="../companyPages/displayCategory.jsf">
+                            <a class="nav-link" href="http://localhost:8080/electronic_store_management/companyPages/displayCategory.jsf">
                                 <i class="nav-icon fas fa-laptop"></i>
                                 <p>
                                     Categories
@@ -159,7 +162,7 @@
                             </a>
                         </li>
                         <li class="nav-item" style="cursor: pointer">
-                            <a class="nav-link" href="../companyPages/displayProduct.jsf">
+                            <a class="nav-link" href="http://localhost:8080/electronic_store_management/companyPages/displayProduct.jsf">
                                 <i class="nav-icon fas fa-tablet-alt"></i>
                                 <p>
                                     Products
@@ -183,7 +186,7 @@
                             </a>
                         </li>-->
                         <li class="nav-item" style="cursor: pointer">
-                            <a class="nav-link" href="../companyPages/displayProductStock.jsf">
+                            <a class="nav-link" href="http://localhost:8080/electronic_store_management/companyPages/displayProductStock.jsf">
                                 <i class="nav-icon fas fa-cubes"></i>
                                 <p>
                                     Stocks
@@ -204,43 +207,43 @@
             </div>
             <!-- /.sidebar -->
         </aside>
-        <script src="#{request.contextPath}/public/plugins/jquery/jquery.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/jquery/jquery.min.js"></script>
         <!-- jQuery UI 1.11.4 -->
-        <script src="#{request.contextPath}/public/plugins/jquery-ui/jquery-ui.min.js"></script>
-        <script src="#{request.contextPath}/public/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/jquery-ui/jquery-ui.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
         <!-- ChartJS -->
-        <script src="#{request.contextPath}/public/plugins/chart.js/Chart.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/chart.js/Chart.min.js"></script>
         <!-- Sparkline -->
-        <script src="#{request.contextPath}/public/plugins/sparklines/sparkline.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/sparklines/sparkline.js"></script>
         <!-- JQVMap -->
-        <script src="#{request.contextPath}/public/plugins/jqvmap/jquery.vmap.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/jqvmap/jquery.vmap.min.js"></script>
         <script src="~/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
         <!-- jQuery Knob Chart -->
-        <script src="#{request.contextPath}/public/plugins/jquery-knob/jquery.knob.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/jquery-knob/jquery.knob.min.js"></script>
         <!-- daterangepicker -->
-        <script src="#{request.contextPath}/public/plugins/moment/moment.min.js"></script>
-        <script src="#{request.contextPath}/public/plugins/daterangepicker/daterangepicker.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/moment/moment.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/daterangepicker/daterangepicker.js"></script>
         <!-- Tempusdominus Bootstrap 4 -->
-        <script src="#{request.contextPath}/public/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
         <!-- Summernote -->
-        <script src="#{request.contextPath}/public/plugins/summernote/summernote-bs4.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/summernote/summernote-bs4.min.js"></script>
         <!-- overlayScrollbars -->
-        <script src="#{request.contextPath}/public/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
         <!-- AdminLTE App -->
-        <script src="#{request.contextPath}/public/dist/js/adminlte.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/dist/js/adminlte.js"></script>
         <!-- AdminLTE for demo purposes -->
-        <script src="#{request.contextPath}/public/dist/js/demo.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/dist/js/demo.js"></script>
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-        <script src="#{request.contextPath}/public/dist/js/pages/dashboard.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/dist/js/pages/dashboard.js"></script>
         <!-- Datatable -->
-        <script src="#{request.contextPath}/public/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-        <script src="#{request.contextPath}/public/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-        <script src="#{request.contextPath}/public/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-        <script src="#{request.contextPath}/public/plugins/datatables/jquery.dataTables.min.js"></script>
-        <script src="#{request.contextPath}/public/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-        <script src="#{request.contextPath}/public/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-        <script src="#{request.contextPath}/public/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-        <script src="#{request.contextPath}/public/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-        <script src="#{request.contextPath}/public/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="#{facesContext.externalContext.requestContextPath}/public/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
     </h:body>
 </html>
