@@ -81,13 +81,7 @@ public class companyDetailsEJB {
                                     .getSingleResult();
         return comId;
     }
-//    public <T> T getCompanyId(Class<T> responseType, String email) {
-//        T comId = em.createQuery("SELECT c.companyId FROM CompanyDetails c WHERE c.email = :email", responseType)
-//                    .setParameter("email", email)
-//                    .getSingleResult();
-//        return comId;
-//    }
-    
+
     // count category for the company Dashboard
     public Integer getCategoryCount(Integer catid) {
         CompanyDetails cd = em.find(CompanyDetails.class, catid);
