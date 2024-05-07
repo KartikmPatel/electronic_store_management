@@ -10,7 +10,8 @@
     <h:body>
         <ui:include src="../companyPages/companyHeader.xhtml" />
 
-        <div class="container" style="margin-top: 2%;margin-left: 250px;">
+        <div class="content-wrapper">
+        <div class="container" style="margin-top: 2%;position: absolute;margin-left: 150px;">
             <c:if test="${not empty sessionScope.successmessage}">
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     ${sessionScope.successmessage}
@@ -41,6 +42,7 @@
                     </table>
                 </div>
             </div>
+        </div>
         </div>
         <script>
             $(document).ready(function () {

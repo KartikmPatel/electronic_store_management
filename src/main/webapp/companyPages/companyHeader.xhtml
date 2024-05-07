@@ -4,6 +4,9 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
         <title>Facelet Title</title>
+        <!-- Theme style -->
+        <!--<link rel="stylesheet" href="#{request.contextPath}/public/dist/css/adminlte.min.css" />-->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css"/>
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" />
         <!-- Font Awesome -->
@@ -16,8 +19,6 @@
         <link rel="stylesheet" href="#{request.contextPath}/public/plugins/icheck-bootstrap/icheck-bootstrap.min.css" />
         <!-- JQVMap -->
         <link rel="stylesheet" href="#{request.contextPath}/public/plugins/jqvmap/jqvmap.min.css"/>
-        <!-- Theme style -->
-        <link rel="stylesheet" href="#{request.contextPath}/public/dist/css/adminlte.min.css" />
         <!-- overlayScrollbars -->
         <link rel="stylesheet" href="#{request.contextPath}/public/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" />
         <!-- Daterange picker -->
@@ -142,7 +143,7 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
                         <li class="nav-item menu-open">
-                            <a class="nav-link active" style="background:#17a2b8" href="http://localhost:8080/electronic_store_management/companyPages/companyDashboard.jsf">
+                            <a class="nav-link active" style="background:#17a2b8" href="#{request.contextPath}/companyPages/companyDashboard.jsf">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
                                     Dashboard
@@ -154,7 +155,7 @@
                         </li>
                         
                         <li class="nav-item" style="cursor: pointer">
-                            <a class="nav-link" href="http://localhost:8080/electronic_store_management/companyPages/displayCategory.jsf">
+                            <a class="nav-link" href="#{request.contextPath}/companyPages/displayCategory.jsf">
                                 <i class="nav-icon fas fa-laptop"></i>
                                 <p>
                                     Categories
@@ -162,7 +163,7 @@
                             </a>
                         </li>
                         <li class="nav-item" style="cursor: pointer">
-                            <a class="nav-link" href="http://localhost:8080/electronic_store_management/companyPages/displayProduct.jsf">
+                            <a class="nav-link" href="#{request.contextPath}/companyPages/displayProduct.jsf">
                                 <i class="nav-icon fas fa-tablet-alt"></i>
                                 <p>
                                     Products
@@ -186,7 +187,7 @@
                             </a>
                         </li>-->
                         <li class="nav-item" style="cursor: pointer">
-                            <a class="nav-link" href="http://localhost:8080/electronic_store_management/companyPages/displayProductStock.jsf">
+                            <a class="nav-link" href="#{request.contextPath}/companyPages/displayProductStock.jsf">
                                 <i class="nav-icon fas fa-cubes"></i>
                                 <p>
                                     Stocks
@@ -217,7 +218,7 @@
         <script src="#{request.contextPath}/public/plugins/sparklines/sparkline.js"></script>
         <!-- JQVMap -->
         <script src="#{request.contextPath}/public/plugins/jqvmap/jquery.vmap.min.js"></script>
-        <script src="~/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+        <script src="#{request.contextPath}/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
         <!-- jQuery Knob Chart -->
         <script src="#{request.contextPath}/public/plugins/jquery-knob/jquery.knob.min.js"></script>
         <!-- daterangepicker -->
@@ -230,7 +231,8 @@
         <!-- overlayScrollbars -->
         <script src="#{request.contextPath}/public/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
         <!-- AdminLTE App -->
-        <script src="#{request.contextPath}/public/dist/js/adminlte.js"></script>
+        <!--<script src="#{request.contextPath}/public/dist/js/adminlte.js"></script>-->
+        <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/js/adminlte.min.js"></script>
         <!-- AdminLTE for demo purposes -->
         <script src="#{request.contextPath}/public/dist/js/demo.js"></script>
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
@@ -240,6 +242,7 @@
         <script src="#{request.contextPath}/public/plugins/datatables-buttons/js/buttons.print.min.js"></script>
         <script src="#{request.contextPath}/public/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
         <script src="#{request.contextPath}/public/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="#{request.contextPath}/public/plugins/datatables/jquery.dataTables.js"></script>
         <script src="#{request.contextPath}/public/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
         <script src="#{request.contextPath}/public/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
         <script src="#{request.contextPath}/public/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
