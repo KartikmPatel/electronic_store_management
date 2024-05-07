@@ -2,9 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Filter.java to edit this template
  */
-package filter;
+package JWTAuth;
 
 import CDIBeanPackage.LoginBean;
+import static JWTAuth.Constants.AUTHORIZATION_HEADER;
+import static JWTAuth.Constants.BEARER;
 import RestClientPackage.companyClient;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -27,9 +29,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import static jwtrest.Constants.AUTHORIZATION_HEADER;
-import static jwtrest.Constants.BEARER;
-import record.KeepRecord;
 
 /**
  *
@@ -66,7 +65,7 @@ public class AuthFilter implements Filter {
                 KeepRecord.reset();
                 Cookie[] cookies = req.getCookies();
                 for(Cookie c:cookies){
-                    if(c.getName().equals(jwtrest.Constants.AUTHORIZATION_HEADER)){
+                    if(c.getName().equals(AUTHORIZATION_HEADER)){
                         c.setMaxAge(0);
                         c.setPath("/");
                         System.out.println("Cookie deleted...");
@@ -337,5 +336,4 @@ public class AuthFilter implements Filter {
     public void log(String msg) {
         filterConfig.getServletContext().log(msg);        
     }
-    
 }

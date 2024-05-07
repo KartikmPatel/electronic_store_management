@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSF/JSFManagedBean.java to edit this template
  */
-package security;
+package JWTAuth;
 
 import CDIBeanPackage.LoginBean;
 import RestClientPackage.companyClient;
@@ -27,11 +27,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static jwtrest.Constants.AUTHORIZATION_HEADER;
-import static jwtrest.Constants.BEARER;
-import jwtrest.JWTCredential;
-import jwtrest.TokenProvider;
-import record.KeepRecord;
+import static JWTAuth.Constants.AUTHORIZATION_HEADER;
+import static JWTAuth.Constants.BEARER;
 
 /**
  *

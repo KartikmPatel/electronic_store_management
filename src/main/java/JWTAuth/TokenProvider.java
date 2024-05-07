@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package jwtrest;
+package JWTAuth;
 
+import static JWTAuth.Constants.REMEMBERME_VALIDITY_SECONDS;
 import java.io.Serializable;
 import io.jsonwebtoken.*;
 import java.security.PrivateKey;
@@ -18,7 +19,6 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.joining;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
-import static jwtrest.Constants.REMEMBERME_VALIDITY_SECONDS;
 
 /**
  *

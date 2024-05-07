@@ -5,6 +5,7 @@
 package CDIBeanPackage;
 
 import EntityPackage.CompanyDetails;
+import JWTAuth.KeepRecord;
 import RestClientPackage.companyClient;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -19,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
-import record.KeepRecord;
 
 /**
  *
@@ -112,7 +112,7 @@ public class LoginBean implements Serializable {
         KeepRecord.setLogout(true);
         FacesContext fc = FacesContext.getCurrentInstance();
         try{
-            fc.getExternalContext().redirect("login.jsf");
+            fc.getExternalContext().redirect("http://localhost:8080/electronic_store_management/login.jsf");
         }catch(Exception e){
             e.printStackTrace();
         }
