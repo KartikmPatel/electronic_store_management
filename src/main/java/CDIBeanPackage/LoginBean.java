@@ -112,7 +112,7 @@ public class LoginBean implements Serializable {
         KeepRecord.setLogout(true);
         FacesContext fc = FacesContext.getCurrentInstance();
         try{
-            fc.getExternalContext().redirect("http://localhost:8080/electronic_store_management/login.jsf");
+            fc.getExternalContext().redirect("login.jsf");
         }catch(Exception e){
             e.printStackTrace();
         }
