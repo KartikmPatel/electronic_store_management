@@ -4,6 +4,7 @@
  */
 package CDIBeanPackage;
 
+import EJBPackage.companyDetailsEJB;
 import EntityPackage.CategoryDetails;
 import EntityPackage.CompanyDetails;
 import EntityPackage.CompanyProductStock;
@@ -215,7 +216,6 @@ public class companyCDIBean {
     // Register Company
     public String addCompany() {
         String fileName = uploadImage();
-
         cc.addCompany(cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), cd.getPassword(), fileName, cd.getCountry());
         ugc.addUser(cd.getEmail(), cd.getPassword());
         ugc.addGroup("Company", cd.getEmail());
@@ -292,7 +292,7 @@ public class companyCDIBean {
 
     // Add Category
     public String addCategory() {
-        session.setAttribute("successmessage", "Product Successfully Inserted");
+        session.setAttribute("successmessage", "Category Successfully Inserted");
 //        Integer companyId = (Integer) session.getAttribute("comId");
         cc.addCategory1(cdetail.getCategoryName(), String.valueOf(lb.getComId()));
         return "displayCategory";

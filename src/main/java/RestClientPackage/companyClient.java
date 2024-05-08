@@ -18,7 +18,7 @@ import javax.ws.rs.client.WebTarget;
  *        client.close();
  * </pre>
  *
- * @author Admin
+ * @author Kartik Patel
  */
 public class companyClient {
 

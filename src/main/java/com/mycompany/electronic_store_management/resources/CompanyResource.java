@@ -62,7 +62,6 @@ public class CompanyResource {
     // add company
     @POST
     @Path("addcompany/{com_name}/{email}/{cno}/{password}/{clogo}/{country}")
-    @RolesAllowed("Company")
     public void addCompany(@PathParam("com_name") String cname,@PathParam("email") String email,@PathParam("cno") Integer cno,@PathParam("password") String password,@PathParam("clogo") String clogo,@PathParam("country") String country)
     {
         cde.addCompanyDetails(cname, email, cno, password, clogo, country);
