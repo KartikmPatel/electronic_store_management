@@ -107,6 +107,17 @@ public class AuthFilter implements Filter {
                         lb.setComId(cc.getCompanyId(Integer.class, lb.getUsername()));
                         System.out.println("----------------------"+lb.getComId()+"----------------------");
                         req.getRequestDispatcher("/companyPages/companyDashboard.jsf").forward(request, response);
+                    }else if(KeepRecord.getRoles().contains("Store")){
+                        if(lb.isRememberme()){
+                            Cookie cookie = new Cookie(AUTHORIZATION_HEADER,BEARER + KeepRecord.getToken());
+                            cookie.setPath("/");
+                            System.out.println("Cookie added....");
+                            cookie.setMaxAge(60*24*24*60);
+                            resp.addCookie(cookie);
+                        }
+//                        lb.setComId(cc.getCompanyId(Integer.class, lb.getUsername()));
+//                        System.out.println("----------------------"+lb.getComId()+"----------------------");
+                        req.getRequestDispatcher("/storePages/storeDashboard.jsf").forward(request, response);
                     }
                     else{
                         lb.setErrorstatus("Username or Password is Incorrect...");
@@ -132,6 +143,10 @@ public class AuthFilter implements Filter {
                 lb.setErrorstatus("User doesn't has the authorization...");
                 req.getRequestDispatcher("login.jsf").forward(request, response);
             }
+            if(req.getRequestURI().contains("storePages/storeDashboard") && KeepRecord.getRoles()!=null && !KeepRecord.getRoles().contains("Store")){
+                lb.setErrorstatus("User doesn't has the authorization...");
+                req.getRequestDispatcher("login.jsf").forward(request, response);
+            }
             String str = req.getRequestURI();
             if(req.getRequestURI().equals("/electronic_store_management/")){
                 sctx.authenticate(req, resp, null);
@@ -145,6 +160,11 @@ public class AuthFilter implements Filter {
                     lb.setComId(cc.getCompanyId(Integer.class, KeepRecord.getPrincipal().getName()));
                     System.out.println("----------------------"+lb.getComId()+"----------------------");
                     req.getRequestDispatcher("companyPages/companyDashboard.jsf").forward(request, response);
+                }
+                else if(KeepRecord.getRoles()!=null && KeepRecord.getRoles().contains("Store")){
+//                    lb.setComId(cc.getCompanyId(Integer.class, KeepRecord.getPrincipal().getName()));
+//                    System.out.println("----------------------"+lb.getComId()+"----------------------");
+                    req.getRequestDispatcher("storePages/storeDashboard.jsf").forward(request, response);
                 }
             }
         }

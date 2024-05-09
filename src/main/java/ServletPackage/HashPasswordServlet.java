@@ -43,7 +43,7 @@ public class HashPasswordServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             
-            String hash = pb.generate("user".toCharArray());
+            String hash = pb.generate("gada@123".toCharArray());
             out.println(hash);
             out.println("<h1>Servlet HashPasswordServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
