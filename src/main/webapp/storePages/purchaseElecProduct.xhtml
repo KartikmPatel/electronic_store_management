@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:include src="storeHeader.xhtml" />
+
+        <div class="content-wrapper">
+            <div class="container">
+                <c:if test="${not empty sessionScope.errormessage}">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        ${sessionScope.errormessage}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </c:if>
+                <div class="col-md-8" style="padding-top: 2%;">
+                    <div class="card card-primary">
+                        <div class="card-header" style="background:#20c997;">
+                            <h3 class="card-title">Purchase Product</h3>
+                        </div>
+                        <!-- form start -->
+                        <h:form id="purchaseForm">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <h:inputHidden value="#{electronicProductCDI.prod.productId}" id="prodId"/>
+                                    <h:inputHidden value="#{electronicProductCDI.prod.price}" id="price"/>
+                                    <h:inputHidden value="#{electronicProductCDI.prod.discount}" id="dis"/>
+                                    <h:inputHidden value="#{electronicProductCDI.comId}" />
+                                    <label for="exampleInputPoduct">Product Name</label>
+                                    <p:inputText class="form-control" id="exampleInputProduct" value="#{electronicProductCDI.prod.productName}" readonly="true"/>
+
+                                    <label for="exampleInputPrice">Discount Price</label>
+                                    <p:inputText class="form-control" id="exampleInputPrice" value="#{electronicProductCDI.prod.price-(electronicProductCDI.prod.price * electronicProductCDI.prod.discount)/100}" readonly="true"/>
+
+                                    <label for="exampleInputPrice">Available Stocks</label>
+                                    <p:inputText class="form-control" id="exampleInputStock" value="#{electronicProductCDI.stock}" readonly="true"/>
+
+                                    <label for="exampleInputWarranty">Category</label>
+                                    <p:inputText class="form-control" id="exampleInputCategory" value="#{electronicProductCDI.prod.categoryId.categoryName}" readonly="true"/>
+
+                                    <label for="exampleInputWarranty">Company</label>
+                                    <p:inputText class="form-control" id="exampleInputCompany" value="#{electronicProductCDI.prod.companyId.companyName}" readonly="true"/>
+
+                                    <label for="exampleInputWarranty">Quantity</label>
+                                    <p:inputText class="form-control" id="totalQuantity" validatorMessage="Please enter the Quantity" value="#{electronicProductCDI.quantity}" placeholder="Enter the quantity">
+                                    </p:inputText>
+                                    
+                                    <!--                                    <label for="exampleInputWarranty">Total Price</label>
+                                                                        <h:inputText class="form-control" id="totalPrice" value="#{electronicProductCDI.totalPrice}" readonly="true"/><br/>-->
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <h:commandButton class="btn btn-success" style="background:#20c997;" action="#{electronicProductCDI.addOrder(electronicProductCDI.prod.productId)}" value="Purchase"/>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>

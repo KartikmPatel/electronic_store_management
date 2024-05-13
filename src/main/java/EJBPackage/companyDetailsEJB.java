@@ -108,4 +108,13 @@ public class companyDetailsEJB {
                 .getSingleResult();
         return count.intValue();
     }
+    
+    // count Electronic Store orders for the company dashboard
+    public Integer getStoreOrderCount(Integer comId) {
+        CompanyDetails cd = em.find(CompanyDetails.class, comId);
+        Long count = (Long) em.createQuery("SELECT COUNT(e.storeOrderId) FROM ElectronicStoreOrder e WHERE e.companyId = :companyId")
+                .setParameter("companyId", cd)
+                .getSingleResult();
+        return count.intValue();
+    }
 }

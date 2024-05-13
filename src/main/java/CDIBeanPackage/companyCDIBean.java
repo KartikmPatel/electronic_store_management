@@ -73,13 +73,9 @@ public class companyCDIBean {
     
     // Variables for counting category,product,stocks
     Integer catCount;
-    GenericType<Integer> gcatCount;
-    
     Integer prodCount;
-    GenericType<Integer> gprodCount;
-    
     Integer stockCount;
-    GenericType<Integer> gstockCount;
+    Integer storeOrderCount;
     
     public companyCDIBean() {
         cc = new companyClient();
@@ -96,10 +92,6 @@ public class companyCDIBean {
         
         cpsdt = new ArrayList<>();
         gcpsdt = new GenericType<Collection<CompanyProductStock>>() {};
-        
-        gcatCount = new GenericType<Integer>(){};
-        gprodCount = new GenericType<Integer>(){};
-        gstockCount = new GenericType<Integer>(){};
     }
 
     public ProductDetails getProdetail() {
@@ -338,7 +330,7 @@ public class companyCDIBean {
     public Integer getCatCount() {
 //        Integer companyId = (Integer) session.getAttribute("comId");
         rs = cc.getCategoryCount(Response.class, String.valueOf(lb.getComId()));
-        catCount = rs.readEntity(gcatCount);
+        catCount = rs.readEntity(Integer.class);
         return catCount;
     }
 
@@ -350,7 +342,7 @@ public class companyCDIBean {
     public Integer getProdCount() {
 //        Integer companyId = (Integer) session.getAttribute("comId");
         rs = cc.getProductCount(Response.class, String.valueOf(lb.getComId()));
-        prodCount = rs.readEntity(gprodCount);
+        prodCount = rs.readEntity(Integer.class);
         return prodCount;
     }
 
@@ -362,12 +354,21 @@ public class companyCDIBean {
     public Integer getStockCount() {
 //        Integer companyId = (Integer) session.getAttribute("comId");
         rs = cc.getCompanyProductStockCount(Response.class, String.valueOf(lb.getComId()));
-        stockCount = rs.readEntity(gstockCount);
+        stockCount = rs.readEntity(Integer.class);
         return stockCount;
     }
 
     public void setStockCount(Integer stockCount) {
         this.stockCount = stockCount;
     }
-    
+
+    public Integer getStoreOrderCount() {
+        rs = cc.getStoreOrderCount(Response.class, String.valueOf(lb.getComId()));
+        storeOrderCount = rs.readEntity(Integer.class);
+        return storeOrderCount;
+    }
+
+    public void setStoreOrderCount(Integer storeOrderCount) {
+        this.storeOrderCount = storeOrderCount;
+    }
 }

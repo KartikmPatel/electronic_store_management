@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:include src="companyHeader.xhtml" />
+
+        <div class="content-wrapper">
+            <div class="container">
+                <h1>Manage Store Orders</h1><hr/>
+                <div class="card" style="margin-top: 20px;">
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Company Name</th>
+                                    <th>Quantity</th>
+                                    <th>Bill Amount</th>
+                                    <th>Order Date</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="#{manageOrderCDI.esorder}" var="o">
+                                    <tr>
+                                        <td>#{o.productId.productName}</td>
+                                        <td>#{o.companyId.companyName}</td>
+                                        <td>#{o.quantity}</td>
+                                        <td>#{o.billAmount}</td>
+                                        <td>#{o.orderDate}</td>
+                                        <td>
+                                            <c:choose>
+                                                <c:when test="${o.status == 0}">
+                                                    <h:form>
+                                                        <h:commandButton class="btn btn-primary" value="Accept" action="#{manageOrderCDI.acceptOrder(o.storeOrderId,o.quantity,o.productId.productId)}"/>
+                                                    </h:form>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <h:commandButton class="btn btn-secondary" value="Confirmed"/>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $("#example1").DataTable({
+                    "responsive": true,
+                    "lengthChange": false,
+                    "length": 4,
+                    "autoWidth": false,
+                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                });
+            });
+        </script>
+    </h:body>
+</html>

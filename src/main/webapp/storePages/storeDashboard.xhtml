@@ -1,14 +1,120 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        Hello from Store Dashboard
-        <h:form>
-            <h:commandButton action="#{loginBean.logout()}" value="Logout"></h:commandButton>
-        </h:form>
+        <ui:include src="storeHeader.xhtml" />
+
+        <div class="content-wrapper" style="margin-top: 1%;">
+            <div class="container-fluid">
+                <!-- Small boxes (Stat box) -->
+                <div class="row">
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-success" >
+                            <div class="inner">
+                                <h3>${storeOrderCDI.electronicProductCount}</h3>
+                                <p style="font-size: 20px;">Electronic Products</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <a href="#{request.contextPath}/storePages/displayAllProducts.jsf" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>${storeOrderCDI.storeProductCount}</h3>
+                                <p style="font-size: 20px;">My Products</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <a href="#{request.contextPath}/storePages/displaySellingProduct.jsf" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3>${storeOrderCDI.storeOrderCount}</h3>
+                                <p style="font-size: 20px;">My Orders</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-list-alt"></i>
+                            </div>
+                            <a href="#{request.contextPath}/storePages/displayOrder.jsf" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-danger">
+                            <div class="inner">
+                                <h3>${storeOrderCDI.stockCount}</h3>
+                                <p style="font-size: 20px;">Stocks</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-cubes"></i>
+                            </div>
+                            <a href="#{request.contextPath}/storePages/displayStoreStock.jsf" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                </div>
+                
+                <div class="row">
+                   <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box bg-secondary" >
+                            <div class="inner">
+                                <h3>${storeOrderCDI.offerCount}</h3>
+                                <p style="font-size: 20px">My Offers</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-gift"></i>
+                            </div>
+                            <a href="#{request.contextPath}/storePages/displayFestivalOffer.jsf" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box" style="background-color: #b0c4de;">
+                            <div class="inner">
+                                <h3>${storeOrderCDI.storeOrderCount}</h3>
+                                <p style="font-size: 20px;">User Feedback</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-comment"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="small-box" style="background-color: #6eb5ff;">
+                            <div class="inner">
+                                <h3>10</h3>
+                                <p style="font-size: 20px;">User Orders</p>
+                            </div>
+                            <div class="icon">
+                                <i class="fas fa-list-alt"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </h:body>
 </html>

@@ -8,11 +8,23 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <ui:include src="../companyPages/companyHeader.xhtml" />
+        <ui:include src="storeHeader.xhtml" />
 
         <div class="content-wrapper">
             <div class="container">
-                <h1>My Stocks</h1><hr/>
+                <c:if test="${not empty storeSellingProductCDI.succesMessage}">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ${storeSellingProductCDI.succesMessage}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </c:if>
+
+                <h2>Selling Products</h2><hr/>
+                <h:form>
+                    <h:commandLink class="btn btn-success" style="margin-top: 1%;" action="addSellingProduct" value="Add New"/>
+                </h:form>
 
                 <div class="card" style="margin-top: 20px;">
                     <!-- /.card-header -->
@@ -20,15 +32,15 @@
                         <table id="example1" class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Product</th>
-                                    <th>Quantity</th>
+                                    <th>Product Name</th>
+                                    <th>Price</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="#{companyCDIBean.cpsdt}" var="c">
-                                    <tr>             
-                                        <td>#{c.productId.productName}</td>
-                                        <td>#{c.quantity}</td>
+                                <c:forEach items="#{storeSellingProductCDI.sellingprod}" var="s">
+                                    <tr>       
+                                        <td>#{s.productId.productName}</td>
+                                        <td>#{s.price}</td>
                                     </tr>
                                 </c:forEach>
                             </tbody>

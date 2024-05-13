@@ -8,6 +8,7 @@ import EJBPackage.companyProductStockEJB;
 import EntityPackage.CategoryDetails;
 import EntityPackage.CompanyDetails;
 import EntityPackage.CompanyProductStock;
+import EntityPackage.ElectronicStoreOrder;
 import EntityPackage.ProductDetails;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -306,5 +307,52 @@ public class CompanyResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Integer getCompanyId(@PathParam("email") String email) {
         return cde.getCompanyId(email);
+    }
+    
+    // Count Electronic Store Order for the CompanyDashboard
+    @GET
+    @Path("getstoreordercount/{comid}")
+    @RolesAllowed("Company")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Integer getStoreOrderCount(@PathParam("comid") Integer comid)
+    {
+        return cde.getStoreOrderCount(comid);
+    }
+    
+    // get orders by companyID
+    @GET
+    @Path("getorderbycomid/{comid}")
+    @RolesAllowed("Company")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<ElectronicStoreOrder> getStoreOrders(@PathParam("comid") Integer comid)
+    {
+        return cpsobj.getStoreOrders(comid);
+    }
+    
+    // get permission for order(Change status method)
+    @POST
+    @Path("changestatus/{status}/{oid}")
+    @RolesAllowed("Company")
+    public void changeStatus(@PathParam("status") Integer status,@PathParam("oid") Integer oid)
+    {
+        cpsobj.changeStatus(status, oid);
+    }
+    
+    // minus quantity from the Company Product Stock Table
+    @POST
+    @Path("minuscompanyproductstock/{qty}/{prodid}")
+    @RolesAllowed("Company")
+    public void minusCompanyProductStock(@PathParam("qty") Integer qty,@PathParam("prodid") Integer prodid)
+    {
+        cpsobj.minusCompanyProductStock(qty, prodid);
+    }
+    
+    // Add or insert the quantity of a product into the Store Product Stock Table after getting the permission
+    @POST
+    @Path("addstroreproductstock/{prodid}/{qty}")
+    @RolesAllowed("Company")
+    public void addElectronicStoreProductStock(@PathParam("prodid") Integer prodid,@PathParam("qty") Integer qty)
+    {
+        cpsobj.addElectronicStoreProductStock(prodid, qty);
     }
 }
