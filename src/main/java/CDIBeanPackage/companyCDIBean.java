@@ -187,7 +187,7 @@ public class companyCDIBean {
         if (file != null) {
             try (InputStream input = file.getInputStream()) {
                 fileName = file.getFileName();
-                OutputStream output = new FileOutputStream("C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
+                OutputStream output = new FileOutputStream("C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads" + fileName);
                 try {
                     byte[] buffer = new byte[1024];
                     int bytesRead;
@@ -300,6 +300,7 @@ public class companyCDIBean {
     // Update or Edit Product
     public String editProduct() {
         String fileName = uploadImage();
+        String finalFile = null;
                 
         session.setAttribute("successmessage", "Product Successfully Edited");
 //        Integer companyId = (Integer) session.getAttribute("comId");
@@ -307,8 +308,14 @@ public class companyCDIBean {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = dateFormat.format(prodetail.getMfgDate());
+        
+        if(fileName==null){
+            finalFile = prodetail.getProductImage();
+        }else{
+            finalFile = fileName;
+        }
 
-        cc.updateProduct(prodetail.getProductId().toString(), prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), fileName, formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, String.valueOf(lb.getComId()));
+        cc.updateProduct(prodetail.getProductId().toString(), prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), finalFile, formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, String.valueOf(lb.getComId()));
         return "displayProduct";
     }
 

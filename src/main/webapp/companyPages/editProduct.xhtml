@@ -36,8 +36,8 @@
                                         <label for="exampleInputPrice">Price</label>
                                         <p:inputText class="form-control" id="exampleInputPrice" value="#{companyCDIBean.prodetail.price}" placeholder="Enter the Price" />
                                         
-                                        <label for="exampleInputImage">Image</label>
-                                        <p:fileUpload class="form-control" id="logo" value="#{companyCDIBean.file}" mode="simple" />
+                                        <label for="exampleInputImage">Image</label><img src="#{request.contextPath}/public/uploads/#{companyCDIBean.prodetail.productImage}" height="55px" width="55px;"/>
+                                        <p:fileUpload class="form-control" id="logo" value="#{companyCDIBean.file}" required="false" mode="simple" />
                                         
                                         <label for="exampleInputDate">Manufacture Date </label>
                                         <p:calendar id="exampleInputDate" value="#{companyCDIBean.prodetail.mfgDate}" placeholder="Enter the Manufacture Date" /><br></br>

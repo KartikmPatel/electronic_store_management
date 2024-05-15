@@ -6,6 +6,40 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>Facelet Title</title>
+        <!-- Add your CSS and JS imports here -->
+        <link rel="stylesheet" href="path/to/your/css/bootstrap.min.css" />
+        <script src="path/to/your/js/jquery.min.js"></script>
+        <script src="path/to/your/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="path/to/your/css/datatables.min.css" />
+        <script src="path/to/your/js/datatables.min.js"></script>
+        <style>
+            /* Add your modal styles here */
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 9999;
+                padding-top: 250px;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.5); /* Background color with opacity */
+            }
+            .modal-content {
+                position: relative;
+                margin: auto;
+                display: block;
+                max-width: 20%;
+                max-height: 30%;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Shadow effect */
+                background-color: #fff; /* Background color */
+            }
+            .modal img {
+                display: block;
+                width: 100%; /* Ensure image fills its container */
+            }
+        </style>
     </h:head>
     <h:body>
         <ui:include src="storeHeader.xhtml" />
@@ -42,7 +76,12 @@
                             <tbody>
                                 <c:forEach items="#{electronicProductCDI.pdetails}" var="p">
                                     <tr>
-                                        <td><img src="#{request.contextPath}/public/uploads/#{p.productImage}" height="55px" width="55px;"/></td>
+                                        <td>
+                                            <!-- Add image modal functionality here -->
+                                            <img src="#{request.contextPath}/public/uploads/#{p.productImage}" 
+                                                 height="55px" width="55px;" 
+                                                 onclick="openModal('#{request.contextPath}/public/uploads/#{p.productImage}')"/>
+                                        </td>
                                         <td>#{p.productName}</td>
                                         <td>#{p.discount}</td>
                                         <td>
@@ -66,7 +105,34 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal Popup -->
+        <div id="myModal" class="modal" onclick="closeModal(event)">
+            <div class="modal-content">
+                <div class="image-wrapper">
+                    <img id="img01"/>
+                </div>
+            </div>
+        </div>
+
         <script>
+            // Function to open modal popup with clicked image
+            function openModal(src) {
+                var modal = document.getElementById("myModal");
+                var modalImg = document.getElementById("img01");
+                modal.style.display = "block";
+                modalImg.src = src;
+            }
+
+            // Function to close modal popup
+            function closeModal(event) {
+                var modal = document.getElementById("myModal");
+                if (event.target === modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            // DataTables Initialization
             $(document).ready(function () {
                 $("#example1").DataTable({
                     "responsive": true,
