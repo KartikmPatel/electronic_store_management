@@ -41,16 +41,16 @@ public class electronicProductCDI {
     Integer comId;
     Integer stock;
 
-    HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-    HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-    HttpSession session = request.getSession();
+    // for Error Message
+    String succesMessage, errorMessage;
 
     public electronicProductCDI() {
         sc = new storeClient();
         pdetails = new ArrayList<>();
         gpdetails = new GenericType<Collection<ProductDetails>>() {
         };
-        session.removeAttribute("successmessage1");
+        succesMessage = null;
+        errorMessage = null;
     }
 
     public Collection<ProductDetails> getPdetails() {
@@ -103,6 +103,22 @@ public class electronicProductCDI {
         this.stock = stock;
     }
 
+    public String getSuccesMessage() {
+        return succesMessage;
+    }
+
+    public void setSuccesMessage(String succesMessage) {
+        this.succesMessage = succesMessage;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+    
     public String purchaseElecProduct(ProductDetails prod) {
         this.prod = prod;
         this.comId = prod.getCompanyId().getCompanyId();
@@ -125,14 +141,14 @@ public class electronicProductCDI {
         Integer checkqty = rs.readEntity(Integer.class);
         if (quantity != null && quantity > 0) {
             if (quantity > checkqty) {
-                session.setAttribute("errormessage", "That much Quantity is not available");
+                errorMessage = "That much Quantity is not available";
                 rs = sc.getProductById(Response.class, String.valueOf(prod1));
                 this.prod = rs.readEntity(ProductDetails.class);
                 this.comId = prod.getCompanyId().getCompanyId();
                 this.stock = checkqty;
                 return "purchaseElecProduct";
             } else {
-                session.setAttribute("successmessage1", "Order Successfully placed");
+                succesMessage = "Order Successfully placed";
                 Integer billamt = quantity * (prod.getPrice() - (prod.getPrice() * prod.getDiscount()) / 100);
                 LocalDate currentDate = LocalDate.now();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -142,7 +158,7 @@ public class electronicProductCDI {
                 return "displayAllProducts";
             }
         } else {
-            session.setAttribute("errormessage", "Quantity is Required or required 1 or more than 1 quantity");
+            errorMessage = "Quantity is Required or required 1 or more than 1 quantity";
             rs = sc.getProductById(Response.class, String.valueOf(prod1));
             this.prod = rs.readEntity(ProductDetails.class);
             this.comId = prod.getCompanyId().getCompanyId();

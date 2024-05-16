@@ -44,17 +44,15 @@ public class storeOrderCDI {
     GenericType<Collection<ElectronicStoreFestival>> gstorefestival;
     ElectronicStoreFestival festival = new ElectronicStoreFestival();
     
-    HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-    HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-
-    HttpSession session = request.getSession();
-    
     // Count variable for store order,stock,store product,Electronic product,festival
     Integer storeOrderCount;
     Integer stockCount;
     Integer electronicProductCount;
     Integer storeProductCount;
     Integer offerCount;
+    
+    // for Error Message
+    String succesMessage, errorMessage;
     
     public storeOrderCDI() {
         sc = new storeClient();
@@ -64,7 +62,8 @@ public class storeOrderCDI {
         gstoreStock = new GenericType<Collection<ElectronicStoreProductStock>>(){};
         storefestival = new ArrayList<>();
         gstorefestival = new GenericType<Collection<ElectronicStoreFestival>>(){};
-        session.removeAttribute("successmessage");
+        succesMessage = null;
+        errorMessage = null;
     }
 
     public Collection<ElectronicStoreOrder> getSorder() {
@@ -155,12 +154,27 @@ public class storeOrderCDI {
     public void setFestival(ElectronicStoreFestival festival) {
         this.festival = festival;
     }
+
+    public String getSuccesMessage() {
+        return succesMessage;
+    }
+
+    public void setSuccesMessage(String succesMessage) {
+        this.succesMessage = succesMessage;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
     
     // add Offer
     public String addFestival()
     {
-        session.setAttribute("successmessage", "Offer Successfully Inserted");
-        
+        succesMessage = "Offer Successfully Inserted";
         // Format manufacture date
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = dateFormat.format(festival.getFestivalDate());
@@ -179,7 +193,7 @@ public class storeOrderCDI {
     // update offer
     public String updateFestivalOffer()
     {
-        session.setAttribute("successmessage", "Offer Successfully Edited");
+        succesMessage = "Offer Successfully Edited";
         
         // Format manufacture date
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -191,7 +205,8 @@ public class storeOrderCDI {
     
     public String deleteOffer(Integer festId)
     {
-        session.setAttribute("successmessage", "Offer Successfully deleted");
+        succesMessage = "Offer Successfully deleted";
+        
         sc.deleteFestival(String.valueOf(festId));
         return "displayFestivalOffer";
     }

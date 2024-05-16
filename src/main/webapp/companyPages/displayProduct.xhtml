@@ -40,11 +40,11 @@
 
         <div class="content-wrapper">
             <div class="container">
-                <c:if test="${not empty sessionScope.successmessage}">
+                <c:if test="${not empty companyCDIBean.succesMessage}">
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        ${sessionScope.successmessage}
+                        ${companyCDIBean.succesMessage}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span class="close">×</span>
+                            <!--<span aria-hidden="true">&times;</span>-->
                         </button>
                     </div>
                 </c:if>
@@ -78,7 +78,7 @@
                                         <td>#{p.discount}</td>
                                         <td>#{p.price}</td>
                                         <td>
-                                            <img src="#{request.contextPath}/public/uploads/#{p.productImage}" 
+                                            <img style="cursor: pointer;" src="#{request.contextPath}/public/uploads/#{p.productImage}" 
                                                  height="55px" width="55px;" 
                                                  onclick="openModal('#{request.contextPath}/public/uploads/#{p.productImage}')"/>
                                         </td>

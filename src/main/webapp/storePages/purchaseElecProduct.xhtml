@@ -14,14 +14,15 @@
 
         <div class="content-wrapper">
             <div class="container">
-                <c:if test="${not empty sessionScope.errormessage}">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        ${sessionScope.errormessage}
+                <c:if test="${not empty electronicProductCDI.errorMessage}">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-bottom: 10px;">
+                        ${ electronicProductCDI.errorMessage}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                 </c:if>
+
                 <div class="col-md-8" style="padding-top: 2%;">
                     <div class="card card-primary">
                         <div class="card-header" style="background:#20c997;">
@@ -53,7 +54,7 @@
                                     <label for="exampleInputWarranty">Stock</label>
                                     <p:inputText class="form-control" id="totalQuantity" validatorMessage="Please enter the Stock" value="#{electronicProductCDI.quantity}" placeholder="Enter the Stock">
                                     </p:inputText>
-                                    
+
                                     <!--                                    <label for="exampleInputWarranty">Total Price</label>
                                                                         <h:inputText class="form-control" id="totalPrice" value="#{electronicProductCDI.totalPrice}" readonly="true"/><br/>-->
                                 </div>

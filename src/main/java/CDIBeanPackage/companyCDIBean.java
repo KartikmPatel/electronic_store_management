@@ -63,10 +63,6 @@ public class companyCDIBean {
     Collection<CompanyProductStock> cpsdt;
     GenericType<Collection<CompanyProductStock>> gcpsdt;
     
-    HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-    HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-
-    HttpSession session = request.getSession();
     Response rs;
     Collection<CategoryDetails> catdt;
     GenericType<Collection<CategoryDetails>> gcatdt;
@@ -77,6 +73,9 @@ public class companyCDIBean {
     Integer stockCount;
     Integer storeOrderCount;
     
+    // for Error Message
+    String succesMessage, errorMessage;
+    
     public companyCDIBean() {
         cc = new companyClient();
         ugc = new userGroupClient();
@@ -85,13 +84,15 @@ public class companyCDIBean {
 //        generateCaptcha();
         catdt = new ArrayList<>();
         gcatdt = new GenericType<Collection<CategoryDetails>>() {};
-        session.removeAttribute("successmessage");
 
         prodt = new ArrayList<>();
         gprodt = new GenericType<Collection<ProductDetails>>() {};
         
         cpsdt = new ArrayList<>();
         gcpsdt = new GenericType<Collection<CompanyProductStock>>() {};
+        
+        succesMessage = null;
+        errorMessage = null;
     }
 
     public ProductDetails getProdetail() {
@@ -180,6 +181,23 @@ public class companyCDIBean {
     public void setCpsdetails(CompanyProductStock cpsdetails) {
         this.cpsdetails = cpsdetails;
     }
+
+    public String getSuccesMessage() {
+        return succesMessage;
+    }
+
+    public void setSuccesMessage(String succesMessage) {
+        this.succesMessage = succesMessage;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+    
     
     // file uploading function
     private String uploadImage() {
@@ -187,7 +205,7 @@ public class companyCDIBean {
         if (file != null) {
             try (InputStream input = file.getInputStream()) {
                 fileName = file.getFileName();
-                OutputStream output = new FileOutputStream("C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads" + fileName);
+                OutputStream output = new FileOutputStream("C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
                 try {
                     byte[] buffer = new byte[1024];
                     int bytesRead;
@@ -268,7 +286,7 @@ public class companyCDIBean {
         ProductDetails pd1 = new ProductDetails();
         GenericType<ProductDetails> gpd1 = new GenericType<ProductDetails>(){};
         
-        session.setAttribute("successmessage", "Product Successfully Inserted");
+        succesMessage = "Product Successfully Inserted";
 //        Integer companyId = (Integer) session.getAttribute("comId");
 
         // Format manufacture date
@@ -284,7 +302,7 @@ public class companyCDIBean {
 
     // Add Category
     public String addCategory() {
-        session.setAttribute("successmessage", "Category Successfully Inserted");
+        succesMessage = "Category Successfully Inserted";
 //        Integer companyId = (Integer) session.getAttribute("comId");
         cc.addCategory1(cdetail.getCategoryName(), String.valueOf(lb.getComId()));
         return "displayCategory";
@@ -301,8 +319,8 @@ public class companyCDIBean {
     public String editProduct() {
         String fileName = uploadImage();
         String finalFile = null;
-                
-        session.setAttribute("successmessage", "Product Successfully Edited");
+        
+        succesMessage = "Product Successfully Edited";
 //        Integer companyId = (Integer) session.getAttribute("comId");
         
 
@@ -327,7 +345,7 @@ public class companyCDIBean {
 
     // Update or Edit Category
     public String editCategory() {
-        session.setAttribute("successmessage", "Category Successfully Edited");
+        succesMessage = "Category Successfully Edited";
 //        Integer companyId = (Integer) session.getAttribute("comId");
         cc.updateCategory(String.valueOf(cdetail.getCategoryId()), cdetail.getCategoryName(), String.valueOf(lb.getComId()));
         return "displayCategory";
