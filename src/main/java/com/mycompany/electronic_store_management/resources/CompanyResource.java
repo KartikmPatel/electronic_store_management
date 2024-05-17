@@ -101,7 +101,7 @@ public class CompanyResource {
     @RolesAllowed("Company")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Collection<CompanyDetails> getCompanyById(@PathParam("com_id") Integer com_id)
+    public CompanyDetails getCompanyById(@PathParam("com_id") Integer com_id)
     {
         return cde.getDataByIdForUpdate(com_id);
     }

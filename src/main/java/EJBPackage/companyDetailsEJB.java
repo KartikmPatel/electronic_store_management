@@ -40,8 +40,8 @@ public class companyDetailsEJB {
         em.persist(model);
     }
 
-    public Collection<CompanyDetails> getDataByIdForUpdate(Integer companyId) {
-        return em.createNamedQuery("CompanyDetails.findByCompanyId").setParameter("companyId", companyId).getResultList();
+    public CompanyDetails getDataByIdForUpdate(Integer companyId) {
+        return em.createNamedQuery("CompanyDetails.findByCompanyId",CompanyDetails.class).setParameter("companyId", companyId).getSingleResult();
     }
 
     public void updateCompanyDetails(Integer companyId, String companyName, String email, Integer contactNo, String password, String companyLogo, String country) {

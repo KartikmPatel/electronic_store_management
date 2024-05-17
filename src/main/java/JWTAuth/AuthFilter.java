@@ -95,7 +95,7 @@ public class AuthFilter implements Filter {
                             cookie.setMaxAge(60*24*24*60);
                             resp.addCookie(cookie);
                         }
-                        req.getRequestDispatcher("user.jsf").forward(request, response);
+                        req.getRequestDispatcher("/userPages/userDashboard.jsf").forward(request, response);
                     }else if(KeepRecord.getRoles().contains("Company")){
                         if(lb.isRememberme()){
                             Cookie cookie = new Cookie(AUTHORIZATION_HEADER,BEARER + KeepRecord.getToken());

@@ -205,7 +205,7 @@ public class companyCDIBean {
         if (file != null) {
             try (InputStream input = file.getInputStream()) {
                 fileName = file.getFileName();
-                OutputStream output = new FileOutputStream("C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
+                OutputStream output = new FileOutputStream("C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
                 try {
                     byte[] buffer = new byte[1024];
                     int bytesRead;
@@ -298,6 +298,25 @@ public class companyCDIBean {
         pd1 = rs.readEntity(gpd1);
         cc.addCompanyProductStock(String.valueOf(cpsdetails.getQuantity()),pd1.getProductId().toString());
         return "displayProduct";
+    }
+    
+    public String editCompanyForm(){
+        this.cd = cc.getCompanyById(CompanyDetails.class, lb.getComId().toString());
+        return "editCompany";
+    }
+    
+    public String editCompany(){
+        String fileName = uploadImage();
+        String finalFile2 = null;        
+
+        if(fileName==null){
+            finalFile2 = cd.getCompanyLogo();
+        }else{
+            finalFile2 = fileName;
+        }
+        succesMessage = "Company Successfully Edited";
+        cc.updateCompany(cd.getCompanyId().toString(), cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), cd.getPassword(), finalFile2, cd.getCountry());
+        return "companyDashboard";
     }
 
     // Add Category
