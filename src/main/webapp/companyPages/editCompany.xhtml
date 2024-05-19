@@ -27,30 +27,30 @@
                                 <div class="card-body">
                                     <div class="form-group">
                                         <h:inputHidden value="#{companyCDIBean.cd.companyId}"/>
+                                        <h:inputHidden value="#{companyCDIBean.cd.companyLogo}"/>
                                         <label for="exampleInputCompany">Company Name</label>
                                         <p:inputText class="form-control" placeholder="Enter the company name" value="#{companyCDIBean.cd.companyName}"/>
-                                        
+
                                         <label for="exampleInputEmail">Email</label>
                                         <p:inputText class="form-control" placeholder="Enter the Email Address" value="#{companyCDIBean.cd.email}"/>
-                                        
+
                                         <label for="exampleInputContactNo">Contact No</label>
                                         <p:inputText class="form-control" placeholder="Enter the number" value="#{companyCDIBean.cd.contactNo}"/>
-                                        
+
                                         <label for="exampleInputImage">Logo</label>
                                         <img src="#{request.contextPath}/public/uploads/#{companyCDIBean.cd.companyLogo}" height="55px" width="55px;"/>
                                         <p:fileUpload class="form-control" id="logo" value="#{companyCDIBean.file}" mode="simple" />
-                                        
+
                                         <label for="exampleInputPassword">Password</label>
                                         <p:inputText class="form-control" placeholder="Enter the password" value="#{companyCDIBean.cd.password}"/>
-                                        
+
                                         <label for="exampleInputCountry">Country</label>
                                         <p:inputText class="form-control" placeholder="Enter the Country" value="#{companyCDIBean.cd.country}" />
                                     </div>
                                 </div>
-                                <!-- /.card-body -->
 
                                 <div class="card-footer">
-                                    <h:commandButton class="btn btn-primary" action="#{companyCDIBean.editCompany()}" style="background:#17a2b8" value="Edit Company"/>
+                                    <h:commandButton class="btn btn-primary" action="#{companyCDIBean.editCompany}" style="background:#17a2b8" value="Edit Company"/>
                                 </div>
                             </h:form>
                         </div>

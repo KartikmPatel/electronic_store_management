@@ -305,24 +305,20 @@ public class companyCDIBean {
         return "editCompany";
     }
     
-    public String editCompany(){
+    public String editCompany() {
         String fileName = uploadImage();
-        String finalFile2 = null;        
-
-        if(fileName==null){
-            finalFile2 = cd.getCompanyLogo();
-        }else{
-            finalFile2 = fileName;
+        if (fileName.isEmpty()) {
+            cc.updateCompany(cd.getCompanyId().toString(), cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), cd.getPassword(), cd.getCompanyLogo(), cd.getCountry());
+        } else {
+            cc.updateCompany(cd.getCompanyId().toString(), cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), cd.getPassword(), fileName, cd.getCountry());
         }
         succesMessage = "Company Successfully Edited";
-        cc.updateCompany(cd.getCompanyId().toString(), cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), cd.getPassword(), finalFile2, cd.getCountry());
         return "companyDashboard";
     }
 
     // Add Category
     public String addCategory() {
         succesMessage = "Category Successfully Inserted";
-//        Integer companyId = (Integer) session.getAttribute("comId");
         cc.addCategory1(cdetail.getCategoryName(), String.valueOf(lb.getComId()));
         return "displayCategory";
     }
@@ -337,22 +333,17 @@ public class companyCDIBean {
     // Update or Edit Product
     public String editProduct() {
         String fileName = uploadImage();
-        String finalFile = null;
         
         succesMessage = "Product Successfully Edited";
-//        Integer companyId = (Integer) session.getAttribute("comId");
-        
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = dateFormat.format(prodetail.getMfgDate());
         
-        if(fileName==null){
-            finalFile = prodetail.getProductImage();
+        if(fileName.isEmpty()){
+            cc.updateProduct(prodetail.getProductId().toString(), prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), prodetail.getProductImage(), formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, String.valueOf(lb.getComId()));
         }else{
-            finalFile = fileName;
+            cc.updateProduct(prodetail.getProductId().toString(), prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), fileName, formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, String.valueOf(lb.getComId()));
         }
-
-        cc.updateProduct(prodetail.getProductId().toString(), prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), finalFile, formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, String.valueOf(lb.getComId()));
         return "displayProduct";
     }
 
