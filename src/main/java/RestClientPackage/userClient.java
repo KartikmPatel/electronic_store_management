@@ -18,7 +18,7 @@ import javax.ws.rs.client.WebTarget;
  *        client.close();
  * </pre>
  *
- * @author Kartik Patel
+ * @author Admin
  */
 public class userClient {
 
@@ -39,6 +39,10 @@ public class userClient {
 
     public void addFeedback(String message, String fdate, String uid) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("addfeedback/{0}/{1}/{2}", new Object[]{message, fdate, uid})).request().post(null);
+    }
+
+    public void addUserDetails(String name, String email, String cno, String pass, String dob, String gender, String pic, String address, String country) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("addUserDetail/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}", new Object[]{name, email, cno, pass, dob, gender, pic, address, country})).request().post(null);
     }
 
     public <T> T getAllFeedback(Class<T> responseType) throws ClientErrorException {

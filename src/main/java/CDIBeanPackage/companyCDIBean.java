@@ -229,7 +229,13 @@ public class companyCDIBean {
         cc.addCompany(cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), cd.getPassword(), fileName, cd.getCountry());
         ugc.addUser(cd.getEmail(), cd.getPassword());
         ugc.addGroup("Company", cd.getEmail());
-        return "companyLogin?faces-redirect=true";
+        FacesContext context = FacesContext.getCurrentInstance();
+        try {
+            context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/login.jsf");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // Company Login

@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/public/css/companyRegisterDesign.css" />
+    </h:head>
+    <h:body>
+        <div class="container">
+            <div class="title">
+                <p>User Registration</p>
+            </div>
+            <h:form enctype="multipart/form-data" onsubmit="return validateCaptcha()">
+                <div class="user_details">
+                    <div class="input_box">
+                        <h:outputLabel value="User Name" />
+                        <p:inputText placeholder="Enter the User name" value="#{homeCDI.ud.username}" />
+                    </div>
+                    <div class="input_box">
+                        <h:outputLabel value="Email" />
+                        <p:inputText placeholder="Enter the Email Address" value="#{homeCDI.ud.email}"/>
+                    </div>
+                    <div class="input_box">
+                        <h:outputLabel value="Phone Number" />
+                        <p:inputText placeholder="Enter the number" value="#{homeCDI.ud.contactNo}"/>
+                    </div>
+                    <div class="input_box">
+                        <h:outputLabel value="Password" />
+                        <p:inputText placeholder="Enter the password" value="#{homeCDI.ud.password}"/>
+                    </div>
+                    <div class="input_box">
+                        <h:outputLabel value="DOB" />
+                        <p:calendar id="exampleInputDate" value="#{homeCDI.ud.dob}" placeholder="Enter the DOB" /><br></br>
+                    </div>
+                    <div class="input_box">
+                        <h:outputLabel value="Gender" />
+                        <p:selectOneRadio value="#{homeCDI.ud.gender}">
+                            <f:selectItem itemLabel="Male" itemValue="Male"></f:selectItem>
+                            <f:selectItem itemLabel="Female" itemValue="Female"></f:selectItem>
+                            <f:selectItem itemLabel="Other" itemValue="Other"></f:selectItem>
+                        </p:selectOneRadio>
+                    </div>
+                    <div class="input_box">
+                        <h:outputLabel value="Profile Pic" />
+                        <p:fileUpload id="pic" value="#{homeCDI.file}" mode="simple" />
+                    </div>
+                    <div class="input_box">
+                        <h:outputLabel value="Address" />
+                        <p:inputText placeholder="Enter the address" value="#{homeCDI.ud.address}"/>
+                    </div>
+                    <div class="input_box">
+                        <h:outputLabel value="Country" />
+                        <p:inputText placeholder="Enter the Country" value="#{homeCDI.ud.country}" />
+                    </div>
+                </div>
+
+                <div class="reg_btn">
+                    <h:commandButton value="Register" action="#{homeCDI.userRegister()}"/>
+                </div>
+            </h:form>
+        </div>
+    </h:body>
+</html>

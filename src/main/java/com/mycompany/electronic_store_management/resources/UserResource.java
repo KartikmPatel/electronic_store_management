@@ -33,6 +33,7 @@ public class UserResource {
     
     @EJB EJBPackage.userFeedBackEJB ufe;
     @EJB EJBPackage.userHomeDetailsEJB usetHomeObj;
+    @EJB EJBPackage.userDetailsEJB userDetailObj;
     
     // add feedback
     @POST
@@ -64,5 +65,17 @@ public class UserResource {
     public Collection<ElectronicStoreSellingProduct> getAllSellingProducts()
     {
         return usetHomeObj.getAllSellingProducts();
+    }
+    
+    @POST
+    @Path("addUserDetail/{name}/{email}/{cno}/{pass}/{dob}/{gender}/{pic}/{address}/{country}")
+    public void addUserDetails(@PathParam("name") String name, @PathParam("email") String email, @PathParam("cno") Integer cno, @PathParam("pass") String pass, @PathParam("dob") String dob, @PathParam("gender") String gender, @PathParam("pic") String pic, @PathParam("address") String address, @PathParam("country") String country){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date mdate = sdf.parse(dob);
+            userDetailObj.addUserDetails(name, email, cno, pass, mdate, gender, pic, address, country);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,4 +1,3 @@
-<?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -10,7 +9,7 @@
     <h:body onload="fillLoginForm()">
         <div class="container">
             <div class="title">
-                <p>Company Login</p>
+                <p>Login</p>
             </div>
             <h:form>
                 <div class="user_details">
@@ -28,7 +27,7 @@
                     <div class="remember-me" style="padding-left: 25px;">
                         <p:selectBooleanCheckbox value="#{loginBean.rememberme}" id="rememberMeCheckbox"/>
                         <h:outputText style="padding-left: 5px;" value="Remember Me" />
-                        <h:outputLink style="margin-left: 35%;" value="#{request.contextPath}/companyPages/companyRegister.jsf">Register?</h:outputLink>
+                        <h:outputLink style="margin-left: 35%;" value="#" onclick="PF('registerDialog').show(); return false;">Register?</h:outputLink>
                     </div>
                 </div>
                 <div style="margin-top: 0px;" class="reg_btn">
@@ -36,7 +35,20 @@
                 </div>
             </h:form>
         </div>
+        
+        <p:dialog header="Register" widgetVar="registerDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <h:form>
+                <h:outputLabel value="Choose your role:" />
+                <p:selectOneRadio value="#{registerBean.selectedRole}">
+                    <f:selectItem itemLabel="Company" itemValue="Company" />
+                    <f:selectItem itemLabel="User" itemValue="User" />
+                </p:selectOneRadio><br></br>
+                <div class="dialog-buttons">
+                    <p:commandButton value="Continue" action="#{registerBean.proceedToRegister()}" oncomplete="PF('registerDialog').hide();" />
+                </div>
+            </h:form>
+        </p:dialog>
+
         <script type="text/javascript" src="#{request.contextPath}/public/js/captcha.js"></script>
     </h:body>
-
 </html>
