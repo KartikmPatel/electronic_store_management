@@ -8,6 +8,7 @@ import CDIBeanPackage.LoginBean;
 import static JWTAuth.Constants.AUTHORIZATION_HEADER;
 import static JWTAuth.Constants.BEARER;
 import RestClientPackage.companyClient;
+import RestClientPackage.userClient;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -35,23 +36,26 @@ import javax.servlet.http.HttpServletResponse;
  * @author Admin
  */
 public class AuthFilter implements Filter {
-    
+
     private static final boolean debug = true;
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
-    
-    @Inject LoginBean lb;
-    @Inject SecurityContext sctx;
+
+    @Inject
+    LoginBean lb;
+    @Inject
+    SecurityContext sctx;
     CredentialValidationResult cres;
     AuthenticationStatus status;
     companyClient cc = new companyClient();
+    userClient uc = new userClient();
 
     public AuthFilter() {
-    }    
-    
+    }
+
     private void doBeforeProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
@@ -60,108 +64,103 @@ public class AuthFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
-        if(req.getRequestURI().contains("login.jsf")){
-            if(KeepRecord.isLogout()){
+        if (req.getRequestURI().contains("login.jsf")) {
+            if (KeepRecord.isLogout()) {
                 KeepRecord.reset();
                 Cookie[] cookies = req.getCookies();
-                for(Cookie c:cookies){
-                    if(c.getName().equals(AUTHORIZATION_HEADER)){
+                for (Cookie c : cookies) {
+                    if (c.getName().equals(AUTHORIZATION_HEADER)) {
                         c.setMaxAge(0);
                         c.setPath("/");
                         System.out.println("Cookie deleted...");
                         resp.addCookie(c);
                     }
                 }
-            //req.getRequestDispatcher("index.xhtml").forward(request, response);
-            }
-            else if(lb.getUsername()!=null && lb.getPassword()!=null){
-                Credential cred = new UsernamePasswordCredential(lb.getUsername(),new Password(lb.getPassword()));
+                //req.getRequestDispatcher("index.xhtml").forward(request, response);
+            } else if (lb.getUsername() != null && lb.getPassword() != null) {
+                Credential cred = new UsernamePasswordCredential(lb.getUsername(), new Password(lb.getPassword()));
                 status = sctx.authenticate(req, resp, withParams().credential(cred));
-                if(status == AuthenticationStatus.SUCCESS && KeepRecord.getPrincipal()!=null){
-                    if(KeepRecord.getRoles().contains("Admin")){
-                        if(lb.isRememberme()){
-                            Cookie cookie = new Cookie(AUTHORIZATION_HEADER,BEARER + KeepRecord.getToken());
+                if (status == AuthenticationStatus.SUCCESS && KeepRecord.getPrincipal() != null) {
+                    if (KeepRecord.getRoles().contains("Admin")) {
+                        if (lb.isRememberme()) {
+                            Cookie cookie = new Cookie(AUTHORIZATION_HEADER, BEARER + KeepRecord.getToken());
                             cookie.setPath("/");
                             System.out.println("Cookie added....");
-                            cookie.setMaxAge(60*24*24*60);
+                            cookie.setMaxAge(60 * 24 * 24 * 60);
                             resp.addCookie(cookie);
                         }
                         req.getRequestDispatcher("admin.jsf").forward(request, response);
-                    }else if(KeepRecord.getRoles().contains("User")){
-                        if(lb.isRememberme()){
-                            Cookie cookie = new Cookie(AUTHORIZATION_HEADER,BEARER + KeepRecord.getToken());
+                    } else if (KeepRecord.getRoles().contains("User")) {
+                        if (lb.isRememberme()) {
+                            Cookie cookie = new Cookie(AUTHORIZATION_HEADER, BEARER + KeepRecord.getToken());
                             cookie.setPath("/");
                             System.out.println("Cookie added....");
-                            cookie.setMaxAge(60*24*24*60);
+                            cookie.setMaxAge(60 * 24 * 24 * 60);
                             resp.addCookie(cookie);
                         }
+                        lb.setComId(uc.getUserId(Integer.class, lb.getUsername()));
+                        System.out.println("----------------------" + lb.getComId() + "----------------------");
                         req.getRequestDispatcher("/userPages/userDashboard.jsf").forward(request, response);
-                    }else if(KeepRecord.getRoles().contains("Company")){
-                        if(lb.isRememberme()){
-                            Cookie cookie = new Cookie(AUTHORIZATION_HEADER,BEARER + KeepRecord.getToken());
+                    } else if (KeepRecord.getRoles().contains("Company")) {
+                        if (lb.isRememberme()) {
+                            Cookie cookie = new Cookie(AUTHORIZATION_HEADER, BEARER + KeepRecord.getToken());
                             cookie.setPath("/");
                             System.out.println("Cookie added....");
-                            cookie.setMaxAge(60*24*24*60);
+                            cookie.setMaxAge(60 * 24 * 24 * 60);
                             resp.addCookie(cookie);
                         }
                         lb.setComId(cc.getCompanyId(Integer.class, lb.getUsername()));
-                        System.out.println("----------------------"+lb.getComId()+"----------------------");
+                        System.out.println("----------------------" + lb.getComId() + "----------------------");
                         req.getRequestDispatcher("/companyPages/companyDashboard.jsf").forward(request, response);
-                    }else if(KeepRecord.getRoles().contains("Store")){
-                        if(lb.isRememberme()){
-                            Cookie cookie = new Cookie(AUTHORIZATION_HEADER,BEARER + KeepRecord.getToken());
+                    } else if (KeepRecord.getRoles().contains("Store")) {
+                        if (lb.isRememberme()) {
+                            Cookie cookie = new Cookie(AUTHORIZATION_HEADER, BEARER + KeepRecord.getToken());
                             cookie.setPath("/");
                             System.out.println("Cookie added....");
-                            cookie.setMaxAge(60*24*24*60);
+                            cookie.setMaxAge(60 * 24 * 24 * 60);
                             resp.addCookie(cookie);
                         }
 //                        lb.setComId(cc.getCompanyId(Integer.class, lb.getUsername()));
 //                        System.out.println("----------------------"+lb.getComId()+"----------------------");
                         req.getRequestDispatcher("/storePages/storeDashboard.jsf").forward(request, response);
-                    }
-                    else{
+                    } else {
                         lb.setErrorstatus("Username or Password is Incorrect...");
                         req.getRequestDispatcher("login.jsf").forward(request, response);
                     }
-                }
-                else{
+                } else {
                     lb.setErrorstatus("Username or Password is Incorrect...");
-    //                lb.getFc().getExternalContext().redirect("index.xhtml");
+                    //                lb.getFc().getExternalContext().redirect("index.xhtml");
                 }
             }
-        }
-        else{
-            if(req.getRequestURI().contains("admin") && KeepRecord.getRoles()!=null && !KeepRecord.getRoles().contains("Admin")){
+        } else {
+            if (req.getRequestURI().contains("admin") && KeepRecord.getRoles() != null && !KeepRecord.getRoles().contains("Admin")) {
                 lb.setErrorstatus("User doesn't has the authorization...");
                 req.getRequestDispatcher("login.jsf").forward(request, response);
             }
-            if(req.getRequestURI().contains("user") && KeepRecord.getRoles()!=null && !KeepRecord.getRoles().contains("User")){
+            if (req.getRequestURI().contains("user") && KeepRecord.getRoles() != null && !KeepRecord.getRoles().contains("User")) {
                 lb.setErrorstatus("User doesn't has the authorization...");
                 req.getRequestDispatcher("login.jsf").forward(request, response);
             }
-            if(req.getRequestURI().contains("companyPages/companyDashboard") && KeepRecord.getRoles()!=null && !KeepRecord.getRoles().contains("Company")){
+            if (req.getRequestURI().contains("companyPages/companyDashboard") && KeepRecord.getRoles() != null && !KeepRecord.getRoles().contains("Company")) {
                 lb.setErrorstatus("User doesn't has the authorization...");
                 req.getRequestDispatcher("login.jsf").forward(request, response);
             }
-            if(req.getRequestURI().contains("storePages/storeDashboard") && KeepRecord.getRoles()!=null && !KeepRecord.getRoles().contains("Store")){
+            if (req.getRequestURI().contains("storePages/storeDashboard") && KeepRecord.getRoles() != null && !KeepRecord.getRoles().contains("Store")) {
                 lb.setErrorstatus("User doesn't has the authorization...");
                 req.getRequestDispatcher("login.jsf").forward(request, response);
             }
             String str = req.getRequestURI();
-            if(req.getRequestURI().equals("/electronic_store_management/")){
+            if (req.getRequestURI().equals("/electronic_store_management/")) {
                 sctx.authenticate(req, resp, null);
-                if(KeepRecord.getRoles()!=null && KeepRecord.getRoles().contains("Admin")){
+                if (KeepRecord.getRoles() != null && KeepRecord.getRoles().contains("Admin")) {
                     req.getRequestDispatcher("admin.jsf").forward(request, response);
-                }
-                else if(KeepRecord.getRoles()!=null && KeepRecord.getRoles().contains("User")){
+                } else if (KeepRecord.getRoles() != null && KeepRecord.getRoles().contains("User")) {
                     req.getRequestDispatcher("user.jsf").forward(request, response);
-                }
-                else if(KeepRecord.getRoles()!=null && KeepRecord.getRoles().contains("Company")){
+                } else if (KeepRecord.getRoles() != null && KeepRecord.getRoles().contains("Company")) {
                     lb.setComId(cc.getCompanyId(Integer.class, KeepRecord.getPrincipal().getName()));
-                    System.out.println("----------------------"+lb.getComId()+"----------------------");
+                    System.out.println("----------------------" + lb.getComId() + "----------------------");
                     req.getRequestDispatcher("companyPages/companyDashboard.jsf").forward(request, response);
-                }
-                else if(KeepRecord.getRoles()!=null && KeepRecord.getRoles().contains("Store")){
+                } else if (KeepRecord.getRoles() != null && KeepRecord.getRoles().contains("Store")) {
 //                    lb.setComId(cc.getCompanyId(Integer.class, KeepRecord.getPrincipal().getName()));
 //                    System.out.println("----------------------"+lb.getComId()+"----------------------");
                     req.getRequestDispatcher("storePages/storeDashboard.jsf").forward(request, response);
@@ -189,8 +188,8 @@ public class AuthFilter implements Filter {
 	    log(buf.toString());
 	}
          */
-    }    
-    
+    }
+
     private void doAfterProcessing(ServletRequest request, ServletResponse response)
             throws IOException, ServletException {
         if (debug) {
@@ -228,13 +227,13 @@ public class AuthFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        
+
         if (debug) {
             log("AuthFilter:doFilter()");
         }
-        
+
         doBeforeProcessing(request, response);
-        
+
         Throwable problem = null;
         try {
             chain.doFilter(request, response);
@@ -245,7 +244,7 @@ public class AuthFilter implements Filter {
             problem = t;
             t.printStackTrace();
         }
-        
+
         doAfterProcessing(request, response);
 
         // If there was a problem, we want to rethrow it if it is
@@ -280,16 +279,16 @@ public class AuthFilter implements Filter {
     /**
      * Destroy method for this filter
      */
-    public void destroy() {        
+    public void destroy() {
     }
 
     /**
      * Init method for this filter
      */
-    public void init(FilterConfig filterConfig) {        
+    public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
-            if (debug) {                
+            if (debug) {
                 log("AuthFilter:Initializing filter");
             }
         }
@@ -308,20 +307,20 @@ public class AuthFilter implements Filter {
         sb.append(")");
         return (sb.toString());
     }
-    
+
     private void sendProcessingError(Throwable t, ServletResponse response) {
-        String stackTrace = getStackTrace(t);        
-        
+        String stackTrace = getStackTrace(t);
+
         if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
                 PrintStream ps = new PrintStream(response.getOutputStream());
-                PrintWriter pw = new PrintWriter(ps);                
+                PrintWriter pw = new PrintWriter(ps);
                 pw.print("<html>\n<head>\n<title>Error</title>\n</head>\n<body>\n"); //NOI18N
 
                 // PENDING! Localize this for next official release
-                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");                
-                pw.print(stackTrace);                
+                pw.print("<h1>The resource did not process correctly</h1>\n<pre>\n");
+                pw.print(stackTrace);
                 pw.print("</pre></body>\n</html>"); //NOI18N
                 pw.close();
                 ps.close();
@@ -338,7 +337,7 @@ public class AuthFilter implements Filter {
             }
         }
     }
-    
+
     public static String getStackTrace(Throwable t) {
         String stackTrace = null;
         try {
@@ -352,8 +351,8 @@ public class AuthFilter implements Filter {
         }
         return stackTrace;
     }
-    
+
     public void log(String msg) {
-        filterConfig.getServletContext().log(msg);        
+        filterConfig.getServletContext().log(msg);
     }
 }

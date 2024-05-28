@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:include src="userHeader.xhtml" />
+
+        <div class="content-wrapper">
+            <div class="container">
+                <c:if test="${not empty userOrderDetailsCDI.successMessage}">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ${msgs.feedbacksuccesmessage}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <!--<span aria-hidden="true">&times;</span>-->
+                        </button>
+                    </div>
+                </c:if>
+                
+                <!--<div class="container-fluid">-->
+                <!--<div class="row">-->
+                <!-- left column -->
+                <div class="col-md-8" style="padding-top: 2%;">
+                    <div class="card card-primary">
+                        <div class="card-header" style="background:#808080;">
+                            <h3 class="card-title">${msgs.feedbackformtitle}</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <h:form>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">${msgs.feedbackmessage}</label>
+                                    <p:inputTextarea id="reviewEditor" value="#{userOrderDetailsCDI.ufd.message}" style="height: 500px;width: 600px;"/>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <h:commandButton class="btn btn-primary" style="background:#808080" action="#{userOrderDetailsCDI.addUserFeedback()}" value="${msgs.addfeedbackbutton}"/>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+                <!--</div>-->
+            </div>
+        </div>
+    </h:body>
+</html>

@@ -29,6 +29,7 @@
             <default-locale>en</default-locale>
             <supported-locale>en</supported-locale>
             <supported-locale>hi</supported-locale>
+            <supported-locale>gu</supported-locale>
         </locale-config>
         <resource-bundle>
             <base-name>localizationPackage.messages</base-name>

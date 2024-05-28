@@ -54,6 +54,18 @@ public class storeClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
+    public <T> T getUserFeedbackCount(Class<T> responseType) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("getfeedbackcount");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T displayAllUserOrders(Class<T> responseType) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("displayuserorders");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
     public void deleteElectronicStore(String storeId) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("deleteStore/{0}", new Object[]{storeId})).request().delete();
     }
@@ -102,8 +114,20 @@ public class storeClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
+    public <T> T getAllFeedback(Class<T> responseType) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("getallfeedback");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
     public void addOrder(String qty, String billamt, String odate, String status, String prodid, String comid) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("addorder/{0}/{1}/{2}/{3}/{4}/{5}", new Object[]{qty, billamt, odate, status, prodid, comid})).request().post(null);
+    }
+
+    public <T> T getUserOrderCount(Class<T> responseType) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("userordercount");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public void updateFestival(String festivalId, String festivalName, String festivalDate, String festivalDiscount) throws ClientErrorException {
@@ -140,6 +164,10 @@ public class storeClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
+    public void cutStoreProductStock(String qty, String prodId) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("cutstoreproductstock/{0}/{1}", new Object[]{qty, prodId})).request().post(null);
+    }
+
     public void updateElectronicStore(String storeId, String name, String email, String contactNo, String password, String storeLogo, String address, String country) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("updateStore/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}", new Object[]{storeId, name, email, contactNo, password, storeLogo, address, country})).request().post(null);
     }
@@ -148,6 +176,10 @@ public class storeClient {
         WebTarget resource = webTarget;
         resource = resource.path("getallproducts");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public void verifyUserOrder(String status, String orderId) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("verifyuserorder/{0}/{1}", new Object[]{status, orderId})).request().post(null);
     }
 
     public <T> T getStoreStockCount(Class<T> responseType) throws ClientErrorException {

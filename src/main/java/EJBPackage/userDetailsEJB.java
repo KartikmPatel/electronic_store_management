@@ -33,6 +33,11 @@ public class userDetailsEJB {
         em.persist(model);
     }
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
+    // get user id
+    public Integer getUserId(String email) {
+        Integer userId = (Integer) em.createQuery("SELECT c.userId FROM UserDetails c WHERE c.email = :email")
+                                    .setParameter("email", email)
+                                    .getSingleResult();
+        return userId;
+    }
 }

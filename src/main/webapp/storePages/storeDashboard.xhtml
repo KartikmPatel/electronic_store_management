@@ -90,13 +90,13 @@
                         <!-- small box -->
                         <div class="small-box" style="background-color: #b0c4de;">
                             <div class="inner">
-                                <h3>${storeOrderCDI.storeOrderCount}</h3>
+                                <h3>${storeOrderCDI.userFeedbackCount}</h3>
                                 <p style="font-size: 20px;">User Feedback</p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-comment"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="#{request.contextPath}/storePages/displayUserFeedback.jsf" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                     <!-- ./col -->
@@ -104,13 +104,13 @@
                         <!-- small box -->
                         <div class="small-box" style="background-color: #6eb5ff;">
                             <div class="inner">
-                                <h3>10</h3>
+                                <h3>${storeOrderCDI.userOrderCount}</h3>
                                 <p style="font-size: 20px;">User Orders</p>
                             </div>
                             <div class="icon">
                                 <i class="fas fa-list-alt"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <a href="#{request.contextPath}/storePages/displayUserOrder.jsf" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                 </div>

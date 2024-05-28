@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/public/css/userCart.css" />
+    </h:head>
+    <h:body>
+        <ui:include src="userHeader.xhtml" />
+
+        <!--Cart Section-->
+        <section class="mt-5">
+            <div class="container">
+                <c:if test="${not empty homeCDI.errormessage}">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-bottom: 10px;">
+                        ${msgs.stockError}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </c:if>
+                <div class="cart">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th scope="col" class="text-white">${msgs.image}</th>
+                                    <th scope="col" class="text-white">${msgs.product1}</th>
+                                    <th scope="col" class="text-white">${msgs.price}</th>
+                                    <th scope="col" class="text-white">${msgs.quantity}</th>
+                                    <th scope="col" class="text-white">${msgs.totalprice}</th>
+                                    <th scope="col" class="text-white">${msgs.remove}</th>
+                                </tr>
+                            </thead>
+                            <c:forEach items="#{homeCDI.ucart}" var="cart">
+                                <tbody>
+                                    <h:inputHidden id="prodId1" value="#{cart.sellingProductId.productId}" />
+                                    <tr>
+                                        <td>
+                                            <div class="main">
+                                                <div class="d-flex">
+                                                    <img src="#{request.contextPath}/public/uploads/#{cart.sellingProductId.productId.productImage}" width="60px;" height="60px;" alt="" />
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="des">
+                                                <p>#{cart.sellingProductId.productId.productName}</p>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <h6>#{cart.sellingProductId.price - (cart.sellingProductId.price * cart.sellingProductId.productId.discount)/100}</h6>
+                                        </td>
+                                        <td>
+                                            <div class="counter">
+                                                <h:form>
+                                                    <h:commandButton value="-" styleClass="p-button-rounded p-button-secondary p-button-sm" class="btn btn-light" style="text-align: center;width: 40px;height: 40px;font-weight: bold;font-size: 22px;" action="#{homeCDI.decreaseQty(cart.cartId,cart.quantity,cart.sellingProductId.productId.productId)}"/>
+                                                </h:form>
+                                                <h:inputText class="input-number" value="#{cart.quantity}" id="qty" readonly="true"/>
+                                                <h:form>
+                                                    <h:commandButton value="+" styleClass="p-button-rounded p-button-secondary p-button-sm" class="btn btn-light" style="width: 40px;height: 40px;font-weight: bold;font-size: 20px;" action="#{homeCDI.increseQty(cart.cartId,cart.quantity,cart.sellingProductId.productId.productId)}"/>
+                                                </h:form>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <h6>#{cart.quantity * (cart.sellingProductId.price - (cart.sellingProductId.price * cart.sellingProductId.productId.discount)/100)}</h6>
+                                        </td>
+                                        <td>
+                                            <h:form>
+                                                <h:commandButton class="btn btn-danger" value="${msgs.remove}" action="#{homeCDI.removeCartItem(cart.cartId)}">
+                                                </h:commandButton>
+                                            </h:form>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </c:forEach>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="col-lg-4 offset-lg-4">
+            <div class="checkout">
+                <ul>
+                    <li class="cart-total">${msgs.totalamt}
+                        <span id="amt">#{homeCDI.totalPrice}</span>
+                    </li>
+                </ul>
+                <h:form id="orderForm">
+                    <h:commandButton class="proceed-btn" style="width: 100%" value="#{msgs.proceed}" action="#{homeCDI.addUserOrder()}"/>
+                </h:form>
+            </div>
+        </div>
+
+    </h:body>
+</html>

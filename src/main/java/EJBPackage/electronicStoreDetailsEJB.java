@@ -142,4 +142,18 @@ public class electronicStoreDetailsEJB {
                 .getSingleResult();
         return count.intValue();
     }
+    
+    // get count of user orders for Store dashboard
+    public Integer getUserOrderCount() {
+        Long count = (Long) em.createQuery("SELECT COUNT(e.orderId) FROM UserOrderDetails e")
+                .getSingleResult();
+        return count.intValue();
+    }
+    
+    // get count of user feedback for Store dashboard
+    public Integer getUserFeedbackCount() {
+        Long count = (Long) em.createQuery("SELECT COUNT(e.feedbackId) FROM UserFeedback e")
+                .getSingleResult();
+        return count.intValue();
+    }
 }

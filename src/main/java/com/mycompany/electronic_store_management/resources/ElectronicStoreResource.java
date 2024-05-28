@@ -10,6 +10,8 @@ import EntityPackage.ElectronicStoreOrder;
 import EntityPackage.ElectronicStoreProductStock;
 import EntityPackage.ElectronicStoreSellingProduct;
 import EntityPackage.ProductDetails;
+import EntityPackage.UserFeedback;
+import EntityPackage.UserOrderDetails;
 import java.text.SimpleDateFormat;
 
 import javax.ejb.EJB;
@@ -25,10 +27,17 @@ import javax.annotation.security.RolesAllowed;
 @DeclareRoles("Store")
 @RequestScoped
 public class ElectronicStoreResource {
-    @EJB electronicStoreDetailsEJB stoobj;
-    @EJB electronicStoreProductStockEJB stockobj;
-    @EJB electronicStoreFestivalEJB festobj;
-    @EJB storeSellingProductEJB sellingobj;
+
+    @EJB
+    electronicStoreDetailsEJB stoobj;
+    @EJB
+    electronicStoreProductStockEJB stockobj;
+    @EJB
+    electronicStoreFestivalEJB festobj;
+    @EJB
+    storeSellingProductEJB sellingobj;
+    @EJB
+    EJBPackage.manageUserOdersEJB userOrderObj;
 
     // get all store
     @GET
@@ -70,62 +79,60 @@ public class ElectronicStoreResource {
     public void deleteElectronicStore(@PathParam("storeId") Integer storeId) {
         stoobj.deleteElectronicStoreDetails(storeId);
     }
-    
+
     // Electronic Store Product Store
     @POST
     @Path("addstock/{pid}/{qty}")
     @RolesAllowed("Store")
-    public void addStock(@PathParam("pid") Integer pid,@PathParam("qty") Integer qty)
-    {
+    public void addStock(@PathParam("pid") Integer pid, @PathParam("qty") Integer qty) {
         stockobj.addStock(pid, qty);
     }
-    
+
     @GET
     @Path("displaystock")
     @RolesAllowed("Store")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<ElectronicStoreProductStock> getAllStock()
-    {
+    public Collection<ElectronicStoreProductStock> getAllStock() {
         return stockobj.getAllStock();
     }
-    
+
     // display festival
     @GET
     @Path("displayFestival")
     @RolesAllowed("Store")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<ElectronicStoreFestival> displayFestival(){
+    public Collection<ElectronicStoreFestival> displayFestival() {
         return festobj.displayFestival();
     }
-    
+
     // add festival
     @POST
     @Path("addFestival/{festivalName}/{festivalDate}/{festivalDiscount}")
     @RolesAllowed("Store")
-    public void addFestival(@PathParam("festivalName") String festivalName, @PathParam("festivalDate") String festivalDate, @PathParam("festivalDiscount") Integer festivalDiscount){
+    public void addFestival(@PathParam("festivalName") String festivalName, @PathParam("festivalDate") String festivalDate, @PathParam("festivalDiscount") Integer festivalDiscount) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date mdate = sdf.parse(festivalDate);
             festobj.addFestival(festivalName, mdate, festivalDiscount);
         } catch (Exception e) {
             e.printStackTrace();
-        } 
+        }
     }
-    
+
     @GET
     @Path("getFestivalById/{festivalId}")
     @RolesAllowed("Store")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Collection<ElectronicStoreFestival> getFestivalById(@PathParam("festivalId") Integer festivalId){
+    public Collection<ElectronicStoreFestival> getFestivalById(@PathParam("festivalId") Integer festivalId) {
         return festobj.getDataByIdForUpdate(festivalId);
     }
-    
+
     // update festival
     @POST
     @Path("updateFestival/{festivalId}/{festivalName}/{festivalDate}/{festivalDiscount}")
     @RolesAllowed("Store")
-    public void updateFestival(@PathParam("festivalId") Integer festivalId,@PathParam("festivalName") String festivalName, @PathParam("festivalDate") String festivalDate, @PathParam("festivalDiscount") Integer festivalDiscount){
+    public void updateFestival(@PathParam("festivalId") Integer festivalId, @PathParam("festivalName") String festivalName, @PathParam("festivalDate") String festivalDate, @PathParam("festivalDiscount") Integer festivalDiscount) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date mdate = sdf.parse(festivalDate);
@@ -134,50 +141,46 @@ public class ElectronicStoreResource {
             e.printStackTrace();
         }
     }
-    
+
     @DELETE
     @Path("deleteFestival/{festivalId}")
     @RolesAllowed("Store")
-    public void deleteFestival(@PathParam("festivalId") Integer festivalId){
+    public void deleteFestival(@PathParam("festivalId") Integer festivalId) {
         festobj.deleteFestival(festivalId);
     }
-    
+
     // get all products for display products
     @GET
     @Path("getallproducts")
     @RolesAllowed("Store")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<ProductDetails> getAllProducts()
-    {
+    public Collection<ProductDetails> getAllProducts() {
         return stoobj.getAllProducts();
     }
-    
+
     // check quantity
     @GET
     @Path("getquantity/{prodid}")
     @RolesAllowed("Store")
     @Produces(MediaType.APPLICATION_JSON)
-    public Integer getQuantity(@PathParam("prodid") Integer prodid)
-    {
+    public Integer getQuantity(@PathParam("prodid") Integer prodid) {
         return stoobj.getQuantity(prodid);
     }
-    
+
     // get a product by product Id
     @GET
     @Path("getptoductbyid/{prodid}")
     @RolesAllowed("Store")
     @Produces(MediaType.APPLICATION_JSON)
-    public ProductDetails getProductById(@PathParam("prodid") Integer prodid)
-    {
+    public ProductDetails getProductById(@PathParam("prodid") Integer prodid) {
         return stoobj.getProductById(prodid);
     }
-    
+
     // add order
     @POST
     @Path("addorder/{qty}/{billamt}/{odate}/{status}/{prodid}/{comid}")
     @RolesAllowed("Store")
-    public void addOrder(@PathParam("qty") Integer qty,@PathParam("billamt") Integer billamt,@PathParam("odate") String odate,@PathParam("status") Integer status,@PathParam("prodid") Integer prodid,@PathParam("comid") Integer comid)
-    {
+    public void addOrder(@PathParam("qty") Integer qty, @PathParam("billamt") Integer billamt, @PathParam("odate") String odate, @PathParam("status") Integer status, @PathParam("prodid") Integer prodid, @PathParam("comid") Integer comid) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date odate1 = sdf.parse(odate);
@@ -186,57 +189,52 @@ public class ElectronicStoreResource {
             e.printStackTrace();
         }
     }
-    
+
     // display orders
     @GET
     @Path("getallorders")
     @RolesAllowed("Store")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<ElectronicStoreOrder> getAllOrders()
-    {
+    public Collection<ElectronicStoreOrder> getAllOrders() {
         return stoobj.getAllOrders();
     }
-    
+
     // get count of store order for Store dashboard
     @GET
     @Path("getelestoreordercount")
     @RolesAllowed("Store")
     @Produces(MediaType.APPLICATION_JSON)
-    public Integer getEleStoreOrderCount()
-    {
+    public Integer getEleStoreOrderCount() {
         return stoobj.getEleStoreOrderCount();
     }
-    
+
     // get count of store product stock for store dashboard
     @GET
     @Path("getStoreStockCount")
     @RolesAllowed("Store")
     @Produces(MediaType.APPLICATION_JSON)
-    public Integer getStoreStockCount()
-    {
+    public Integer getStoreStockCount() {
         return stoobj.getStoreStockCount();
     }
-    
+
     // display Selling Products
     @GET
     @Path("getallsellingproduct")
     @RolesAllowed("Store")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<ElectronicStoreSellingProduct> getAllSellingProduct()
-    {
+    public Collection<ElectronicStoreSellingProduct> getAllSellingProduct() {
         return sellingobj.getSellingProducts();
     }
-    
+
     // get Products available in product stock table
     @GET
     @Path("getstoreproductstoreforselling")
     @RolesAllowed("Store")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<ElectronicStoreProductStock> getStoreProductStoreForSelling()
-    {
+    public Collection<ElectronicStoreProductStock> getStoreProductStoreForSelling() {
         return sellingobj.getStoreProductStoreForSelling();
     }
-    
+
     // get actaul price of product by product Id
     @GET
     @Path("getpriceofproduct/{pid}")
@@ -245,15 +243,15 @@ public class ElectronicStoreResource {
     public Integer getPriceOfProduct(@PathParam("pid") Integer pid) {
         return sellingobj.getPriceOfProduct(pid);
     }
-    
+
     // add Selling Product
     @POST
     @Path("addstoresellingproduct/{price}/{pid}")
     @RolesAllowed("Store")
-    public void addStoreSellingProductData(@PathParam("price") Integer price,@PathParam("pid") Integer pid) {
+    public void addStoreSellingProductData(@PathParam("price") Integer price, @PathParam("pid") Integer pid) {
         sellingobj.addStoreSellingProduct(price, pid);
     }
-    
+
     // check if the same Product exists or not in the selling product table
     @GET
     @Path("checksellingproduct/{pid}")
@@ -262,7 +260,7 @@ public class ElectronicStoreResource {
     public ElectronicStoreSellingProduct checkSellingProduct(@PathParam("pid") Integer pid) {
         return sellingobj.checkSellingProduct(pid);
     }
-    
+
     // get count of Electronic Products for store dashboard
     @GET
     @Path("getEleProductCount")
@@ -271,25 +269,79 @@ public class ElectronicStoreResource {
     public Integer getElectronicProductCount() {
         return stoobj.getElectronicProductCount();
     }
-    
+
     // get count of Selling Product for Store dashboard
     @GET
     @Path("getstoresellingproductcount")
     @RolesAllowed("Store")
     @Produces(MediaType.APPLICATION_JSON)
-    public Integer getStoreSellingProductCount()
-    {
+    public Integer getStoreSellingProductCount() {
         return stoobj.getStoreSellingProductCount();
     }
-    
+
     // get count of Festival Offers for Store dashboard
     @GET
     @Path("getoffercount")
     @RolesAllowed("Store")
     @Produces(MediaType.APPLICATION_JSON)
-    public Integer getOfferCount()
-    {
+    public Integer getOfferCount() {
         return stoobj.getOfferCount();
     }
     
+    // verify user order at store side
+    @POST
+    @Path("verifyuserorder/{status}/{orderId}")
+    @RolesAllowed("Store")
+    public void verifyUserOrder(@PathParam("status") Integer status,@PathParam("orderId") Integer orderId) {
+        userOrderObj.verifyUserOrder(status, orderId);
+    }
+    
+    // display the feedback
+    @GET
+    @Path("getallfeedback")
+    @RolesAllowed("Store")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<UserFeedback> getAllFeedback()
+    {
+        return userOrderObj.getAllFeedback();
+    }
+    
+    // get count of user orders for Store dashboard
+    @GET
+    @Path("userordercount")
+    @RolesAllowed("Store")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Integer getUserOrderCount()
+    {
+        return stoobj.getUserOrderCount();
+    }
+    
+    // get count of user feedback for Store dashboard
+    @GET
+    @Path("getfeedbackcount")
+    @RolesAllowed("Store")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Integer getUserFeedbackCount()
+    {
+        return stoobj.getUserFeedbackCount();
+    }
+    
+    // display all userOrder for store
+    @GET
+    @Path("displayuserorders")
+    @RolesAllowed("Store")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<UserOrderDetails> displayAllUserOrders()
+    {
+        return userOrderObj.getAllUserOrder();
+    }
+    
+    // cut the product stock
+    @POST
+    @Path("cutstoreproductstock/{qty}/{prodId}")
+    @RolesAllowed("Store")
+    public void cutStoreProductStock(@PathParam("qty") Integer qty,@PathParam("prodId") Integer prodId)
+    {
+        userOrderObj.cutStoreProductStock(qty, prodId);
+    }
 }

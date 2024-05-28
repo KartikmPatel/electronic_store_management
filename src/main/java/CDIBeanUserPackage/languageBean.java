@@ -28,6 +28,7 @@ public class languageBean implements Serializable {
         countries = new LinkedHashMap<>();
         countries.put("English", Locale.ENGLISH);
         countries.put("Hindi", new Locale("hi")); // Add Hindi locale
+         countries.put("Gujarati", new Locale("gu")); // Add Gujarati locale
     }
 
     public Map<String, Object> getCountries() {

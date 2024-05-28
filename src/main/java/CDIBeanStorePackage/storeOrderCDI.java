@@ -50,9 +50,12 @@ public class storeOrderCDI {
     Integer electronicProductCount;
     Integer storeProductCount;
     Integer offerCount;
+    Integer userOrderCount;
+    Integer userFeedbackCount;
     
     // for Error Message
     String succesMessage, errorMessage;
+    @EJB EJBPackage.electronicStoreDetailsEJB esd;
     
     public storeOrderCDI() {
         sc = new storeClient();
@@ -134,6 +137,27 @@ public class storeOrderCDI {
 
     public void setOfferCount(Integer offerCount) {
         this.offerCount = offerCount;
+    }
+
+    public Integer getUserOrderCount() {
+//        rs = sc.getUserOrderCount(Response.class);
+//        userOrderCount = rs.readEntity(Integer.class);
+        userOrderCount = esd.getUserOrderCount();
+        return userOrderCount;
+    }
+
+    public void setUserOrderCount(Integer userOrderCount) {
+        this.userOrderCount = userOrderCount;
+    }
+
+    public Integer getUserFeedbackCount() {
+        rs = sc.getUserFeedbackCount(Response.class);
+        userFeedbackCount = rs.readEntity(Integer.class);
+        return userFeedbackCount;
+    }
+
+    public void setUserFeedbackCount(Integer userFeedbackCount) {
+        this.userFeedbackCount = userFeedbackCount;
     }
     
 

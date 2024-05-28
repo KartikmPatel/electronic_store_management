@@ -4,6 +4,11 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
         <title>Facelet Title</title>
+        <style>
+            #aside1 {
+                position: fixed;
+            }
+        </style>
         <!-- Theme style -->
         <!--<link rel="stylesheet" href="#{request.contextPath}/public/dist/css/adminlte.min.css" />-->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.1/dist/css/adminlte.min.css"/>
@@ -107,7 +112,7 @@
         </nav>
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4" id="aside1">
             <!-- Brand Logo -->
             <!--    <a href="index3.html" class="brand-link">
                 <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8" />
@@ -162,7 +167,7 @@
                                 </p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item" style="cursor: pointer">
                             <a class="nav-link" href="#{request.contextPath}/storePages/displaySellingProduct.jsf">
                                 <i class="nav-icon fas fa-shopping-cart"></i>
@@ -171,7 +176,7 @@
                                 </p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item" style="cursor: pointer">
                             <a class="nav-link" href="#{request.contextPath}/storePages/displayOrder.jsf">
                                 <i class="nav-icon fas fa-list-alt"></i>
@@ -180,7 +185,25 @@
                                 </p>
                             </a>
                         </li>
-                        
+
+                        <li class="nav-item" style="cursor: pointer">
+                            <a class="nav-link" href="#{request.contextPath}/storePages/displayUserOrder.jsf">
+                                <i class="nav-icon fas fa-list-alt"></i>
+                                <p>
+                                    User Orders
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item" style="cursor: pointer">
+                            <a class="nav-link" href="#{request.contextPath}/storePages/displayStoreStock.jsf">
+                                <i class="nav-icon fas fa-cubes"></i>
+                                <p>
+                                    Stocks
+                                </p>
+                            </a>
+                        </li>
+
                         <li class="nav-item" style="cursor: pointer">
                             <a class="nav-link" href="#{request.contextPath}/storePages/displayFestivalOffer.jsf">
                                 <i class="nav-icon fas fa-gift"></i>
@@ -189,12 +212,12 @@
                                 </p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item" style="cursor: pointer">
-                            <a class="nav-link" href="#{request.contextPath}/storePages/displayStoreStock.jsf">
-                                <i class="nav-icon fas fa-cubes"></i>
+                            <a class="nav-link" href="#{request.contextPath}/storePages/displayUserFeedback.jsf">
+                                <i class="nav-icon fa fa-comments"></i>
                                 <p>
-                                    Stocks
+                                    User Feedback
                                 </p>
                             </a>
                         </li>
