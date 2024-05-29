@@ -9,6 +9,40 @@
     <h:head>
         <title>Facelet Title</title>
         <link rel="stylesheet" type="text/css" href="#{request.contextPath}/public/css/userHome.css" />
+        <style>
+            .festival-banner {
+                width: 100%;
+                /*background-color: #93F6CC;*/
+                background-color: #F1D477;
+                color: #333;
+                text-align: center;
+                padding: 20px 0;
+                margin-bottom: 20px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                position: relative;
+            }
+
+            .festival-banner-content {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                padding: 0 20px;
+            }
+
+            .banner-gift {
+                width: auto;
+                height: 50px;
+            }
+
+            .festival-banner-text {
+                font-size: 1.5rem;
+                font-weight: bold;
+                margin: 0;
+                flex: 1;
+                text-align: center;
+            }
+        </style>
     </h:head>
     <h:body>
         <ui:include src="userHeader.xhtml" />
@@ -23,15 +57,56 @@
                 </div>
             </c:if>
             <div class="product-container">
+                <!-- Festival Offer Banner -->
+                <c:forEach items="${homeCDI.storeFestivals}" var="f">
+                    <c:if test="${f.festivalDate == homeCDI.currentDate}">
+                        <div class="festival-banner" style="margin-top: 10px;">
+                            <div class="festival-banner-content">
+                                <img src="#{request.contextPath}/public/uploads/festivalgift1.png" alt="Gift" id="gift1" class="banner-gift"/>
+                                <h2 class="festival-banner-text">
+                                    Special Offer for #{f.festivalName}! Enjoy up to #{f.festivalDiscount}% discount on all products!
+                                </h2>
+                                <img src="#{request.contextPath}/public/uploads/festivalgift1.png" alt="Gift" id="gift1" class="banner-gift"/>
+                            </div>
+                        </div>
+                    </c:if>
+                </c:forEach>
 
                 <c:forEach items="#{homeCDI.sellingProducts}" var="s">
                     <div class="product-card">
                         <img src="#{request.contextPath}/public/uploads/#{s.productId.productImage}" alt="Product Name" height="200px;" width="100%"/>
                         <h3 class="product-name">#{s.productId.productName}</h3>
-                        <p class="product-description" style="font-size: 15px;">#{s.productId.discount}% discount</p>
+
+                        <c:set var="festivalDiscountApplied" value="false" />
+                        <c:forEach items="${homeCDI.storeFestivals}" var="f">
+                            <c:if test="${f.festivalDate == homeCDI.currentDate}">
+                                <p class="product-description" style="font-size: 15px;margin-top: 0px;margin-bottom: 0px;">
+                                    ${f.festivalName} offer <br/> ${f.festivalDiscount + s.productId.discount}% discount
+                                </p>
+                                <c:set var="festivalDiscountApplied" value="true" />
+                            </c:if>
+                        </c:forEach>
+
+                        <c:if test="${!festivalDiscountApplied}">
+                            <p class="product-description" style="font-size: 15px;">
+                                ${s.productId.discount}% discount
+                            </p>
+                        </c:if>
+
                         <div class="product-price">
                             <span class="original-price" style="color: red;">#{s.price}</span>
-                            <span class="discount-price">#{s.price - (s.price * s.productId.discount)/100}</span>
+
+                            <c:forEach items="${homeCDI.storeFestivals}" var="f">
+                                <c:if test="${f.festivalDate == homeCDI.currentDate}">
+                                    <span class="discount-price">#{s.price - (s.price * f.festivalDiscount + s.productId.discount)/100}</span>
+                                    <c:set var="festivalDiscountApplied" value="true" />
+                                </c:if>
+                            </c:forEach>
+
+                            <c:if test="${!festivalDiscountApplied}">
+                                <span class="discount-price">#{s.price - (s.price * s.productId.discount)/100}</span>
+                            </c:if>
+
                         </div>
                         <h:form>
                             <h:commandButton class="add-to-cart-button" action="#{homeCDI.addCartDetails(s.sellingProductId)}" value="#{msgs.addtocart}" />

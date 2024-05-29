@@ -137,7 +137,7 @@ public class AuthFilter implements Filter {
                 lb.setErrorstatus("User doesn't has the authorization...");
                 req.getRequestDispatcher("login.jsf").forward(request, response);
             }
-            if (req.getRequestURI().contains("user") && KeepRecord.getRoles() != null && !KeepRecord.getRoles().contains("User")) {
+            if (req.getRequestURI().contains("userPages/userDashboard") && KeepRecord.getRoles() != null && !KeepRecord.getRoles().contains("User")) {
                 lb.setErrorstatus("User doesn't has the authorization...");
                 req.getRequestDispatcher("login.jsf").forward(request, response);
             }
@@ -155,7 +155,9 @@ public class AuthFilter implements Filter {
                 if (KeepRecord.getRoles() != null && KeepRecord.getRoles().contains("Admin")) {
                     req.getRequestDispatcher("admin.jsf").forward(request, response);
                 } else if (KeepRecord.getRoles() != null && KeepRecord.getRoles().contains("User")) {
-                    req.getRequestDispatcher("user.jsf").forward(request, response);
+                    lb.setComId(uc.getUserId(Integer.class, KeepRecord.getPrincipal().getName()));
+                    System.out.println("----------------------" + lb.getComId() + "----------------------");
+                    req.getRequestDispatcher("userPages/userDashboard.jsf").forward(request, response);
                 } else if (KeepRecord.getRoles() != null && KeepRecord.getRoles().contains("Company")) {
                     lb.setComId(cc.getCompanyId(Integer.class, KeepRecord.getPrincipal().getName()));
                     System.out.println("----------------------" + lb.getComId() + "----------------------");

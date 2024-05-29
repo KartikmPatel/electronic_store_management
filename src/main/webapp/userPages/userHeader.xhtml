@@ -36,7 +36,7 @@
                     display: flex;
                     align-items: center;
                 }
-                
+
                 #aside1 {
                     position: fixed;
                 }
@@ -91,24 +91,24 @@
 
                 <!-- Right navbar links -->
                 <ul class="navbar-nav ml-auto">
+
+                    <div class="header-content">
+                        <!--<div class="setLang">-->
+                        <h:outputLabel for="language" value="Language:" styleClass="language-label" />
+                        <h:form style="display: inline-block;cursor: pointer;">
+                            <h:panelGrid columns="2" styleClass="language-selector">
+                                <h:selectOneMenu id="language" value="#{languageBean.locale}" onchange="submit()" valueChangeListener="#{languageBean.localeChanged}" styleClass="language-dropdown" style="cursor: pointer;">
+                                    <f:selectItems value="#{languageBean.countries}" />
+                                </h:selectOneMenu>
+                            </h:panelGrid>
+                        </h:form>
+                        <!--</div>-->
+                    </div>
+
                     <div class="dropdown">
-                        <div class="header-content">
-                            <!--<div class="setLang">-->
-                            <h:outputLabel for="language" value="Language:" styleClass="language-label" />
-                            <h:form style="display: inline-block;cursor: pointer;">
-                                <h:panelGrid columns="2" styleClass="language-selector">
-                                    <h:selectOneMenu id="language" value="#{languageBean.locale}" onchange="submit()" valueChangeListener="#{languageBean.localeChanged}" styleClass="language-dropdown" style="cursor: pointer;">
-                                        <f:selectItems value="#{languageBean.countries}" />
-                                    </h:selectOneMenu>
-                                </h:panelGrid>
-                            </h:form>
-                            <!--</div>-->
-
-                            <a class="nav-link dropdown-toggle" href="#" role="button" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="#{request.contextPath}/public/uploads/Screenshot (12).png" class="img-circle elevation-2" alt="User Image" style="width: 30px; height: 30px; cursor:pointer;" />
-                            </a>
-                        </div>
-
+                        <a class="nav-link dropdown-toggle" href="#" role="button" id="profileDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="#{request.contextPath}/public/uploads/Screenshot (12).png" class="img-circle elevation-2" alt="User Image" style="width: 30px; height: 30px; cursor:pointer;" />
+                        </a>
                         <div class="dropdown-menu" aria-labelledby="profileDropdown" style="cursor: pointer">
                             <a class="dropdown-item">
                                 <i class="fas fa-edit"></i> Edit Profile

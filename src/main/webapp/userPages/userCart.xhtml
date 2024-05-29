@@ -55,8 +55,19 @@
                                         </td>
 
                                         <td>
-                                            <h6>#{cart.sellingProductId.price - (cart.sellingProductId.price * cart.sellingProductId.productId.discount)/100}</h6>
+                                            <c:set var="festivalDiscountApplied" value="false" />
+                                            <c:forEach items="${homeCDI.storeFestivals}" var="f">
+                                                <c:if test="${f.festivalDate == homeCDI.currentDate}">
+                                                    <h6>#{cart.sellingProductId.price - (cart.sellingProductId.price * f.festivalDiscount + cart.sellingProductId.productId.discount)/100}</h6>
+                                                    <c:set var="festivalDiscountApplied" value="true" />
+                                                </c:if>
+                                            </c:forEach>
+
+                                            <c:if test="${!festivalDiscountApplied}">
+                                                <h6>#{cart.sellingProductId.price - (cart.sellingProductId.price * cart.sellingProductId.productId.discount)/100}</h6>
+                                            </c:if>
                                         </td>
+
                                         <td>
                                             <div class="counter">
                                                 <h:form>
@@ -68,9 +79,20 @@
                                                 </h:form>
                                             </div>
                                         </td>
+
                                         <td>
-                                            <h6>#{cart.quantity * (cart.sellingProductId.price - (cart.sellingProductId.price * cart.sellingProductId.productId.discount)/100)}</h6>
+                                            <c:forEach items="${homeCDI.storeFestivals}" var="f">
+                                                <c:if test="${f.festivalDate == homeCDI.currentDate}">
+                                                    <h6>#{cart.quantity * (cart.sellingProductId.price - (cart.sellingProductId.price * f.festivalDiscount + cart.sellingProductId.productId.discount)/100)}</h6>
+                                                    <c:set var="festivalDiscountApplied" value="true" />
+                                                </c:if>
+                                            </c:forEach>
+
+                                            <c:if test="${!festivalDiscountApplied}">
+                                                <h6>#{cart.quantity * (cart.sellingProductId.price - (cart.sellingProductId.price * cart.sellingProductId.productId.discount)/100)}</h6>
+                                            </c:if>
                                         </td>
+
                                         <td>
                                             <h:form>
                                                 <h:commandButton class="btn btn-danger" value="${msgs.remove}" action="#{homeCDI.removeCartItem(cart.cartId)}">

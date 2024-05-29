@@ -4,6 +4,7 @@
  */
 package CDIBeanStorePackage;
 
+import EntityPackage.ElectronicStoreFestival;
 import EntityPackage.UserFeedback;
 import EntityPackage.UserOrderDetails;
 import RestClientPackage.storeClient;
@@ -30,6 +31,10 @@ public class manageUserOrderCDI {
     
     Collection<UserFeedback> feedbacks;
     GenericType<Collection<UserFeedback>> gfeedbacks;
+    
+    Collection<ElectronicStoreFestival> festivals1;
+    GenericType<Collection<ElectronicStoreFestival>> gfestivals1;
+    
     @EJB EJBPackage.manageUserOdersEJB manageorder;
     
     public manageUserOrderCDI() {
@@ -39,6 +44,9 @@ public class manageUserOrderCDI {
         
         feedbacks = new ArrayList<>();
         gfeedbacks = new GenericType<Collection<UserFeedback>>(){};
+        
+        festivals1 = new ArrayList<>();
+        gfestivals1 = new GenericType<Collection<ElectronicStoreFestival>>(){};
     }
 
     public Collection<UserOrderDetails> getOrderDetails1() {
@@ -50,6 +58,16 @@ public class manageUserOrderCDI {
 
     public void setOrderDetails1(Collection<UserOrderDetails> orderDetails1) {
         this.orderDetails1 = orderDetails1;
+    }
+
+    public Collection<ElectronicStoreFestival> getFestivals1() {
+        rs = sc.displayFestival(Response.class);
+        festivals1 = rs.readEntity(gfestivals1);
+        return festivals1;
+    }
+
+    public void setFestivals1(Collection<ElectronicStoreFestival> festivals1) {
+        this.festivals1 = festivals1;
     }
 
     public Collection<UserFeedback> getFeedbacks() {
@@ -68,4 +86,5 @@ public class manageUserOrderCDI {
         sc.cutStoreProductStock(String.valueOf(qty), String.valueOf(prodId));
         return "displayUserOrder";
     }
+    
 }

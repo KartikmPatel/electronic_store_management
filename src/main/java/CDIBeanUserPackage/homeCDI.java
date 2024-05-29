@@ -28,6 +28,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -78,6 +79,11 @@ public class homeCDI {
         ucart = new ArrayList<>();
         gucart = new GenericType<Collection<UserCartDetails>>() {
         };
+
+        storeFestivals = new ArrayList<>();
+        gstoreFestivals = new GenericType<Collection<ElectronicStoreFestival>>() {
+        };
+
         errormessage = null;
         succesMessage = null;
     }
@@ -154,13 +160,38 @@ public class homeCDI {
         uc.addCartDetails("1", String.valueOf(selprodid), String.valueOf(lb.getComId()));
     }
 
+    // display festival offers
+    public Collection<ElectronicStoreFestival> getStoreFestivals() {
+        rs = uc.getAllFestivalOffers(Response.class);
+        storeFestivals = rs.readEntity(gstoreFestivals);
+        return storeFestivals;
+    }
+
+    public void setStoreFestivals(Collection<ElectronicStoreFestival> storeFestivals) {
+        this.storeFestivals = storeFestivals;
+    }
+
     public Collection<UserCartDetails> getUcart() {
         rs = uc.getAllCartDetails(Response.class, String.valueOf(lb.getComId()));
         ucart = rs.readEntity(gucart);
         Collection<UserCartDetails> ucd = ucart;
+        Collection<ElectronicStoreFestival> festivals = storeFestivals;
         totalPrice = 0;
         for (UserCartDetails u : ucd) {
-            totalPrice += u.getQuantity() * (u.getSellingProductId().getPrice() - (u.getSellingProductId().getPrice() * u.getSellingProductId().getProductId().getDiscount()) / 100);
+            boolean festivalDiscountApplied = false;
+            for (ElectronicStoreFestival f : festivals) {
+                // Format the festival date to match the current date format
+                String festivalDate = new SimpleDateFormat("EEE MMM dd 00:00:00 zzz yyyy").format(f.getFestivalDate());
+
+                if (festivalDate.equals(getCurrentDate())) {
+                    totalPrice += u.getQuantity() * (u.getSellingProductId().getPrice() - (u.getSellingProductId().getPrice() * f.getFestivalDiscount() + u.getSellingProductId().getProductId().getDiscount()) / 100);
+                    festivalDiscountApplied = true;
+                    break;
+                }
+            }
+            if (!festivalDiscountApplied) {
+                totalPrice += u.getQuantity() * (u.getSellingProductId().getPrice() - (u.getSellingProductId().getPrice() * u.getSellingProductId().getProductId().getDiscount()) / 100);
+            }
         }
         return ucart;
     }
@@ -193,16 +224,11 @@ public class homeCDI {
         this.succesMessage = succesMessage;
     }
 
-    public Collection<ElectronicStoreFestival> getStoreFestivals() {
-        rs = uc.getAllFestivalOffers(Response.class);
-        storeFestivals = rs.readEntity(gstoreFestivals);
-        return storeFestivals;
+    public String getCurrentDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd 00:00:00 zzz yyyy");
+        return sdf.format(new Date());
     }
 
-    public void setStoreFestivals(Collection<ElectronicStoreFestival> storeFestivals) {
-        this.storeFestivals = storeFestivals;
-    }
-    
     public Integer getCartCount() {
         rs = uc.getCartCount(Response.class, String.valueOf(lb.getComId()));
         cartCount = rs.readEntity(Integer.class);
@@ -242,8 +268,23 @@ public class homeCDI {
         String dateString = currentDate.format(formatter); // Convert LocalDate to String
 
         Collection<UserCartDetails> ucd = ucart;
+        Collection<ElectronicStoreFestival> festivals = storeFestivals;
+
         for (UserCartDetails cd : ucd) {
-            uc.addUserOrder(String.valueOf(cd.getQuantity()), String.valueOf(cd.getQuantity() * (cd.getSellingProductId().getPrice() - (cd.getSellingProductId().getPrice() * cd.getSellingProductId().getProductId().getDiscount()) / 100)), dateString, String.valueOf(cd.getSellingProductId().getSellingProductId()), String.valueOf(lb.getComId()));
+            boolean festivalDiscountApplied = false;
+            for (ElectronicStoreFestival f : festivals) {
+                // Format the festival date to match the current date format
+                String festivalDate = new SimpleDateFormat("EEE MMM dd 00:00:00 zzz yyyy").format(f.getFestivalDate());
+
+                if (festivalDate.equals(getCurrentDate())) {
+                    uc.addUserOrder(String.valueOf(cd.getQuantity()), String.valueOf(cd.getQuantity() * (cd.getSellingProductId().getPrice() - (cd.getSellingProductId().getPrice() * f.getFestivalDiscount() + cd.getSellingProductId().getProductId().getDiscount()) / 100)), dateString, String.valueOf(cd.getSellingProductId().getSellingProductId()), String.valueOf(lb.getComId()));
+                    festivalDiscountApplied = true;
+                    break;
+                }
+            }
+            if (!festivalDiscountApplied) {
+                uc.addUserOrder(String.valueOf(cd.getQuantity()), String.valueOf(cd.getQuantity() * (cd.getSellingProductId().getPrice() - (cd.getSellingProductId().getPrice() * cd.getSellingProductId().getProductId().getDiscount()) / 100)), dateString, String.valueOf(cd.getSellingProductId().getSellingProductId()), String.valueOf(lb.getComId()));
+            }
         }
 
         uc.removeAllCartItems(String.valueOf(lb.getComId()));
@@ -259,6 +300,8 @@ public class homeCDI {
         PdfWriter writer = new PdfWriter(out);
         PdfDocument pdf = new PdfDocument(writer);
         Document document = new Document(pdf);
+
+        Integer totalAmt = 0;
 
         // Add title
         Paragraph title = new Paragraph("Order Details")
@@ -283,16 +326,41 @@ public class homeCDI {
                     .setMarginBottom(5));
             document.add(new Paragraph("Quantity: " + cd.getQuantity())
                     .setMarginBottom(5));
-            document.add(new Paragraph("Price: " + (cd.getSellingProductId().getPrice()
-                    - (cd.getSellingProductId().getPrice() * cd.getSellingProductId().getProductId().getDiscount()) / 100))
-                    .setMarginBottom(5));
-            document.add(new Paragraph("Total Price: " + cd.getQuantity() * (cd.getSellingProductId().getPrice()
-                    - (cd.getSellingProductId().getPrice() * cd.getSellingProductId().getProductId().getDiscount()) / 100))
-                    .setMarginBottom(10));
+            boolean festivalDiscountApplied = false;
+            for (ElectronicStoreFestival f : festivals) {
+                // Format the festival date to match the current date format
+                String festivalDate = new SimpleDateFormat("EEE MMM dd 00:00:00 zzz yyyy").format(f.getFestivalDate());
+
+                if (festivalDate.equals(getCurrentDate())) {
+                    document.add(new Paragraph("Price: " + (cd.getSellingProductId().getPrice()
+                            - (cd.getSellingProductId().getPrice() * f.getFestivalDiscount()+ cd.getSellingProductId().getProductId().getDiscount()) / 100))
+                            .setMarginBottom(5));
+                    document.add(new Paragraph("Total Price: " + cd.getQuantity() * (cd.getSellingProductId().getPrice()
+                            - (cd.getSellingProductId().getPrice() * f.getFestivalDiscount() + cd.getSellingProductId().getProductId().getDiscount()) / 100))
+                            .setMarginBottom(10));
+
+                    totalAmt += cd.getQuantity() * (cd.getSellingProductId().getPrice()
+                            - (cd.getSellingProductId().getPrice() * f.getFestivalDiscount() + cd.getSellingProductId().getProductId().getDiscount()) / 100);
+                    festivalDiscountApplied = true;
+                    break;
+                }
+            }
+            if (!festivalDiscountApplied) {
+                document.add(new Paragraph("Price: " + (cd.getSellingProductId().getPrice()
+                        - (cd.getSellingProductId().getPrice() * cd.getSellingProductId().getProductId().getDiscount()) / 100))
+                        .setMarginBottom(5));
+                document.add(new Paragraph("Total Price: " + cd.getQuantity() * (cd.getSellingProductId().getPrice()
+                        - (cd.getSellingProductId().getPrice() * cd.getSellingProductId().getProductId().getDiscount()) / 100))
+                        .setMarginBottom(10));
+
+                totalAmt += cd.getQuantity() * (cd.getSellingProductId().getPrice()
+                        - (cd.getSellingProductId().getPrice() * cd.getSellingProductId().getProductId().getDiscount()) / 100);
+
+            }
         }
 
         // Add total amount
-        Paragraph total = new Paragraph("Total Amount: " + totalPrice)
+        Paragraph total = new Paragraph("Total Amount: " + totalAmt)
                 .setFontSize(14)
                 .setBold()
                 .setTextAlignment(TextAlignment.RIGHT)

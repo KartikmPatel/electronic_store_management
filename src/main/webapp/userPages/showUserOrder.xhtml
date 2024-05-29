@@ -32,8 +32,31 @@
                                         <tr>
                                             <td>#{o.sellingProductId.productId.productName}</td>
                                             <td>#{o.quantity}</td>
-                                            <td>#{o.sellingProductId.price - (o.sellingProductId.price * o.sellingProductId.productId.discount)/100}</td>
-                                            <td>#{o.quantity * (o.sellingProductId.price - (o.sellingProductId.price * o.sellingProductId.productId.discount)/100)}</td>
+                                            <td>
+                                                <c:set var="festivalDiscountApplied" value="false" />
+                                                <c:forEach items="${homeCDI.storeFestivals}" var="f">
+                                                    <c:if test="${f.festivalDate == o.orderDate}">
+                                                        #{o.sellingProductId.price - (o.sellingProductId.price * f.festivalDiscount + o.sellingProductId.productId.discount)/100}
+                                                        <c:set var="festivalDiscountApplied" value="true" />
+                                                    </c:if>
+                                                </c:forEach>
+
+                                                <c:if test="${!festivalDiscountApplied}">
+                                                    #{o.sellingProductId.price - (o.sellingProductId.price * o.sellingProductId.productId.discount)/100}
+                                                </c:if>
+                                            </td>
+                                            <td>
+                                                <c:forEach items="${homeCDI.storeFestivals}" var="f">
+                                                    <c:if test="${f.festivalDate == o.orderDate}">
+                                                        #{o.quantity * (o.sellingProductId.price - (o.sellingProductId.price * f.festivalDiscount + o.sellingProductId.productId.discount)/100)}
+                                                        <c:set var="festivalDiscountApplied" value="true" />
+                                                    </c:if>
+                                                </c:forEach>
+
+                                                <c:if test="${!festivalDiscountApplied}">
+                                                    #{o.quantity * (o.sellingProductId.price - (o.sellingProductId.price * o.sellingProductId.productId.discount)/100)}
+                                                </c:if>
+                                            </td>
                                             <td>#{o.orderDate}</td>
                                         </tr>
                                     </c:if>
@@ -65,8 +88,31 @@
                                         <tr>
                                             <td>#{o.sellingProductId.productId.productName}</td>
                                             <td>#{o.quantity}</td>
-                                            <td>#{o.sellingProductId.price - (o.sellingProductId.price * o.sellingProductId.productId.discount)/100}</td>
-                                            <td>#{o.quantity * (o.sellingProductId.price - (o.sellingProductId.price * o.sellingProductId.productId.discount)/100)}</td>
+                                            <td>
+                                                <c:set var="festivalDiscountApplied" value="false" />
+                                                <c:forEach items="${homeCDI.storeFestivals}" var="f">
+                                                    <c:if test="${f.festivalDate == o.orderDate}">
+                                                        #{o.sellingProductId.price - (o.sellingProductId.price * f.festivalDiscount + o.sellingProductId.productId.discount)/100}
+                                                        <c:set var="festivalDiscountApplied" value="true" />
+                                                    </c:if>
+                                                </c:forEach>
+
+                                                <c:if test="${!festivalDiscountApplied}">
+                                                    #{o.sellingProductId.price - (o.sellingProductId.price * o.sellingProductId.productId.discount)/100}
+                                                </c:if>
+                                            </td>
+                                            <td>
+                                                <c:forEach items="${homeCDI.storeFestivals}" var="f">
+                                                    <c:if test="${f.festivalDate == o.orderDate}">
+                                                        #{o.quantity * (o.sellingProductId.price - (o.sellingProductId.price * f.festivalDiscount + o.sellingProductId.productId.discount)/100)}
+                                                        <c:set var="festivalDiscountApplied" value="true" />
+                                                    </c:if>
+                                                </c:forEach>
+
+                                                <c:if test="${!festivalDiscountApplied}">
+                                                    #{o.quantity * (o.sellingProductId.price - (o.sellingProductId.price * o.sellingProductId.productId.discount)/100)}
+                                                </c:if>
+                                            </td>
                                             <td>#{o.orderDate}</td>
                                         </tr>
                                     </c:if>
