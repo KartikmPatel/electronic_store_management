@@ -32,6 +32,24 @@ public class userDetailsEJB {
         model.setCountry(country);
         em.persist(model);
     }
+    
+     public UserDetails getDataByIdForUpdate(Integer userId) {
+        return em.createNamedQuery("UserDetails.findByUserId",UserDetails.class).setParameter("userId", userId).getSingleResult();
+    }
+    
+    public void updateUserDetails(Integer id, String name, String email, Integer cno, String pass, Date dob, String gender, String pic, String address, String country){
+        UserDetails model = em.find(UserDetails.class, id);
+        model.setUsername(name);
+        model.setEmail(email);
+        model.setContactNo(cno);
+        model.setPassword(pass);
+        model.setDob(dob);
+        model.setGender(gender);
+        model.setProfilePic(pic);
+        model.setAddress(address);
+        model.setCountry(country);
+        em.merge(model);
+    }
 
     // get user id
     public Integer getUserId(String email) {

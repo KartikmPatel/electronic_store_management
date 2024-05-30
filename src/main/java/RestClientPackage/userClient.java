@@ -18,7 +18,7 @@ import javax.ws.rs.client.WebTarget;
  *        client.close();
  * </pre>
  *
- * @author Kartik Patel
+ * @author Admin
  */
 public class userClient {
 
@@ -41,8 +41,18 @@ public class userClient {
         webTarget.path(java.text.MessageFormat.format("adduserorder/{0}/{1}/{2}/{3}/{4}", new Object[]{qty, tamt, odate, selprodid, userid})).request().post(null);
     }
 
+    public void updateUserDetails(String id, String name, String email, String cno, String pass, String dob, String gender, String pic, String address, String country) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("updateUserDetail/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}/{8}/{9}", new Object[]{id, name, email, cno, pass, dob, gender, pic, address, country})).request().post(null);
+    }
+
     public void removeCartItem(String cartId) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("removecartitem/{0}", new Object[]{cartId})).request().delete();
+    }
+
+    public <T> T getUserById(Class<T> responseType, String user_id) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("getuserbyid/{0}", new Object[]{user_id}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public void removeAllCartItems(String userId) throws ClientErrorException {

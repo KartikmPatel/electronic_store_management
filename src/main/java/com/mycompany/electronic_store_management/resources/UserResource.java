@@ -7,6 +7,7 @@ package com.mycompany.electronic_store_management.resources;
 import EntityPackage.ElectronicStoreFestival;
 import EntityPackage.ElectronicStoreSellingProduct;
 import EntityPackage.UserCartDetails;
+import EntityPackage.UserDetails;
 import EntityPackage.UserFeedback;
 import EntityPackage.UserOrderDetails;
 import java.text.SimpleDateFormat;
@@ -85,6 +86,29 @@ public class UserResource {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date mdate = sdf.parse(dob);
             userDetailObj.addUserDetails(name, email, cno, pass, mdate, gender, pic, address, country);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @GET
+    @Path("getuserbyid/{user_id}")
+    @RolesAllowed("User")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public UserDetails getUserById(@PathParam("user_id") Integer user_id)
+    {
+        return userDetailObj.getDataByIdForUpdate(user_id);
+    }
+    
+    @POST
+    @Path("updateUserDetail/{id}/{name}/{email}/{cno}/{pass}/{dob}/{gender}/{pic}/{address}/{country}")
+    @RolesAllowed("User")
+    public void updateUserDetails(@PathParam("id") Integer id, @PathParam("name") String name, @PathParam("email") String email, @PathParam("cno") Integer cno, @PathParam("pass") String pass, @PathParam("dob") String dob, @PathParam("gender") String gender, @PathParam("pic") String pic, @PathParam("address") String address, @PathParam("country") String country){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date mdate = sdf.parse(dob);
+            userDetailObj.updateUserDetails(id, name, email, cno, pass, mdate, gender, pic, address, country);
         } catch (Exception e) {
             e.printStackTrace();
         }

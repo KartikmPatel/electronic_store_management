@@ -154,6 +154,24 @@ public class homeCDI {
         }
         return null;
     }
+    
+    public String editUserForm(){
+        this.ud = uc.getUserById(UserDetails.class, lb.getComId().toString());
+        return "editUser";
+    }
+    
+    public String editUser() {
+        String fileName = uploadImage();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = dateFormat.format(ud.getDob());
+        if (fileName.isEmpty()) {
+            uc.updateUserDetails(ud.getUserId().toString(), ud.getUsername(), ud.getEmail(), String.valueOf(ud.getContactNo()), ud.getPassword(), formattedDate, ud.getGender(), ud.getProfilePic(), ud.getAddress(), ud.getCountry());
+        } else {
+            uc.updateUserDetails(ud.getUserId().toString(), ud.getUsername(), ud.getEmail(), String.valueOf(ud.getContactNo()), ud.getPassword(), formattedDate, ud.getGender(), fileName, ud.getAddress(), ud.getCountry());
+        }
+        succesMessage = "User Successfully Edited";
+        return "userDashboard";
+    }
 
     // add data in the cart table
     public void addCartDetails(Integer selprodid) {
