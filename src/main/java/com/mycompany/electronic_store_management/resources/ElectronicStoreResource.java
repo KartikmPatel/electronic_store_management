@@ -51,26 +51,25 @@ public class ElectronicStoreResource {
     // add store
     @POST
     @Path("addStore/{name}/{email}/{contactNo}/{password}/{storeLogo}/{address}/{country}")
-    @RolesAllowed("Store")
     public void addElectronicStore(@PathParam("name") String name, @PathParam("email") String email, @PathParam("contactNo") Integer contact, @PathParam("password") String password, @PathParam("storeLogo") String logo, @PathParam("address") String address, @PathParam("country") String country) {
         stoobj.addElectronicStoreDetails(name, email, contact, password, logo, address, country);
     }
 
     @GET
-    @Path("getStoreById/{storeId}")
+    @Path("getStoreById")
     @RolesAllowed("Store")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Collection<ElectronicStoreDetails> getStoreById(@PathParam("storeId") Integer storeId) {
-        return stoobj.getDataByIdForUpdate(storeId);
+    public ElectronicStoreDetails getStoreById() {
+        return stoobj.getDataByIdForUpdate();
     }
 
     // update store
     @POST
-    @Path("updateStore/{storeId}/{name}/{email}/{contactNo}/{password}/{storeLogo}/{address}/{country}")
+    @Path("updateStore/{name}/{email}/{contactNo}/{password}/{storeLogo}/{address}/{country}")
     @RolesAllowed("Store")
-    public void updateElectronicStore(@PathParam("storeId") Integer storeId, @PathParam("name") String name, @PathParam("email") String email, @PathParam("contactNo") Integer contact, @PathParam("password") String password, @PathParam("storeLogo") String logo, @PathParam("address") String address, @PathParam("country") String country) {
-        stoobj.updateElectronicStoreDetails(storeId, name, email, contact, password, logo, address, country);
+    public void updateElectronicStore(@PathParam("name") String name, @PathParam("email") String email, @PathParam("contactNo") Integer contact, @PathParam("password") String password, @PathParam("storeLogo") String logo, @PathParam("address") String address, @PathParam("country") String country) {
+        stoobj.updateElectronicStoreDetails(name, email, contact, password, logo, address, country);
     }
 
     @DELETE

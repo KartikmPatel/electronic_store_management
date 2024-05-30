@@ -19,7 +19,7 @@ import javax.ws.rs.client.WebTarget;
  *        client.close();
  * </pre>
  *
- * @author Kartik Patel
+ * @author Admin
  */
 public class storeClient {
 
@@ -152,9 +152,9 @@ public class storeClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
-    public <T> T getStoreById(Class<T> responseType, String storeId) throws ClientErrorException {
+    public <T> T getStoreById(Class<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("getStoreById/{0}", new Object[]{storeId}));
+        resource = resource.path("getStoreById");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
@@ -168,8 +168,8 @@ public class storeClient {
         webTarget.path(java.text.MessageFormat.format("cutstoreproductstock/{0}/{1}", new Object[]{qty, prodId})).request().post(null);
     }
 
-    public void updateElectronicStore(String storeId, String name, String email, String contactNo, String password, String storeLogo, String address, String country) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("updateStore/{0}/{1}/{2}/{3}/{4}/{5}/{6}/{7}", new Object[]{storeId, name, email, contactNo, password, storeLogo, address, country})).request().post(null);
+    public void updateElectronicStore(String name, String email, String contactNo, String password, String storeLogo, String address, String country) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("updateStore/{0}/{1}/{2}/{3}/{4}/{5}/{6}", new Object[]{name, email, contactNo, password, storeLogo, address, country})).request().post(null);
     }
 
     public <T> T getAllProducts(Class<T> responseType) throws ClientErrorException {

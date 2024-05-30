@@ -4,8 +4,13 @@
  */
 package CDIBeanStorePackage;
 
+import EntityPackage.ElectronicStoreDetails;
 import EntityPackage.ProductDetails;
 import RestClientPackage.storeClient;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
+import org.primefaces.model.file.UploadedFile;
 
 /**
  *
@@ -34,6 +40,9 @@ public class electronicProductCDI {
     Response rs;
     Collection<ProductDetails> pdetails;
     GenericType<Collection<ProductDetails>> gpdetails;
+    UploadedFile file;
+    
+    ElectronicStoreDetails esd = new ElectronicStoreDetails();
 
     ProductDetails prod = new ProductDetails();
     Integer quantity;
@@ -51,6 +60,14 @@ public class electronicProductCDI {
         };
         succesMessage = null;
         errorMessage = null;
+    }
+
+    public ElectronicStoreDetails getEsd() {
+        return esd;
+    }
+
+    public void setEsd(ElectronicStoreDetails esd) {
+        this.esd = esd;
     }
 
     public Collection<ProductDetails> getPdetails() {
@@ -103,6 +120,14 @@ public class electronicProductCDI {
         this.stock = stock;
     }
 
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+
     public String getSuccesMessage() {
         return succesMessage;
     }
@@ -135,6 +160,30 @@ public class electronicProductCDI {
 //        }
 //    }
     
+    // file uploading function
+    private String uploadImage() {
+        String fileName = "";
+        if (file != null) {
+            try (InputStream input = file.getInputStream()) {
+                fileName = file.getFileName();
+                OutputStream output = new FileOutputStream("C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
+                try {
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = input.read(buffer)) != -1) {
+                        output.write(buffer, 0, bytesRead);
+                    }
+                } finally {
+                    output.close();
+                }
+            } catch (IOException e) {
+                // Handle the error
+                e.printStackTrace();
+            }
+        }
+        return fileName;
+    }
+    
     //add Store Orders
     public String addOrder(Integer prod1) {
         rs = sc.getQuantity(Response.class, String.valueOf(prod.getProductId()));
@@ -165,5 +214,21 @@ public class electronicProductCDI {
             this.stock = checkqty;
             return "purchaseElecProduct";
         }
+    }
+    
+    public String editStoreForm(){
+        this.esd = sc.getStoreById(ElectronicStoreDetails.class);
+        return "editStore";
+    }
+    
+    public String editStore() {
+        String fileName = uploadImage();
+        if (fileName.isEmpty()) {
+            sc.updateElectronicStore(esd.getStoreName(), esd.getEmail(), String.valueOf(esd.getContactNo()), esd.getPassword(), esd.getStoreLogo(), esd.getAddress(), esd.getCountry());
+        } else {
+            sc.updateElectronicStore(esd.getStoreName(), esd.getEmail(), String.valueOf(esd.getContactNo()), esd.getPassword(), fileName, esd.getAddress(), esd.getCountry());
+        }
+        succesMessage = "Store Successfully Edited";
+        return "storeDashboard";
     }
 }

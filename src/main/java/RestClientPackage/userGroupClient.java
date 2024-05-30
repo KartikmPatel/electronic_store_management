@@ -35,7 +35,7 @@ public class userGroupClient {
     public void addUser(String email, String password) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("addUser/{0}/{1}", new Object[]{email, password})).request().post(null);
     }
-
+    
     public void addGroup(String groupName, String email) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("addGroup/{0}/{1}", new Object[]{groupName, email})).request().post(null);
     }

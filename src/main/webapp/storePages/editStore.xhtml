@@ -1,11 +1,64 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        Hello from Facelets
+        <ui:include src="storeHeader.xhtml" />
+        
+        <div class="content-wrapper">
+        <div class="container">
+            <!--<div class="container-fluid">-->
+                <!--<div class="row">-->
+                    <!-- left column -->
+                    <div class="col-md-8" style="padding-top: 2%;">
+                        <div class="card card-primary">
+                            <div class="card-header" style="background:#17a2b8">
+                                <h3 class="card-title">Edit Store</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <h:form enctype="multipart/form-data">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <h:inputHidden value="#{electronicProductCDI.esd.storeId}"/>
+                                        <h:inputHidden value="#{electronicProductCDI.esd.storeLogo}"/>
+                                        <label for="exampleInputStore">Store Name</label>
+                                        <p:inputText class="form-control" placeholder="Enter the store name" value="#{electronicProductCDI.esd.storeName}"/>
+
+                                        <label for="exampleInputEmail">Email</label>
+                                        <p:inputText class="form-control" placeholder="Enter the Email Address" value="#{electronicProductCDI.esd.email}"/>
+
+                                        <label for="exampleInputContactNo">Contact No</label>
+                                        <p:inputText class="form-control" placeholder="Enter the number" value="#{electronicProductCDI.esd.contactNo}"/>
+
+                                        <label for="exampleInputImage">Logo</label>
+                                        <img src="#{request.contextPath}/public/uploads/#{electronicProductCDI.esd.storeLogo}" height="55px" width="55px;"/>
+                                        <p:fileUpload class="form-control" id="logo" value="#{electronicProductCDI.file}" mode="simple" />
+
+                                        <label for="exampleInputPassword">Password</label>
+                                        <p:inputText class="form-control" placeholder="Enter the password" value="#{electronicProductCDI.esd.password}"/>
+
+                                        <label for="exampleInputAddress">Address</label>
+                                        <p:inputText class="form-control" placeholder="Enter the Address" value="#{electronicProductCDI.esd.address}" />
+                                        
+                                        <label for="exampleInputCountry">Country</label>
+                                        <p:inputText class="form-control" placeholder="Enter the Country" value="#{electronicProductCDI.esd.country}" />
+                                    </div>
+                                </div>
+
+                                <div class="card-footer">
+                                    <h:commandButton class="btn btn-primary" action="#{electronicProductCDI.editStore()}" style="background:#17a2b8" value="Edit Store"/>
+                                </div>
+                            </h:form>
+                        </div>
+                    </div>
+                </div>
+            <!--</div>-->
+        </div>
     </h:body>
 </html>

@@ -42,12 +42,12 @@ public class electronicStoreDetailsEJB {
         em.persist(model);
     }
 
-    public Collection<ElectronicStoreDetails> getDataByIdForUpdate(Integer storeId) {
-        return em.createNamedQuery("ElectronicStoreDetails.findByStoreId").setParameter("storeId", storeId).getResultList();
+    public ElectronicStoreDetails getDataByIdForUpdate() {
+        return em.createNamedQuery("ElectronicStoreDetails.findByStoreId",ElectronicStoreDetails.class).setParameter("storeId", 1).getSingleResult();
     }
 
-    public void updateElectronicStoreDetails(Integer storeId, String storeName, String email, Integer contactNo, String password, String storeLogo, String address, String country) {
-        ElectronicStoreDetails model = em.find(ElectronicStoreDetails.class, storeId);
+    public void updateElectronicStoreDetails(String storeName, String email, Integer contactNo, String password, String storeLogo, String address, String country) {
+        ElectronicStoreDetails model = em.find(ElectronicStoreDetails.class, 1);
         model.setStoreName(storeName);
         model.setEmail(email);
         model.setContactNo(contactNo);
