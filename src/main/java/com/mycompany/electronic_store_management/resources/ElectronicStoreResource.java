@@ -343,4 +343,33 @@ public class ElectronicStoreResource {
     {
         userOrderObj.cutStoreProductStock(qty, prodId);
     }
+    
+    // display total sale of each product
+    @GET
+    @Path("displayallSales")
+    @RolesAllowed("Store")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<Object[]> displayAllSales()
+    {
+        return sellingobj.displayAllSales();
+    }
+    
+    // display total sale of each product
+    @GET
+    @Path("displayallSales1/{pid}")
+    @RolesAllowed("Store")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<Object[]> displayAllSales1(@PathParam("pid") Integer pid)
+    {
+        return sellingobj.displayAllSales1(pid);
+    }
+    
+    // get count of Sold Product Store dashboard
+    @GET
+    @Path("getSaleProductCount")
+    @RolesAllowed("Store")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Integer getSaleProductCount() {
+        return stoobj.getSaleProductCount();
+    }
 }

@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -33,6 +36,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -69,6 +73,7 @@ public class homeCDI {
     String errormessage;
     Integer cartCount;
     String succesMessage;
+    String succesProfilemsg;
 
     public homeCDI() {
         uc = new userClient();
@@ -86,6 +91,7 @@ public class homeCDI {
 
         errormessage = null;
         succesMessage = null;
+        succesProfilemsg = null;
     }
 
     public UserDetails getUd() {
@@ -104,6 +110,14 @@ public class homeCDI {
         this.file = file;
     }
 
+    public String getSuccesProfilemsg() {
+        return succesProfilemsg;
+    }
+
+    public void setSuccesProfilemsg(String succesProfilemsg) {
+        this.succesProfilemsg = succesProfilemsg;
+    }
+
     public Collection<ElectronicStoreSellingProduct> getSellingProducts() {
         rs = uc.getAllSellingProducts(Response.class);
         sellingProducts = rs.readEntity(gsellingProducts);
@@ -120,7 +134,7 @@ public class homeCDI {
         if (file != null) {
             try (InputStream input = file.getInputStream()) {
                 fileName = file.getFileName();
-                OutputStream output = new FileOutputStream("C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
+                OutputStream output = new FileOutputStream("C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
                 try {
                     byte[] buffer = new byte[1024];
                     int bytesRead;
@@ -154,12 +168,12 @@ public class homeCDI {
         }
         return null;
     }
-    
-    public String editUserForm(){
+
+    public String editUserForm() {
         this.ud = uc.getUserById(UserDetails.class, lb.getComId().toString());
         return "editUser";
     }
-    
+
     public String editUser() {
         String fileName = uploadImage();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -169,7 +183,7 @@ public class homeCDI {
         } else {
             uc.updateUserDetails(ud.getUserId().toString(), ud.getUsername(), ud.getEmail(), String.valueOf(ud.getContactNo()), ud.getPassword(), formattedDate, ud.getGender(), fileName, ud.getAddress(), ud.getCountry());
         }
-        succesMessage = "User Successfully Edited";
+        succesProfilemsg = "Profile Successfully Edited";
         return "userDashboard";
     }
 
@@ -280,7 +294,7 @@ public class homeCDI {
     }
 
     // add user order
-    public void addUserOrder() throws IOException {
+    public String addUserOrder() throws IOException {
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String dateString = currentDate.format(formatter); // Convert LocalDate to String
@@ -306,16 +320,21 @@ public class homeCDI {
         }
 
         uc.removeAllCartItems(String.valueOf(lb.getComId()));
-        succesMessage = "Order Successfully Placed";
 
         // pdf generate and download code
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
-        response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "attachment; filename=\"order_details.pdf\"");
-
-        OutputStream out = response.getOutputStream();
-        PdfWriter writer = new PdfWriter(out);
+//        FacesContext facesContext = FacesContext.getCurrentInstance();
+//        HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+//        response.setContentType("application/pdf");
+//        response.setHeader("Content-Disposition", "attachment; filename=\"order_details.pdf\"");
+        // Generate PDF and save to Downloads folder
+        String home = System.getProperty("user.home");
+        Path downloadsDir = Paths.get(home, "Downloads");
+        if (!Files.exists(downloadsDir)) {
+            Files.createDirectories(downloadsDir);
+        }
+        Path pdfPath = downloadsDir.resolve("order_details.pdf");
+//        OutputStream out = response.getOutputStream();
+        PdfWriter writer = new PdfWriter(pdfPath.toString());
         PdfDocument pdf = new PdfDocument(writer);
         Document document = new Document(pdf);
 
@@ -351,7 +370,7 @@ public class homeCDI {
 
                 if (festivalDate.equals(getCurrentDate())) {
                     document.add(new Paragraph("Price: " + (cd.getSellingProductId().getPrice()
-                            - (cd.getSellingProductId().getPrice() * f.getFestivalDiscount()+ cd.getSellingProductId().getProductId().getDiscount()) / 100))
+                            - (cd.getSellingProductId().getPrice() * f.getFestivalDiscount() + cd.getSellingProductId().getProductId().getDiscount()) / 100))
                             .setMarginBottom(5));
                     document.add(new Paragraph("Total Price: " + cd.getQuantity() * (cd.getSellingProductId().getPrice()
                             - (cd.getSellingProductId().getPrice() * f.getFestivalDiscount() + cd.getSellingProductId().getProductId().getDiscount()) / 100))
@@ -394,7 +413,8 @@ public class homeCDI {
         document.add(status1);
 
         document.close();
-        facesContext.responseComplete();
-        facesContext.getExternalContext().redirect("userDashboard");
+
+        succesMessage = "Your order has been successfully placed, and the bill has been downloaded";
+        return "userDashboard.jsf";
     }
 }

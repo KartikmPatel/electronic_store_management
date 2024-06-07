@@ -48,14 +48,25 @@
         <ui:include src="userHeader.xhtml" />
 
         <div class="content-wrapper">
-            <c:if test="${not empty homeCDI.succesMessage}">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    ${msgs.orderplacemessage}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <!--<span aria-hidden="true">&times;</span>-->
-                    </button>
-                </div>
-            </c:if>
+            <c:choose>
+                <c:when test="${not empty homeCDI.succesMessage}">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ${msgs.orderplacemessage}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <!--<span aria-hidden="true">&times;</span>-->
+                        </button>
+                    </div>
+                </c:when>
+                <c:when test="${not empty homeCDI.succesProfilemsg}">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ${msgs.profilesuccesmsg}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <!--<span aria-hidden="true">&times;</span>-->
+                        </button>
+                    </div>
+                </c:when>
+            </c:choose>
+
             <div class="product-container">
                 <!-- Festival Offer Banner -->
                 <c:forEach items="${homeCDI.storeFestivals}" var="f">

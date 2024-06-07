@@ -26,31 +26,57 @@
 //            return false; // Prevent form submission
 //        }
 //    }
-    
-    
-    function rememberMe() {
-    const email = document.getElementById("emailaddress").value;
-    const password = document.getElementById("password").value;
-    const rememberMeCheckbox = document.getElementById("rememberMeCheckbox");
 
-    if (rememberMeCheckbox.checked) {
-        localStorage.setItem("email", email);
-        localStorage.setItem("password", password);
-    } else {
-        localStorage.removeItem("email");
-        localStorage.removeItem("password");
-    }
-}
 
-function fillLoginForm() {
-    const email = localStorage.getItem("email");
-    const password = localStorage.getItem("password");
-    const rememberMeCheckbox = document.getElementById("rememberMeCheckbox");
+//    function rememberMe() {
+//    const email = document.getElementById("emailaddress").value;
+//    const password = document.getElementById("password").value;
+//    const rememberMeCheckbox = document.getElementById("rememberMeCheckbox");
+//
+//    if (rememberMeCheckbox.checked) {
+//        localStorage.setItem("email", email);
+//        localStorage.setItem("password", password);
+//    } else {
+//        localStorage.removeItem("email");
+//        localStorage.removeItem("password");
+//    }
+//}
+//
+//function fillLoginForm() {
+//    const email = localStorage.getItem("email");
+//    const password = localStorage.getItem("password");
+//    const rememberMeCheckbox = document.getElementById("rememberMeCheckbox");
+//
+//    if (email && password) {
+//        document.getElementById("emailaddress").value = email;
+//        document.getElementById("password").value = password;
+//        rememberMeCheckbox.checked = true;
+//    }
+//}
 
-    if (email && password) {
-        document.getElementById("emailaddress").value = email;
-        document.getElementById("password").value = password;
-        rememberMeCheckbox.checked = true;
-    }
-}
 
+//function validateCategory() {
+//    var categoryInput = document.getElementById('exampleInputEmail1');
+//    var errorSpan = document.getElementById('catErr');
+//    var categoryName = categoryInput.value.trim();
+//    if (categoryName === "") {
+//        errorSpan.innerHTML = "Category Name is required";
+//        return false;
+//    } else {
+//        errorSpan.innerHTML = ""; // Clear any previous error message
+//        return true;
+//    }
+//}
+
+//function ajaxAction(actionUrl, cartId, quantity, productId) {
+//    var xhr = new XMLHttpRequest();
+//    xhr.open("POST", actionUrl, true);
+//    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+//    xhr.onreadystatechange = function () {
+//        if (xhr.readyState === 4 && xhr.status === 200) {
+//            // Update the part of the page with the response
+//            document.getElementById("cartSection").innerHTML = xhr.responseText;
+//        }
+//    };
+//    xhr.send("cartId=" + cartId + "&quantity=" + quantity + "&productId=" + productId);
+//}

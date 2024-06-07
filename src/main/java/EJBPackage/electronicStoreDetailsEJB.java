@@ -156,4 +156,11 @@ public class electronicStoreDetailsEJB {
                 .getSingleResult();
         return count.intValue();
     }
+    
+    // get count of sold for Store dashboard
+    public Integer getSaleProductCount() {
+        Long count = (Long) em.createQuery("SELECT SUM(u.quantity) FROM UserOrderDetails u WHERE u.status = 1")
+                .getSingleResult();
+        return count.intValue();
+    }
 }

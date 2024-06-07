@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:include src="storeHeader.xhtml" />
+
+        <div class="content-wrapper">
+            <div class="container">
+
+                <h2 style="padding-top: 1%;">Selling Report</h2><hr/>
+                <!-- Form Section -->
+                <h:form class="form-inline mt-3 mb-3">
+                    <div>
+                        <h:selectOneMenu id="productSelect" value="#{storeOrderCDI.pid}" onchange="submit()" class="form-control">
+                            <f:selectItem itemLabel="-- Select The Product Name --" />
+                            <f:selectItems value="#{storeOrderCDI.storeSellingProducts}" var="p" itemLabel="#{p.productId.productName}" itemValue="#{p.sellingProductId}"/>
+                        </h:selectOneMenu>
+                    </div>
+                </h:form>
+
+                <div class="card" style="margin-top: 20px;">
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example1" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Category Name</th>
+                                    <th>Company Name</th>
+                                    <th>Sold Quantity</th>
+                                    <th>Total Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="#{storeOrderCDI.saleProduct}" var="s">
+                                    <tr>       
+                                        <td>#{s[0]}</td>
+                                        <td>#{s[1]}</td>
+                                        <td>#{s[2]}</td>
+                                        <td>#{s[3]}</td>
+                                        <td>#{s[4]}</td>
+                                    </tr>
+                                </c:forEach>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                $("#example1").DataTable({
+                    "responsive": true,
+                    "lengthChange": false,
+                    "autoWidth": false,
+                    "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+                });
+            });
+        </script>
+    </h:body>
+</html>

@@ -52,8 +52,10 @@ public class SecureAuthentiacation implements HttpAuthenticationMechanism,Serial
     @Override
     public AuthenticationStatus validateRequest(HttpServletRequest hsr, HttpServletResponse hsr1, HttpMessageContext hmc) throws AuthenticationException {
         String token = extractToken(hsr);
+        
         if(token!=null){
         token = token.substring(7);
+
             if(tp.validateToken(token)){
                 JWTCredential cred = tp.getCredential(token);
 //                if(cred.getRoles().contains("Company")){

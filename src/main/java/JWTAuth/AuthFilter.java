@@ -64,6 +64,7 @@ public class AuthFilter implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
+
         if (req.getRequestURI().contains("login.jsf")) {
             if (KeepRecord.isLogout()) {
                 KeepRecord.reset();
@@ -76,50 +77,70 @@ public class AuthFilter implements Filter {
                         resp.addCookie(c);
                     }
                 }
+
                 //req.getRequestDispatcher("index.xhtml").forward(request, response);
             } else if (lb.getUsername() != null && lb.getPassword() != null) {
                 Credential cred = new UsernamePasswordCredential(lb.getUsername(), new Password(lb.getPassword()));
                 status = sctx.authenticate(req, resp, withParams().credential(cred));
                 if (status == AuthenticationStatus.SUCCESS && KeepRecord.getPrincipal() != null) {
                     if (KeepRecord.getRoles().contains("Admin")) {
-                        if (lb.isRememberme()) {
-                            Cookie cookie = new Cookie(AUTHORIZATION_HEADER, BEARER + KeepRecord.getToken());
-                            cookie.setPath("/");
-                            System.out.println("Cookie added....");
-                            cookie.setMaxAge(60 * 24 * 24 * 60);
-                            resp.addCookie(cookie);
-                        }
+//                        if (lb.isRememberme()) {
+                        Cookie cookie = new Cookie(AUTHORIZATION_HEADER, BEARER + KeepRecord.getToken());
+                        cookie.setPath("/");
+                        System.out.println("Cookie added....");
+                        cookie.setMaxAge(60 * 24 * 24 * 60);
+                        resp.addCookie(cookie);
+//                        }
                         req.getRequestDispatcher("admin.jsf").forward(request, response);
                     } else if (KeepRecord.getRoles().contains("User")) {
-                        if (lb.isRememberme()) {
-                            Cookie cookie = new Cookie(AUTHORIZATION_HEADER, BEARER + KeepRecord.getToken());
-                            cookie.setPath("/");
-                            System.out.println("Cookie added....");
-                            cookie.setMaxAge(60 * 24 * 24 * 60);
-                            resp.addCookie(cookie);
-                        }
+                        Cookie cookie = new Cookie(AUTHORIZATION_HEADER, BEARER + KeepRecord.getToken());
+                        cookie.setPath("/");
+                        System.out.println("Cookie added....");
+                        cookie.setMaxAge(60 * 24 * 24 * 60);
+                        resp.addCookie(cookie);
+//                        if (lb.isRememberme() != false) {
+//                            System.out.println("Setting cookies as Remember Me is true");
+//                            Cookie uname = new Cookie("username", lb.getUsername());
+//                            Cookie pass = new Cookie("password", lb.getPassword());
+//                            Cookie rememberme = new Cookie("rememberme", "true");
+//                            resp.addCookie(uname);
+//                            resp.addCookie(pass);
+//                            resp.addCookie(rememberme);
+//                        } else {
+//                            System.out.println("Setting cookies as Remember Me is false");
+//                            Cookie uname = new Cookie("username", null);
+//                            Cookie pass = new Cookie("password", null);
+//                            Cookie rememberme = new Cookie("rememberme", null);
+//                            resp.addCookie(uname);
+//                            resp.addCookie(pass);
+//                            resp.addCookie(rememberme);
+//                            uname.setMaxAge(0);
+//                            pass.setMaxAge(0);
+//                            rememberme.setMaxAge(0);
+//                        }
+
                         lb.setComId(uc.getUserId(Integer.class, lb.getUsername()));
                         System.out.println("----------------------" + lb.getComId() + "----------------------");
                         req.getRequestDispatcher("/userPages/userDashboard.jsf").forward(request, response);
                     } else if (KeepRecord.getRoles().contains("Company")) {
-                        if (lb.isRememberme()) {
-                            Cookie cookie = new Cookie(AUTHORIZATION_HEADER, BEARER + KeepRecord.getToken());
-                            cookie.setPath("/");
-                            System.out.println("Cookie added....");
-                            cookie.setMaxAge(60 * 24 * 24 * 60);
-                            resp.addCookie(cookie);
-                        }
+//                        if (lb.isRememberme()) {
+                        Cookie cookie = new Cookie(AUTHORIZATION_HEADER, BEARER + KeepRecord.getToken());
+                        cookie.setPath("/");
+                        System.out.println("Cookie added....");
+                        cookie.setMaxAge(60 * 24 * 24 * 60);
+                        resp.addCookie(cookie);
+//                        }
                         lb.setComId(cc.getCompanyId(Integer.class, lb.getUsername()));
                         System.out.println("----------------------" + lb.getComId() + "----------------------");
                         req.getRequestDispatcher("/companyPages/companyDashboard.jsf").forward(request, response);
                     } else if (KeepRecord.getRoles().contains("Store")) {
-                        if (lb.isRememberme()) {
-                            Cookie cookie = new Cookie(AUTHORIZATION_HEADER, BEARER + KeepRecord.getToken());
-                            cookie.setPath("/");
-                            System.out.println("Cookie added....");
-                            cookie.setMaxAge(60 * 24 * 24 * 60);
-                            resp.addCookie(cookie);
-                        }
+//                        if (lb.isRememberme()) {
+                        Cookie cookie = new Cookie(AUTHORIZATION_HEADER, BEARER + KeepRecord.getToken());
+                        cookie.setPath("/");
+                        System.out.println("Cookie added....");
+                        cookie.setMaxAge(60 * 24 * 24 * 60);
+                        resp.addCookie(cookie);
+//                        }
 //                        lb.setComId(cc.getCompanyId(Integer.class, lb.getUsername()));
 //                        System.out.println("----------------------"+lb.getComId()+"----------------------");
                         req.getRequestDispatcher("/storePages/storeDashboard.jsf").forward(request, response);
@@ -133,6 +154,23 @@ public class AuthFilter implements Filter {
                 }
             }
         } else {
+//            if (KeepRecord.getRoles() == null) {
+//                Cookie[] cookies1 = req.getCookies();
+//                if (cookies1 != null) {
+//                    for (Cookie cookie : cookies1) {
+//                        if ("username".equals(cookie.getName())) {
+//                            lb.setUsername(cookie.getValue());
+//                        }
+//                        if ("password".equals(cookie.getName())) {
+//                            lb.setPassword(cookie.getValue());
+//                        }
+//                        if ("rememberme".equals(cookie.getName())) {
+//                            lb.setRememberme(Boolean.valueOf(cookie.getValue()));
+//                        }
+//                    }
+//                }
+//                req.getRequestDispatcher("login.jsf").forward(request, response);
+//            }
             if (req.getRequestURI().contains("admin") && KeepRecord.getRoles() != null && !KeepRecord.getRoles().contains("Admin")) {
                 lb.setErrorstatus("User doesn't has the authorization...");
                 req.getRequestDispatcher("login.jsf").forward(request, response);

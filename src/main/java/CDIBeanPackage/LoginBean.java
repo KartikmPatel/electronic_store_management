@@ -12,9 +12,11 @@ import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.security.enterprise.SecurityContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -29,7 +31,19 @@ import javax.ws.rs.core.Response;
 @SessionScoped
 public class LoginBean implements Serializable {
 
-    @Inject SecurityContext sc;
+    @Inject
+    SecurityContext sc;
+
+    boolean checkrem;
+
+    public boolean getCheckrem() {
+        return checkrem;
+    }
+
+    public void setCheckrem(boolean checkrem) {
+        this.checkrem = checkrem;
+    }
+    
     public String getUsername() {
         return username;
     }
@@ -75,7 +89,7 @@ public class LoginBean implements Serializable {
      */
     companyClient rc;
     boolean rememberme;
-    String username,password;
+    String username, password;
     String errorstatus;
     Integer comId;
 
@@ -86,35 +100,57 @@ public class LoginBean implements Serializable {
     public void setComId(Integer comId) {
         this.comId = comId;
     }
-    
-    public String pth1(){
+
+    public String pth1() {
         return rc.path();
     }
-    public String pth2(){
+
+    public String pth2() {
         return rc.path2();
     }
+
     public LoginBean() {
         rc = new companyClient();
+        errorstatus = null;
     }
-    public void login(){
+
+    public void login() {
         FacesContext fc = FacesContext.getCurrentInstance();
-        try{
+        try {
             fc.getExternalContext().redirect("login.jsf");
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    public void logout(){
-        username="";
-        password="";
+
+    public void logout() {
+        username = "";
+        password = "";
         comId = null;
+
+//        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+//        Cookie[] cookies1 = req.getCookies();
+//        if (cookies1 != null) {
+//            for (Cookie cookie : cookies1) {
+//                if ("username".equals(cookie.getName())) {
+//                    username = cookie.getValue();
+//                }
+//                if ("password".equals(cookie.getName())) {
+//                    password = cookie.getValue();
+//                }
+//                if ("rememberme".equals(cookie.getName())) {
+//                    checkrem = Boolean.parseBoolean(cookie.getValue());
+//                }
+//            }
+//        }
+
         KeepRecord.reset();
         KeepRecord.setLogout(true);
         FacesContext fc = FacesContext.getCurrentInstance();
-        try{
+        try {
             fc.getExternalContext().redirect("/electronic_store_management/login.jsf");
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-    }    
+    }
 }

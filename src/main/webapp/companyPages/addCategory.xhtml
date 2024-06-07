@@ -3,40 +3,51 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
         <ui:include src="../companyPages/companyHeader.xhtml" />
-        
+
         <div class="content-wrapper">
             <div class="container">
-            <!--<div class="container-fluid">-->
+                <!--<div class="container-fluid">-->
                 <!--<div class="row">-->
-                    <!-- left column -->
-                    <div class="col-md-8" style="padding-top: 2%;">
-                        <div class="card card-primary">
-                            <div class="card-header" style="background:#17a2b8;">
-                                <h3 class="card-title">Add Category</h3>
-                            </div>
-                            <!-- /.card-header -->
-                            <!-- form start -->
-                            <h:form>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <label for="exampleInputEmail1">Category Name</label>
-                                        <p:inputText class="form-control" id="exampleInputEmail1" value="#{companyCDIBean.cdetail.categoryName}" placeholder="Enter the Category Name" />
-                                    </div>
-                                </div>
-                                <!-- /.card-body -->
-
-                                <div class="card-footer">
-                                    <h:commandButton class="btn btn-primary" action="#{companyCDIBean.addCategory()}" style="background:#17a2b8" value="Add Category"/>
-                                </div>
-                            </h:form>
+                <!-- left column -->
+                <div class="col-md-8" style="padding-top: 2%;">
+                    <div class="card card-primary">
+                        <div class="card-header" style="background:#17a2b8;">
+                            <h3 class="card-title">Add Category</h3>
                         </div>
+                        <span id="catErr"></span>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <h:form>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Category Name</label>
+                                    <p:inputText id="exampleInputEmail1" value="#{companyCDIBean.cdetail.categoryName}" 
+                                                 placeholder="Enter the Category Name" 
+                                                 required="true" 
+                                                 requiredMessage="Category Name is required"
+                                                 label="Category Name"
+                                                 styleClass="form-control">
+                                        <f:validateLength minimum="2" />
+                                    </p:inputText>
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <h:commandButton class="btn btn-primary" action="#{companyCDIBean.addCategory()}" 
+                                                 style="background:#17a2b8" value="Add Category"/>
+                            </div>
+                            <p:messages />
+                        </h:form>
                     </div>
+                </div>
                 <!--</div>-->
             </div>
         </div>

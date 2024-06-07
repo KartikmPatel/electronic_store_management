@@ -69,5 +69,17 @@ public class storeSellingProductEJB {
             return null;
         }
     }
-    
+
+    // display total sale of each product
+    public Collection<Object[]> displayAllSales() {
+        Collection<Object[]> saleProduct = em.createNativeQuery("SELECT p.product_name,c.category_name,cd.company_name,SUM(o.quantity),SUM(o.total_amount) FROM user_order_details o,electronic_store_selling_product s,product_details p,category_details c,company_details cd WHERE o.selling_product_id = s.selling_product_id AND s.product_id = p.product_id AND c.category_id = p.category_id AND cd.company_id = p.company_id AND o.status = 1 GROUP BY o.selling_product_id;").getResultList();
+        return saleProduct;
+    }
+
+    // display total sale of particular product
+    public Collection<Object[]> displayAllSales1(Integer pid) {
+        Collection<Object[]> saleProduct = em.createNativeQuery("SELECT p.product_name,c.category_name,cd.company_name,SUM(o.quantity),SUM(o.total_amount) FROM user_order_details o,electronic_store_selling_product s,product_details p,category_details c,company_details cd WHERE o.selling_product_id = s.selling_product_id AND s.product_id = p.product_id AND c.category_id = p.category_id AND cd.company_id = p.company_id AND o.status = 1 AND o.selling_product_id = ?;").setParameter(1, pid).getResultList();
+        return saleProduct;
+    }
+
 }

@@ -19,7 +19,7 @@ import javax.ws.rs.client.WebTarget;
  *        client.close();
  * </pre>
  *
- * @author Admin
+ * @author Kartik Patel
  */
 public class storeClient {
 
@@ -35,6 +35,12 @@ public class storeClient {
     public <T> T getStoreSellingProductCount(Class<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("getstoresellingproductcount");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T getSaleProductCount(Class<T> responseType) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("getSaleProductCount");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
@@ -73,6 +79,12 @@ public class storeClient {
     public <T> T getAllStock(Class<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("displaystock");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T displayAllSales(Class<T> responseType) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("displayallSales");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
@@ -166,6 +178,12 @@ public class storeClient {
 
     public void cutStoreProductStock(String qty, String prodId) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("cutstoreproductstock/{0}/{1}", new Object[]{qty, prodId})).request().post(null);
+    }
+
+    public <T> T displayAllSales1(Class<T> responseType, String pid) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("displayallSales1/{0}", new Object[]{pid}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public void updateElectronicStore(String name, String email, String contactNo, String password, String storeLogo, String address, String country) throws ClientErrorException {
