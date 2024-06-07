@@ -4,7 +4,6 @@
  */
 package CDIBeanPackage;
 
-import EJBPackage.companyDetailsEJB;
 import EntityPackage.CategoryDetails;
 import EntityPackage.CompanyDetails;
 import EntityPackage.CompanyProductStock;
@@ -16,19 +15,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import java.util.Collection;
-import javax.ejb.EJB;
+import javax.mail.*;
+import javax.mail.internet.*;
+import java.util.Properties;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.activation.DataSource;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import org.primefaces.model.file.UploadedFile;
@@ -223,12 +225,99 @@ public class companyCDIBean {
         return fileName;
     }
 
+    public void sendConfirmationEmail(String companyName, String recipientEmail, String cno, String companyLogoPath, String pass, String country) {
+        final String username = "pnaitik504@gmail.com"; // Your email
+        final String password = "qnpqwcohvtazvehb"; // Your password
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com"); // Assuming you're using Gmail
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props,
+            new javax.mail.Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(username));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
+            message.setSubject("Welcome to " + companyName);
+
+            // HTML content for the email
+            String htmlContent = "<!DOCTYPE html>"
+                    + "<html>"
+                    + "<head>"
+                    + "<style>"
+                    + "body {font-family: Arial, sans-serif;}"
+                    + ".header {background-color: #f2f2f2; padding: 20px; text-align: center;}"
+                    + ".content {padding: 20px;}"
+                    + ".footer {background-color: #f2f2f2; padding: 10px; text-align: center;}"
+                    + "img {max-width: 200px; height: auto;}"
+                    + "</style>"
+                    + "</head>"
+                    + "<body>"
+                    + "<div class='header'>"
+                    + "<img src='cid:companyLogo' alt='Company Logo'/>"
+                    + "</div>"
+                    + "<div class='content'>"
+                    + "<h2>Dear " + recipientEmail + ",</h2>"
+                    + "<p>Welcome to " + companyName + "!</p>"
+                    + "<p>We are thrilled to have you with us. Below are your registration details:</p>"
+                    + "<ul>"
+                    + "<li>Company Name: " + companyName + "</li>"
+                    + "<li>Contact Number: " + cno + "</li>"
+                    + "<li>Password: " + pass + "</li>"
+                    + "<li>Country: " + country + "</li>"
+                    + "</ul>"
+                    + "<p>We look forward to a great journey together.</p>"
+                    + "</div>"
+                    + "<div class='footer'>"
+                    + "<p>Best Regards,</p>"
+                    + "<p>" + companyName + "</p>"
+                    + "</div>"
+                    + "</body>"
+                    + "</html>";
+
+            // Create the message body part
+            MimeBodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setContent(htmlContent, "text/html");
+
+            // Create the image attachment part
+            MimeBodyPart imageAttachment = new MimeBodyPart();
+            DataSource source = new FileDataSource(companyLogoPath);
+            imageAttachment.setDataHandler(new DataHandler(source));
+            imageAttachment.setHeader("Content-ID", "<companyLogo>");
+
+            // Create a multipart message to include both HTML and image
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(messageBodyPart);
+            multipart.addBodyPart(imageAttachment);
+
+            // Set the multipart content to the message
+            message.setContent(multipart);
+
+            Transport.send(message);
+
+            System.out.println("Email sent to " + recipientEmail);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // Register Company
     public String addCompany() {
-        String fileName = uploadImage();
-        cc.addCompany(cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), cd.getPassword(), fileName, cd.getCountry());
+        String logoFileName = uploadImage();
+        cc.addCompany(cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), cd.getPassword(), logoFileName, cd.getCountry());
         ugc.addUser(cd.getEmail(), cd.getPassword());
         ugc.addGroup("Company", cd.getEmail());
+
+        sendConfirmationEmail( cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), "C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + logoFileName, cd.getPassword(), cd.getCountry());
+
         FacesContext context = FacesContext.getCurrentInstance();
         try {
             context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/login.jsf");
