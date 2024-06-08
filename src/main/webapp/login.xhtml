@@ -198,6 +198,76 @@
                 color: #4CAF50;
                 background: #ffffff;
             }
+
+            .card {
+                display: none;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 300px;
+                padding: 20px;
+                background-color: #ffffff;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                text-align: center;
+                z-index: 1000;
+            }
+
+            .card h2 {
+                margin: 0 0 15px 0;
+                font-size: 24px;
+                font-weight: 700;
+                color: #333333;
+            }
+
+            .card form {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .card label {
+                text-align: left;
+            }
+
+            .card input[type="email"] {
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            .card button,
+            .card input[type="submit"] {
+                padding: 10px;
+                border: none;
+                border-radius: 4px;
+                background-color: #4CAF50;
+                color: #ffffff;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+                font-size: 16px;
+                letter-spacing: 1px;
+                text-decoration: none;
+            }
+
+            .card button:hover,
+            .card input[type="submit"]:hover {
+                color: #4CAF50;
+                background: #ffffff;
+                border: 1px solid #4CAF50;
+            }
+
+            .card-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 500;
+            }
         </style>
     </h:head>
     <h:body>
@@ -215,6 +285,8 @@
                     <div class="login-form">
                         <h2>Login</h2>
                         <h:outputLabel style="margin-bottom: 10px;margin-left: -3px;color: red;width: 300px;" value="#{loginBean.errorstatus}"/>
+                        <!-- Display the reset message -->
+                        <h:messages id="resetMsg" style="color: green; margin-top: 10px;"/>
                         <h:form>
                             <p>
                                 <p:inputText type="text" placeholder="Username" value="#{loginBean.username}" />
@@ -231,14 +303,36 @@
                             <p>
                                 <h:commandButton class="btn" style="margin-top: 12px;" action="#{loginBean.login()}" value="Sign In"/>
                             </p>
-                            <p>
-                                <!--<a href="">Forget password?</a>-->
-                                <a href="#{request.contextPath}/userRegister.jsf" style="margin-left: 140px;">Create an account.</a>
+                            <p style="display: flex; justify-content: space-between;">
+                                <a href="#" id="forgetPasswordLink">Forget Password</a>
+                                <a href="#{request.contextPath}/userRegister.jsf">Create an account.</a>
                             </p>
                         </h:form>
                     </div>
                 </div>
             </div>
+            <div class="card-overlay" id="cardOverlay"></div>
+            <div class="card" id="card">
+                <h2>Reset Password</h2>
+                <h:form>
+                    <h:outputLabel value="Email:"></h:outputLabel>
+                    <p:inputText type="text" placeholder="Username" value="#{registerBean.forgEmail}" required="true"/>
+                    <h:commandButton class="btn" action="#{registerBean.forgetPassword()}" value="Submit"/>
+                    <h:messages id="resetMsg" style="color: green; margin-top: 10px;"/>
+                </h:form>
+            </div>
         </div>
+        <script>
+            document.getElementById('forgetPasswordLink').addEventListener('click', function(event) {
+                event.preventDefault();
+                document.getElementById('card').style.display = 'block';
+                document.getElementById('cardOverlay').style.display = 'block';
+            });
+
+            document.getElementById('cardOverlay').addEventListener('click', function() {
+                document.getElementById('card').style.display = 'none';
+                document.getElementById('cardOverlay').style.display = 'none';
+            });
+        </script>
     </h:body>
 </html>

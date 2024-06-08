@@ -32,18 +32,18 @@
                                         <p:inputText class="form-control" placeholder="Enter the User name" value="#{homeCDI.ud.username}"/>
 
                                         <label for="exampleInputEmail">Email</label>
-                                        <p:inputText class="form-control" placeholder="Enter the Email Address" value="#{homeCDI.ud.email}"/>
-
+                                        <p:inputText class="form-control" placeholder="Enter the email" value="#{homeCDI.ud.email}" readonly="true"/>
+                                        
                                         <label for="exampleInputContactNo">Contact No</label>
                                         <p:inputText class="form-control" placeholder="Enter the number" value="#{homeCDI.ud.contactNo}"/>
-
+                                        
+                                        <label for="exampleInputPassword">Password</label>
+                                        <p:inputText class="form-control" placeholder="Enter the password" value="#{homeCDI.ud.password}"/>
+                                        
                                         <label for="exampleInputImage">Profile Pic</label>
                                         <img src="#{request.contextPath}/public/uploads/#{homeCDI.ud.profilePic}" height="55px" width="55px;"/>
                                         <p:fileUpload class="form-control" id="logo" value="#{homeCDI.file}" mode="simple" />
 
-                                        <label for="exampleInputPassword">Password</label>
-                                        <p:inputText class="form-control" placeholder="Enter the password" value="#{homeCDI.ud.password}"/>
-                                        
                                         <label for="exampleInputDate">DOB</label>
                                         <p:calendar id="exampleInputDate" value="#{homeCDI.ud.dob}" placeholder="Enter the DOB" /><br></br>
                                         

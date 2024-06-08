@@ -39,4 +39,10 @@ public class UserGroupResource {
     public void addGroup(@PathParam("groupName") String groupName,@PathParam("email") String email){
         ugobj.addGroup(groupName,email);
     }
+    
+    @POST
+    @Path("changePassword/{email}/{password}")
+    public void changePassword(@PathParam("email") String email,@PathParam("password") String password){
+        ugobj.changePassword(email, password);
+    }
 }

@@ -30,19 +30,19 @@
                                         <h:inputHidden value="#{companyCDIBean.cd.companyLogo}"/>
                                         <label for="exampleInputCompany">Company Name</label>
                                         <p:inputText class="form-control" placeholder="Enter the company name" value="#{companyCDIBean.cd.companyName}"/>
-
+                                        
                                         <label for="exampleInputEmail">Email</label>
-                                        <p:inputText class="form-control" placeholder="Enter the Email Address" value="#{companyCDIBean.cd.email}"/>
+                                        <p:inputText class="form-control" placeholder="Enter the email" value="#{companyCDIBean.cd.email}" readonly="true"/>
 
                                         <label for="exampleInputContactNo">Contact No</label>
                                         <p:inputText class="form-control" placeholder="Enter the number" value="#{companyCDIBean.cd.contactNo}"/>
 
+                                        <label for="exampleInputPassword">Password</label>
+                                        <p:inputText class="form-control" placeholder="Enter the password" value="#{companyCDIBean.cd.password}"/>
+
                                         <label for="exampleInputImage">Logo</label>
                                         <img src="#{request.contextPath}/public/uploads/#{companyCDIBean.cd.companyLogo}" height="55px" width="55px;"/>
                                         <p:fileUpload class="form-control" id="logo" value="#{companyCDIBean.file}" mode="simple" />
-
-                                        <label for="exampleInputPassword">Password</label>
-                                        <p:inputText class="form-control" placeholder="Enter the password" value="#{companyCDIBean.cd.password}"/>
 
                                         <label for="exampleInputCountry">Country</label>
                                         <p:inputText class="form-control" placeholder="Enter the Country" value="#{companyCDIBean.cd.country}" />

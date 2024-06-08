@@ -7,6 +7,7 @@ package CDIBeanStorePackage;
 import EntityPackage.ElectronicStoreDetails;
 import EntityPackage.ProductDetails;
 import RestClientPackage.storeClient;
+import RestClientPackage.userGroupClient;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,6 +38,7 @@ import org.primefaces.model.file.UploadedFile;
 public class electronicProductCDI {
 
     RestClientPackage.storeClient sc;
+    userGroupClient ugc;
     Response rs;
     Collection<ProductDetails> pdetails;
     GenericType<Collection<ProductDetails>> gpdetails;
@@ -55,6 +57,8 @@ public class electronicProductCDI {
 
     public electronicProductCDI() {
         sc = new storeClient();
+        ugc = new userGroupClient();
+        
         pdetails = new ArrayList<>();
         gpdetails = new GenericType<Collection<ProductDetails>>() {
         };
@@ -228,7 +232,8 @@ public class electronicProductCDI {
         } else {
             sc.updateElectronicStore(esd.getStoreName(), esd.getEmail(), String.valueOf(esd.getContactNo()), esd.getPassword(), fileName, esd.getAddress(), esd.getCountry());
         }
-        succesMessage = "Store Successfully Edited";
+        ugc.changePassword(esd.getEmail(), esd.getPassword());
+        succesMessage = "Profile Successfully Edited";
         return "storeDashboard";
     }
 }

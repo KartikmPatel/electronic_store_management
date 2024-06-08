@@ -266,7 +266,7 @@ public class companyCDIBean {
                     + "</div>"
                     + "<div class='content'>"
                     + "<h2>Dear " + recipientEmail + ",</h2>"
-                    + "<p>Welcome to " + companyName + "!</p>"
+                    + "<p>Welcome to Electronic Store Management!</p>"
                     + "<p>We are thrilled to have you with us. Below are your registration details:</p>"
                     + "<ul>"
                     + "<li>Company Name: " + companyName + "</li>"
@@ -407,7 +407,8 @@ public class companyCDIBean {
         } else {
             cc.updateCompany(cd.getCompanyId().toString(), cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), cd.getPassword(), fileName, cd.getCountry());
         }
-        succesMessage = "Company Successfully Edited";
+        ugc.changePassword(cd.getEmail(), cd.getPassword());
+        succesMessage = "Profile Successfully Edited";
         return "companyDashboard";
     }
 
