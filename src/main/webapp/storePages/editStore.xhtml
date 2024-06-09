@@ -31,17 +31,17 @@
                                         <p:inputText class="form-control" placeholder="Enter the store name" value="#{electronicProductCDI.esd.storeName}"/>
 
                                         <label for="exampleInputEmail">Email</label>
-                                        <p:inputText class="form-control" placeholder="Enter the Email Address" value="#{electronicProductCDI.esd.email}"/>
+                                        <p:inputText class="form-control" placeholder="Enter the email" value="#{electronicProductCDI.esd.email}" readonly="true"/>
 
                                         <label for="exampleInputContactNo">Contact No</label>
                                         <p:inputText class="form-control" placeholder="Enter the number" value="#{electronicProductCDI.esd.contactNo}"/>
 
+                                        <label for="exampleInputPassword">Password</label>
+                                        <p:inputText class="form-control" placeholder="Enter the password" value="#{electronicProductCDI.esd.password}"/>
+                                        
                                         <label for="exampleInputImage">Logo</label>
                                         <img src="#{request.contextPath}/public/uploads/#{electronicProductCDI.esd.storeLogo}" height="55px" width="55px;"/>
                                         <p:fileUpload class="form-control" id="logo" value="#{electronicProductCDI.file}" mode="simple" />
-
-                                        <label for="exampleInputPassword">Password</label>
-                                        <p:inputText class="form-control" placeholder="Enter the password" value="#{electronicProductCDI.esd.password}"/>
 
                                         <label for="exampleInputAddress">Address</label>
                                         <p:inputText class="form-control" placeholder="Enter the Address" value="#{electronicProductCDI.esd.address}" />

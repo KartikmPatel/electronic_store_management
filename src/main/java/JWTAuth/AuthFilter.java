@@ -171,22 +171,20 @@ public class AuthFilter implements Filter {
 //                }
 //                req.getRequestDispatcher("login.jsf").forward(request, response);
 //            }
-            if (req.getRequestURI().contains("admin") && KeepRecord.getRoles() != null && !KeepRecord.getRoles().contains("Admin")) {
+
+            if (req.getRequestURI().contains("admin") && !KeepRecord.getRoles().contains("Admin")) {
                 lb.setErrorstatus("User doesn't has the authorization...");
                 req.getRequestDispatcher("login.jsf").forward(request, response);
             }
-            if (req.getRequestURI().contains("userPages/userDashboard") && KeepRecord.getRoles() != null && !KeepRecord.getRoles().contains("User")) {
-                lb.setErrorstatus("User doesn't has the authorization...");
-                req.getRequestDispatcher("login.jsf").forward(request, response);
+            
+            if ((req.getRequestURI().contains("userPages") && (KeepRecord.getRoles() == null || !KeepRecord.getRoles().contains("User"))) ||
+                (req.getRequestURI().contains("companyPages") && (KeepRecord.getRoles() == null || !KeepRecord.getRoles().contains("Company"))) ||
+                (req.getRequestURI().contains("storePages") && (KeepRecord.getRoles() == null || !KeepRecord.getRoles().contains("Store")))) {
+                lb.setErrorstatus("User doesn't have the authorization...");
+                req.getRequestDispatcher("../login.jsf").forward(request, response);
             }
-            if (req.getRequestURI().contains("companyPages/companyDashboard") && KeepRecord.getRoles() != null && !KeepRecord.getRoles().contains("Company")) {
-                lb.setErrorstatus("User doesn't has the authorization...");
-                req.getRequestDispatcher("login.jsf").forward(request, response);
-            }
-            if (req.getRequestURI().contains("storePages/storeDashboard") && KeepRecord.getRoles() != null && !KeepRecord.getRoles().contains("Store")) {
-                lb.setErrorstatus("User doesn't has the authorization...");
-                req.getRequestDispatcher("login.jsf").forward(request, response);
-            }
+
+
             String str = req.getRequestURI();
             if (req.getRequestURI().equals("/electronic_store_management/")) {
                 sctx.authenticate(req, resp, null);
