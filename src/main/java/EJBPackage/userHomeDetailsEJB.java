@@ -64,11 +64,23 @@ public class userHomeDetailsEJB {
     }
 
     // increase the quantity and update the cart
-    public void increaseQuantity(Integer cartId) {
-        UserCartDetails uc = (UserCartDetails) em.find(UserCartDetails.class, cartId);
-        Integer totalQty = uc.getQuantity() + 1;
-        uc.setQuantity(totalQty);
-        em.merge(uc);
+    public Integer increaseQuantity(Integer cartId, Integer productId, Integer qty) {
+        ProductDetails pd = (ProductDetails) em.find(ProductDetails.class, productId);
+        ElectronicStoreProductStock productStock = (ElectronicStoreProductStock) em.createQuery("SELECT e FROM ElectronicStoreProductStock e WHERE e.productId = :productId", ElectronicStoreProductStock.class).setParameter("productId", pd).getSingleResult();
+
+        if (productStock != null) {
+            if (qty > productStock.getQuantity()) {
+                return 0; // Indicates stock is not available
+            } else {
+                UserCartDetails uc = (UserCartDetails) em.find(UserCartDetails.class, cartId);
+                Integer totalQty = uc.getQuantity() + 1;
+                uc.setQuantity(totalQty);
+                em.merge(uc);
+                return 1; // Indicates successful update
+            }
+        } else {
+            return 0; // Indicates product not found
+        }
     }
 
     // decrese the quantity and update the cart
@@ -80,17 +92,16 @@ public class userHomeDetailsEJB {
     }
 
     // get Electronic Stock for checking
-    public Integer getStoreStock(Integer prodId) {
-        ProductDetails pd = (ProductDetails) em.find(ProductDetails.class, prodId);
-        ElectronicStoreProductStock productStock = (ElectronicStoreProductStock) em.createQuery("SELECT e FROM ElectronicStoreProductStock e WHERE e.productId = :productId", ElectronicStoreProductStock.class).setParameter("productId", pd).getSingleResult();
-
-        if (productStock != null) {
-            return productStock.getQuantity();
-        } else {
-            return 0;
-        }
-    }
-
+//    public Integer getStoreStock(Integer prodId) {
+//        ProductDetails pd = (ProductDetails) em.find(ProductDetails.class, prodId);
+//        ElectronicStoreProductStock productStock = (ElectronicStoreProductStock) em.createQuery("SELECT e FROM ElectronicStoreProductStock e WHERE e.productId = :productId", ElectronicStoreProductStock.class).setParameter("productId", pd).getSingleResult();
+//
+//        if (productStock != null) {
+//            return productStock.getQuantity();
+//        } else {
+//            return 0;
+//        }
+//    }
     // count the products in cart
     public Integer getCartCount(Integer userId) {
         UserDetails ud = (UserDetails) em.find(UserDetails.class, userId);
@@ -105,9 +116,9 @@ public class userHomeDetailsEJB {
         UserCartDetails ud = (UserCartDetails) em.find(UserCartDetails.class, cartId);
         em.remove(ud);
     }
-    
+
     // displat all festival offers
-    public Collection<ElectronicStoreFestival> getAllFestivalOffers(){
+    public Collection<ElectronicStoreFestival> getAllFestivalOffers() {
         return em.createNamedQuery("ElectronicStoreFestival.findAll").getResultList();
     }
 }

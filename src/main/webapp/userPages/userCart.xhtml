@@ -16,14 +16,10 @@
         <!--Cart Section-->
         <section class="mt-5">
             <div class="container">
-                <c:if test="${not empty homeCDI.errormessage}">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-bottom: 10px;">
-                        ${msgs.stockError}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </c:if>
+                <div class="alert alert-danger alert-dismissible fade show" id="qtyError" role="alert" style="margin-bottom: 10px;display: none">
+
+                </div>
+
                 <div class="cart">
                     <div class="table-responsive">
                         <table class="table">
@@ -58,46 +54,39 @@
                                             <c:set var="festivalDiscountApplied" value="false" />
                                             <c:forEach items="${homeCDI.storeFestivals}" var="f">
                                                 <c:if test="${f.festivalDate == homeCDI.currentDate}">
-                                                    <h6>#{cart.sellingProductId.price - (cart.sellingProductId.price * f.festivalDiscount + cart.sellingProductId.productId.discount)/100}</h6>
+                                                    <h6 id="prodPrice-#{cart.cartId}">#{cart.sellingProductId.price - (cart.sellingProductId.price * f.festivalDiscount + cart.sellingProductId.productId.discount)/100}</h6>
                                                     <c:set var="festivalDiscountApplied" value="true" />
                                                 </c:if>
                                             </c:forEach>
-
                                             <c:if test="${!festivalDiscountApplied}">
-                                                <h6>#{cart.sellingProductId.price - (cart.sellingProductId.price * cart.sellingProductId.productId.discount)/100}</h6>
+                                                <h6 id="prodPrice-#{cart.cartId}">#{cart.sellingProductId.price - (cart.sellingProductId.price * cart.sellingProductId.productId.discount)/100}</h6>
                                             </c:if>
                                         </td>
 
                                         <td>
                                             <div class="counter">
-                                                <h:form>
-                                                    <h:commandButton value="-" styleClass="p-button-rounded p-button-secondary p-button-sm" class="btn btn-light" style="text-align: center;width: 40px;height: 40px;font-weight: bold;font-size: 22px;" action="#{homeCDI.decreaseQty(cart.cartId,cart.quantity,cart.sellingProductId.productId.productId)}"/>
-                                                </h:form>
-                                                <h:inputText class="input-number" value="#{cart.quantity}" id="qty" readonly="true"/>
-                                                <h:form>
-                                                    <h:commandButton value="+" styleClass="p-button-rounded p-button-secondary p-button-sm" class="btn btn-light" style="width: 40px;height: 40px;font-weight: bold;font-size: 20px;" action="#{homeCDI.increseQty(cart.cartId,cart.quantity,cart.sellingProductId.productId.productId)}"/>
-                                                </h:form>
+                                                <h:commandButton value="-" id="des" onclick="desFunction(#{cart.cartId})" styleClass="p-button-rounded p-button-secondary p-button-sm" class="btn btn-light" style="text-align: center;width: 40px;height: 40px;font-weight: bold;font-size: 22px;" />
+                                                <h:inputText class="input-number" value="#{cart.quantity}" id="quantity-#{cart.cartId}" readonly="true" />
+                                                <h:commandButton value="+" id="inc" onclick="incFunction(#{cart.cartId}, #{cart.sellingProductId.productId.productId})" styleClass="p-button-rounded p-button-secondary p-button-sm" class="btn btn-light" style="width: 40px;height: 40px;font-weight: bold;font-size: 20px;" />
                                             </div>
                                         </td>
 
                                         <td>
                                             <c:forEach items="${homeCDI.storeFestivals}" var="f">
                                                 <c:if test="${f.festivalDate == homeCDI.currentDate}">
-                                                    <h6>#{cart.quantity * (cart.sellingProductId.price - (cart.sellingProductId.price * f.festivalDiscount + cart.sellingProductId.productId.discount)/100)}</h6>
+                                                    <h6 id="totalProdPrice-#{cart.cartId}">#{cart.quantity * (cart.sellingProductId.price - (cart.sellingProductId.price * f.festivalDiscount + cart.sellingProductId.productId.discount)/100)}</h6>
                                                     <c:set var="festivalDiscountApplied" value="true" />
                                                 </c:if>
                                             </c:forEach>
-
                                             <c:if test="${!festivalDiscountApplied}">
-                                                <h6>#{cart.quantity * (cart.sellingProductId.price - (cart.sellingProductId.price * cart.sellingProductId.productId.discount)/100)}</h6>
+                                                <h6 id="totalProdPrice-#{cart.cartId}">#{cart.quantity * (cart.sellingProductId.price - (cart.sellingProductId.price * cart.sellingProductId.productId.discount)/100)}</h6>
                                             </c:if>
                                         </td>
 
                                         <td>
-                                            <h:form>
-                                                <h:commandButton class="btn btn-danger" value="${msgs.remove}" action="#{homeCDI.removeCartItem(cart.cartId)}">
-                                                </h:commandButton>
-                                            </h:form>
+                                            <!--<h:form>-->
+                                                <h:commandButton class="btn btn-danger" value="${msgs.remove}" onclick="removeItem(#{cart.cartId})" />
+                                            <!--</h:form>-->
                                         </td>
                                     </tr>
                                 </tbody>
@@ -120,5 +109,93 @@
             </div>
         </div>
 
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript">
+                                                    function desFunction(cartId) {
+                                                        console.log(cartId);
+                                                        var quantityInput = $('#quantity-' + cartId);
+                                                        var priceElement = $('#prodPrice-' + cartId);
+                                                        var totalPriceElement = $('#totalProdPrice-' + cartId);
+                                                        var currentQuantity = parseInt(quantityInput.val(), 10);
+                                                        var pricePerUnit = parseFloat(priceElement.text()); // get the unit price from the element text
+
+                                                        if (currentQuantity > 1) {
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                url: "#{request.contextPath}/resources/user/updatedecqty/" + cartId,
+                                                                success: function (response) {
+                                                                    var q1 = currentQuantity - 1;
+                                                                    quantityInput.val(q1);
+                                                                    var updatedTotalPrice = q1 * pricePerUnit;
+                                                                    totalPriceElement.text(updatedTotalPrice.toFixed(2)); // update the total price display
+
+                                                                    // Optionally, update total amount if returned in response
+                                                                    // let totalAmount = response.totalAmount;
+                                                                    // $('#total-amount').text(totalAmount);
+                                                                },
+                                                                error: function (xhr, status, error) {
+                                                                    console.error("AJAX Error: " + status + error);
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+
+                                                    function incFunction(cartId, prodId) {
+                                                        console.log(cartId);
+                                                        console.log(prodId);
+                                                        var quantityInput = $('#quantity-' + cartId);
+                                                        var priceElement = $('#prodPrice-' + cartId);
+                                                        var totalPriceElement = $('#totalProdPrice-' + cartId);
+                                                        var pricePerUnit = parseFloat(priceElement.text()); // get the unit price from the element text
+
+                                                        // Get the current quantity directly from the input field
+                                                        var currentQuantity = parseInt(quantityInput.val(), 10);
+
+                                                        // Increment the current quantity before making the Ajax request
+                                                        var newQuantity = currentQuantity + 1;
+
+                                                        $.ajax({
+                                                            type: "POST",
+                                                            url: "#{request.contextPath}/resources/user/updateincqty/" + cartId + "/" + prodId + "/" + newQuantity,
+                                                            success: function (response) {
+                                                                if (response == 0) {
+                                                                    $('#qtyError').text("${msgs.stockError}").show();
+                                                                    setTimeout(function () {
+                                                                        $('#qtyError').fadeOut();
+                                                                    }, 2000);
+                                                                } else {
+                                                                    // Update the quantity input with the incremented value
+                                                                    quantityInput.val(newQuantity);
+
+                                                                    // Calculate and update the total price display
+                                                                    var updatedTotalPrice = newQuantity * pricePerUnit;
+                                                                    totalPriceElement.text(updatedTotalPrice.toFixed(2));
+                                                                }
+                                                            },
+                                                            error: function (xhr, status, error) {
+                                                                console.error("AJAX Error: " + status + error);
+                                                                alert('Error occurred while updating quantity');
+                                                            }
+                                                        });
+                                                    }
+
+                                                    function removeItem(cartId) {
+                                                        console.log(cartId);
+
+                                                        $.ajax({
+                                                            type: "DELETE",
+                                                            url: "#{request.contextPath}/resources/user/removecartitem/" + cartId,
+                                                            success: function (response) {
+                                                                // Redirect to a different page after the item is removed successfully
+                                                                window.location.href = "#{request.contextPath}/userPages/userCart.jsf";
+                                                            },
+                                                            error: function (xhr, status, error) {
+                                                                console.error("AJAX Error: " + status + error);
+                                                                alert('Error occurred while updating quantity');
+                                                            }
+                                                        });
+                                                    }
+
+        </script>
     </h:body>
 </html>

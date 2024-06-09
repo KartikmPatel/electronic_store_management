@@ -271,27 +271,27 @@ public class homeCDI {
         this.cartCount = cartCount;
     }
 
-    public void decreaseQty(Integer cid, Integer qty, Integer pid) {
-        if (qty > 1) {
-            uc.decreaseQuantity(String.valueOf(cid));
-        }
-    }
+//    public void decreaseQty(Integer cid, Integer qty, Integer pid) {
+//        if (qty > 1) {
+//            uc.decreaseQuantity(String.valueOf(cid));
+//        }
+//    }
 
-    public void increseQty(Integer cid, Integer qty, Integer pid) {
-        rs = uc.getStoreStock(Response.class, String.valueOf(pid));
-        Integer stock = rs.readEntity(Integer.class);
-        if (qty >= stock) {
-            errormessage = "Above this quantity is not available";
-        } else {
-            uc.increaseQuantity(String.valueOf(cid));
-        }
-    }
+//    public void increseQty(Integer cid, Integer qty, Integer pid) {
+//        rs = uc.getStoreStock(Response.class, String.valueOf(pid));
+//        Integer stock = rs.readEntity(Integer.class);
+//        if (qty >= stock) {
+//            errormessage = "Above this quantity is not available";
+//        } else {
+//            uc.increaseQuantity(String.valueOf(cid));
+//        }
+//    }
 
     // remove cart item
-    public String removeCartItem(Integer cartId) {
-        uc.removeCartItem(String.valueOf(cartId));
-        return "userCart";
-    }
+//    public String removeCartItem(Integer cartId) {
+//        uc.removeCartItem(String.valueOf(cartId));
+//        return "userCart";
+//    }
 
     // add user order
     public String addUserOrder() throws IOException {

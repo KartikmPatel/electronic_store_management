@@ -10,7 +10,7 @@
     </h:head>
     <h:body>
         <ui:include src="../companyPages/companyHeader.xhtml" />
-
+        <script type="text/javascript" src="#{request.contextPath}/public/js/captcha.js"/>
         <div class="content-wrapper">
             <div class="container">
                 <!--<div class="container-fluid">-->
@@ -24,25 +24,18 @@
                         <span id="catErr"></span>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <h:form>
+                        <h:form onsubmit="return validateCategoryForm();">
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Category Name</label>
-                                    <p:inputText id="exampleInputEmail1" value="#{companyCDIBean.cdetail.categoryName}" 
-                                                 placeholder="Enter the Category Name" 
-                                                 required="true" 
-                                                 requiredMessage="Category Name is required"
-                                                 label="Category Name"
-                                                 styleClass="form-control">
-                                        <f:validateLength minimum="2" />
-                                    </p:inputText>
+                                    <p:inputText id="catname" value="#{companyCDIBean.cdetail.categoryName}"/>
                                 </div>
                             </div>
                             <!-- /.card-body -->
 
                             <div class="card-footer">
                                 <h:commandButton class="btn btn-primary" action="#{companyCDIBean.addCategory()}" 
-                                                 style="background:#17a2b8" value="Add Category"/>
+                                                 style="background:#17a2b8" value="Add Category" onclick="validateCategoryForm()"/>
                             </div>
                             <p:messages />
                         </h:form>

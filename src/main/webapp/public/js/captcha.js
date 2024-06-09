@@ -80,3 +80,17 @@
 //    };
 //    xhr.send("cartId=" + cartId + "&quantity=" + quantity + "&productId=" + productId);
 //}
+
+function validateCategoryForm() {
+    var categoryName = document.getElementById("catname").value;
+    var errorMsg = document.getElementById("catErr");
+
+    if (categoryName.trim().length < 2) {
+        errorMsg.innerHTML = "Category Name must be at least 2 characters long.";
+        errorMsg.style.color = "red";
+        return false;
+    }
+
+    errorMsg.innerHTML = "";
+    return true;
+}

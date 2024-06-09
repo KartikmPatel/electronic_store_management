@@ -45,7 +45,8 @@ public class UserResource {
     EJBPackage.userHomeDetailsEJB userHomeObj;
     @EJB
     EJBPackage.userDetailsEJB userDetailObj;
-    @EJB EJBPackage.userOrderDetailsEJB userOrderObj;
+    @EJB
+    EJBPackage.userOrderDetailsEJB userOrderObj;
 
     // add feedback
     @POST
@@ -90,21 +91,20 @@ public class UserResource {
             e.printStackTrace();
         }
     }
-    
+
     @GET
     @Path("getuserbyid/{user_id}")
     @RolesAllowed("User")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public UserDetails getUserById(@PathParam("user_id") Integer user_id)
-    {
+    public UserDetails getUserById(@PathParam("user_id") Integer user_id) {
         return userDetailObj.getDataByIdForUpdate(user_id);
     }
-    
+
     @POST
     @Path("updateUserDetail/{id}/{name}/{email}/{cno}/{pass}/{dob}/{gender}/{pic}/{address}/{country}")
     @RolesAllowed("User")
-    public void updateUserDetails(@PathParam("id") Integer id, @PathParam("name") String name, @PathParam("email") String email, @PathParam("cno") Integer cno, @PathParam("pass") String pass, @PathParam("dob") String dob, @PathParam("gender") String gender, @PathParam("pic") String pic, @PathParam("address") String address, @PathParam("country") String country){
+    public void updateUserDetails(@PathParam("id") Integer id, @PathParam("name") String name, @PathParam("email") String email, @PathParam("cno") Integer cno, @PathParam("pass") String pass, @PathParam("dob") String dob, @PathParam("gender") String gender, @PathParam("pic") String pic, @PathParam("address") String address, @PathParam("country") String country) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date mdate = sdf.parse(dob);
@@ -138,56 +138,53 @@ public class UserResource {
         return userHomeObj.getAllCartDetails(userid);
     }
 
-    // update the quantity
+    // REST endpoint to update the quantity
     @POST
-    @Path("updateincqty/{cartId}")
+    @Path("updateincqty/{cartId}/{prodId}/{qty}")
     @RolesAllowed("User")
-    public void increaseQuantity(@PathParam("cartId") Integer cartId) {
-        userHomeObj.increaseQuantity(cartId);
+    public Integer updateQuantity(@PathParam("cartId") Integer cartId, @PathParam("prodId") Integer prodId, @PathParam("qty") Integer qty) {
+        return userHomeObj.increaseQuantity(cartId, prodId, qty);
     }
 
     // update the quantity
     @POST
     @Path("updatedecqty/{cartId}")
     @RolesAllowed("User")
+    @Produces(MediaType.APPLICATION_JSON)
     public void decreaseQuantity(@PathParam("cartId") Integer cartId) {
         userHomeObj.decreaseQuantity(cartId);
     }
 
     // get the store stock for checking
-    @GET
-    @Path("getstorequantity/{prodId}")
-    @RolesAllowed("User")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Integer getStoreStock(@PathParam("prodId") Integer prodId) {
-        return userHomeObj.getStoreStock(prodId);
-    }
-
+//    @GET
+//    @Path("getstorequantity/{prodId}")
+//    @RolesAllowed("User")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Integer getStoreStock(@PathParam("prodId") Integer prodId) {
+//        return userHomeObj.getStoreStock(prodId);
+//    }
     // get Cart Count
     @GET
     @Path("getcartcount/{cartId}")
     @RolesAllowed("User")
     @Produces(MediaType.APPLICATION_JSON)
-    public Integer getCartCount(@PathParam("cartId") Integer cartId)
-    {
+    public Integer getCartCount(@PathParam("cartId") Integer cartId) {
         return userHomeObj.getCartCount(cartId);
     }
-    
+
     // remove cart item
     @DELETE
     @Path("removecartitem/{cartId}")
     @RolesAllowed("User")
-    public void removeCartItem(@PathParam("cartId") Integer cartId)
-    {
+    public void removeCartItem(@PathParam("cartId") Integer cartId) {
         userHomeObj.removeCartItem(cartId);
     }
-    
+
     // add the user order
     @POST
     @Path("adduserorder/{qty}/{tamt}/{odate}/{selprodid}/{userid}")
     @RolesAllowed("User")
-    public void addUserOrder(@PathParam("qty") Integer qty,@PathParam("tamt") Integer tamt,@PathParam("odate") String odate,@PathParam("selprodid") Integer selprodid,@PathParam("userid") Integer userid)
-    {
+    public void addUserOrder(@PathParam("qty") Integer qty, @PathParam("tamt") Integer tamt, @PathParam("odate") String odate, @PathParam("selprodid") Integer selprodid, @PathParam("userid") Integer userid) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date odate1 = sdf.parse(odate);
@@ -196,33 +193,30 @@ public class UserResource {
             e.printStackTrace();
         }
     }
-    
+
     // remove all the cart items of particular user
     @DELETE
     @Path("removeallcartitems/{userId}")
     @RolesAllowed("User")
-    public void removeAllCartItems(@PathParam("userId") Integer userId)
-    {
+    public void removeAllCartItems(@PathParam("userId") Integer userId) {
         userOrderObj.removeAllCartItems(userId);
     }
-    
+
     // get user order of particular user
     @GET
     @Path("getuserorder/{userId}")
     @RolesAllowed("User")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<UserOrderDetails> getUserOrder(@PathParam("userId") Integer userId)
-    {
+    public Collection<UserOrderDetails> getUserOrder(@PathParam("userId") Integer userId) {
         return userOrderObj.getUserOrder(userId);
     }
-    
+
     // get all festival offers
     @GET
     @Path("getallfestivaloffers")
     @RolesAllowed("User")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<ElectronicStoreFestival> getAllFestivalOffers()
-    {
+    public Collection<ElectronicStoreFestival> getAllFestivalOffers() {
         return userHomeObj.getAllFestivalOffers();
     }
 }

@@ -18,7 +18,7 @@ import javax.ws.rs.client.WebTarget;
  *        client.close();
  * </pre>
  *
- * @author Admin
+ * @author Kartik Patel
  */
 public class userClient {
 
@@ -29,12 +29,6 @@ public class userClient {
     public userClient() {
         client = javax.ws.rs.client.ClientBuilder.newClient();
         webTarget = client.target(BASE_URI).path("user");
-    }
-
-    public <T> T getStoreStock(Class<T> responseType, String prodId) throws ClientErrorException {
-        WebTarget resource = webTarget;
-        resource = resource.path(java.text.MessageFormat.format("getstorequantity/{0}", new Object[]{prodId}));
-        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
     public void addUserOrder(String qty, String tamt, String odate, String selprodid, String userid) throws ClientErrorException {
@@ -91,6 +85,10 @@ public class userClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
+    public <T> T updateQuantity(Class<T> responseType, String cartId, String prodId, String qty) throws ClientErrorException {
+        return webTarget.path(java.text.MessageFormat.format("updateincqty/{0}/{1}/{2}", new Object[]{cartId, prodId, qty})).request().post(null, responseType);
+    }
+
     public <T> T getAllSellingProducts(Class<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("getallsellingproducts");
@@ -105,10 +103,6 @@ public class userClient {
         WebTarget resource = webTarget;
         resource = resource.path("displayallfeedback");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
-    }
-
-    public void increaseQuantity(String cartId) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("updateincqty/{0}", new Object[]{cartId})).request().post(null);
     }
 
     public <T> T getUserId(Class<T> responseType, String email) throws ClientErrorException {
