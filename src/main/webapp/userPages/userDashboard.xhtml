@@ -12,7 +12,6 @@
         <style>
             .festival-banner {
                 width: 100%;
-                /*background-color: #93F6CC;*/
                 background-color: #F1D477;
                 color: #333;
                 text-align: center;
@@ -42,6 +41,18 @@
                 flex: 1;
                 text-align: center;
             }
+
+            .dropdown-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 15px;
+                padding-top: 1%;
+            }
+
+            .full-width-dropdown {
+                width: 92%;
+            }
         </style>
     </h:head>
     <h:body>
@@ -67,22 +78,32 @@
                 </c:when>
             </c:choose>
 
-            <div class="product-container">
-                <!-- Festival Offer Banner -->
-                <c:forEach items="${homeCDI.storeFestivals}" var="f">
-                    <c:if test="${f.festivalDate == homeCDI.currentDate}">
-                        <div class="festival-banner" style="margin-top: 10px;">
-                            <div class="festival-banner-content">
-                                <img src="#{request.contextPath}/public/uploads/festivalgift1.png" alt="Gift" id="gift1" class="banner-gift"/>
-                                <h2 class="festival-banner-text">
-                                    Special Offer for #{f.festivalName}! Enjoy up to #{f.festivalDiscount}% discount on all products!
-                                </h2>
-                                <img src="#{request.contextPath}/public/uploads/festivalgift1.png" alt="Gift" id="gift1" class="banner-gift"/>
-                            </div>
+            <!-- Festival Offer Banner -->
+            <c:forEach items="${homeCDI.storeFestivals}" var="f">
+                <c:if test="${f.festivalDate == homeCDI.currentDate}">
+                    <div class="festival-banner" style="margin-top: 10px;">
+                        <div class="festival-banner-content">
+                            <img src="#{request.contextPath}/public/uploads/festivalgift1.png" alt="Gift" id="gift1" class="banner-gift"/>
+                            <h2 class="festival-banner-text">
+                                Special Offer for #{f.festivalName}! Enjoy up to #{f.festivalDiscount}% discount on all products!
+                            </h2>
+                            <img src="#{request.contextPath}/public/uploads/festivalgift1.png" alt="Gift" id="gift1" class="banner-gift"/>
                         </div>
-                    </c:if>
-                </c:forEach>
+                    </div>
+                </c:if>
+            </c:forEach>
 
+            <!-- Dropdown Form -->
+            <div class="dropdown-container">
+                <h:form class="full-width-dropdown">
+                    <p:selectOneMenu value="#{homeCDI.prodId}" styleClass="full-width-dropdown" onchange="submit()">
+                        <f:selectItem itemLabel="-- Select The Product Name --" />
+                        <f:selectItems value="#{homeCDI.productDetailses}" var="p" itemLabel="#{p.productName}" itemValue="#{p.productId}"/>
+                    </p:selectOneMenu>
+                </h:form>
+            </div>
+
+            <div class="product-container">
                 <c:forEach items="#{homeCDI.sellingProducts}" var="s">
                     <div class="product-card">
                         <img src="#{request.contextPath}/public/uploads/#{s.productId.productImage}" alt="Product Name" height="200px;" width="100%"/>
@@ -120,8 +141,10 @@
 
                         </div>
                         <h:form>
+                            <h:inputHidden value="#{homeCDI.sellingProdId}" />
                             <h:commandButton class="add-to-cart-button" action="#{homeCDI.addCartDetails(s.sellingProductId)}" value="#{msgs.addtocart}" />
                         </h:form>
+
                     </div>
                 </c:forEach>
 

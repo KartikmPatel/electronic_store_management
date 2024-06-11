@@ -6,6 +6,7 @@ package com.mycompany.electronic_store_management.resources;
 
 import EntityPackage.ElectronicStoreFestival;
 import EntityPackage.ElectronicStoreSellingProduct;
+import EntityPackage.ProductDetails;
 import EntityPackage.UserCartDetails;
 import EntityPackage.UserDetails;
 import EntityPackage.UserFeedback;
@@ -140,19 +141,20 @@ public class UserResource {
 
     // REST endpoint to update the quantity
     @POST
-    @Path("updateincqty/{cartId}/{prodId}/{qty}")
+    @Path("updateincqty/{cartId}/{prodId}/{qty}/{userId}")
     @RolesAllowed("User")
-    public Integer updateQuantity(@PathParam("cartId") Integer cartId, @PathParam("prodId") Integer prodId, @PathParam("qty") Integer qty) {
-        return userHomeObj.increaseQuantity(cartId, prodId, qty);
+    @Produces(MediaType.APPLICATION_JSON)
+    public Integer updateQuantity(@PathParam("cartId") Integer cartId, @PathParam("prodId") Integer prodId, @PathParam("qty") Integer qty,@PathParam("userId") Integer userId) {
+        return userHomeObj.increaseQuantity(cartId, prodId, qty,userId);
     }
 
     // update the quantity
     @POST
-    @Path("updatedecqty/{cartId}")
+    @Path("updatedecqty/{cartId}/{userId}")
     @RolesAllowed("User")
     @Produces(MediaType.APPLICATION_JSON)
-    public void decreaseQuantity(@PathParam("cartId") Integer cartId) {
-        userHomeObj.decreaseQuantity(cartId);
+    public Integer decreaseQuantity(@PathParam("cartId") Integer cartId,@PathParam("userId") Integer userId) {
+        return userHomeObj.decreaseQuantity(cartId,userId);
     }
 
     // get the store stock for checking
@@ -218,5 +220,23 @@ public class UserResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<ElectronicStoreFestival> getAllFestivalOffers() {
         return userHomeObj.getAllFestivalOffers();
+    }
+
+    // searching the product and display to the user
+    @GET
+    @Path("getsearchsellingproducts/{prodId}")
+    @RolesAllowed("User")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<ElectronicStoreSellingProduct> getSearchSellingProducts(@PathParam("prodId") Integer prodId) {
+        return userHomeObj.getSearchSellingProducts(prodId);
+    }
+
+    // get All product for load products into the drop down
+    @GET
+    @Path("gelallproductforuser")
+    @RolesAllowed("User")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<ProductDetails> getAllProductForUser() {
+        return userHomeObj.getAllProductForUser();
     }
 }

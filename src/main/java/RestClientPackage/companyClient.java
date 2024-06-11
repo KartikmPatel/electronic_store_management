@@ -18,7 +18,7 @@ import javax.ws.rs.client.WebTarget;
  *        client.close();
  * </pre>
  *
- * @author Admin
+ * @author Kartik Patel
  */
 public class companyClient {
 
@@ -191,6 +191,10 @@ public class companyClient {
 
     public void minusCompanyProductStock(String qty, String prodid) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("minuscompanyproductstock/{0}/{1}", new Object[]{qty, prodid})).request().post(null);
+    }
+
+    public void editComapnyProductStock(String prodid, String qty) throws ClientErrorException {
+        webTarget.path(java.text.MessageFormat.format("editcompanyproductstock/{0}/{1}", new Object[]{prodid, qty})).request().post(null);
     }
 
     public <T> T getCategoryCount(Class<T> responseType, String comid) throws ClientErrorException {

@@ -372,4 +372,14 @@ public class ElectronicStoreResource {
     public Integer getSaleProductCount() {
         return stoobj.getSaleProductCount();
     }
+    
+    // get multiply quantity and price
+    @GET
+    @Path("calculatetotalprice/{qty}/{price}")
+    @RolesAllowed("Store")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Integer calculateTotalPrice(@PathParam("qty") Integer qty,@PathParam("price") Integer price)
+    {
+        return stoobj.calculateTotalPrice(qty, price);
+    }
 }

@@ -43,7 +43,7 @@ public class electronicStoreDetailsEJB {
     }
 
     public ElectronicStoreDetails getDataByIdForUpdate() {
-        return em.createNamedQuery("ElectronicStoreDetails.findByStoreId",ElectronicStoreDetails.class).setParameter("storeId", 1).getSingleResult();
+        return em.createNamedQuery("ElectronicStoreDetails.findByStoreId", ElectronicStoreDetails.class).setParameter("storeId", 1).getSingleResult();
     }
 
     public void updateElectronicStoreDetails(String storeName, String email, Integer contactNo, String password, String storeLogo, String address, String country) {
@@ -107,60 +107,67 @@ public class electronicStoreDetailsEJB {
         Collection<ElectronicStoreOrder> orders = em.createNamedQuery("ElectronicStoreOrder.findAll").getResultList();
         return orders;
     }
-    
+
     // get count of store order for Store dashboard
     public Integer getEleStoreOrderCount() {
         Long count = (Long) em.createQuery("SELECT COUNT(e.storeOrderId) FROM ElectronicStoreOrder e")
                 .getSingleResult();
         return count.intValue();
     }
-    
+
     // get count of store product stock for store dashboard
     public Integer getStoreStockCount() {
         Long count = (Long) em.createQuery("SELECT COUNT(e.storeStockId) FROM ElectronicStoreProductStock e")
                 .getSingleResult();
         return count.intValue();
     }
-    
+
     // get count of Electronic Products for store dashboard
     public Integer getElectronicProductCount() {
         Long count = (Long) em.createQuery("SELECT COUNT(e.productId) FROM ProductDetails e")
                 .getSingleResult();
         return count.intValue();
     }
-    
+
     // get count of Selling Product for Store dashboard
     public Integer getStoreSellingProductCount() {
         Long count = (Long) em.createQuery("SELECT COUNT(e.sellingProductId) FROM ElectronicStoreSellingProduct e")
                 .getSingleResult();
         return count.intValue();
     }
-    
+
     // get count of Festival Offers for Store dashboard
     public Integer getOfferCount() {
         Long count = (Long) em.createQuery("SELECT COUNT(e.festivalId) FROM ElectronicStoreFestival e")
                 .getSingleResult();
         return count.intValue();
     }
-    
+
     // get count of user orders for Store dashboard
     public Integer getUserOrderCount() {
         Long count = (Long) em.createQuery("SELECT COUNT(e.orderId) FROM UserOrderDetails e")
                 .getSingleResult();
         return count.intValue();
     }
-    
+
     // get count of user feedback for Store dashboard
     public Integer getUserFeedbackCount() {
         Long count = (Long) em.createQuery("SELECT COUNT(e.feedbackId) FROM UserFeedback e")
                 .getSingleResult();
         return count.intValue();
     }
-    
-    // get count of sold for Store dashboard
+
+    // get count of Sold Product for store dashboard
     public Integer getSaleProductCount() {
         Long count = (Long) em.createQuery("SELECT SUM(u.quantity) FROM UserOrderDetails u WHERE u.status = 1")
                 .getSingleResult();
-        return count.intValue();
+        return count != null ? count.intValue() : 0;
+    }
+    
+    // get multiply quantity and price
+    public Integer calculateTotalPrice(Integer qty,Integer price)
+    {
+        Integer totalPrice = qty * price;
+        return totalPrice;
     }
 }

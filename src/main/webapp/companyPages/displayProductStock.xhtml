@@ -12,6 +12,15 @@
 
         <div class="content-wrapper">
             <div class="container">
+                <c:if test="${not empty companyCDIBean.succesMessage}">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ${companyCDIBean.succesMessage}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <!--<span aria-hidden="true">&times;</span>-->
+                        </button>
+                    </div>
+                </c:if>
+                
                 <h1>My Stocks</h1><hr/>
 
                 <div class="card" style="margin-top: 20px;">
@@ -22,6 +31,7 @@
                                 <tr>
                                     <th>Product</th>
                                     <th>Quantity</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -29,6 +39,11 @@
                                     <tr>             
                                         <td>#{c.productId.productName}</td>
                                         <td>#{c.quantity}</td>
+                                        <td>
+                                            <h:form>
+                                                <h:commandButton value="Add Stock" class="btn btn-primary" action="#{companyCDIBean.editProductStockForm(c)}"/>
+                                            </h:form>
+                                        </td>
                                     </tr>
                                 </c:forEach>
                             </tbody>

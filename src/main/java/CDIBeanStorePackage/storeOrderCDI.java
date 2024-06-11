@@ -65,8 +65,6 @@ public class storeOrderCDI {
     
     // for Error Message
     String succesMessage, errorMessage;
-    @EJB
-    EJBPackage.electronicStoreDetailsEJB esd;
 
     public storeOrderCDI() {
         sc = new storeClient();
@@ -163,9 +161,8 @@ public class storeOrderCDI {
     }
 
     public Integer getUserOrderCount() {
-//        rs = sc.getUserOrderCount(Response.class);
-//        userOrderCount = rs.readEntity(Integer.class);
-        userOrderCount = esd.getUserOrderCount();
+        rs = sc.getUserOrderCount(Response.class);
+        userOrderCount = rs.readEntity(Integer.class);
         return userOrderCount;
     }
 

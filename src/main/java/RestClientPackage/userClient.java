@@ -75,8 +75,14 @@ public class userClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
-    public void decreaseQuantity(String cartId) throws ClientErrorException {
-        webTarget.path(java.text.MessageFormat.format("updatedecqty/{0}", new Object[]{cartId})).request().post(null);
+    public <T> T getSearchSellingProducts(Class<T> responseType, String prodId) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("getsearchsellingproducts/{0}", new Object[]{prodId}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T decreaseQuantity(Class<T> responseType, String cartId, String userId) throws ClientErrorException {
+        return webTarget.path(java.text.MessageFormat.format("updatedecqty/{0}/{1}", new Object[]{cartId, userId})).request().post(null, responseType);
     }
 
     public <T> T getAllFestivalOffers(Class<T> responseType) throws ClientErrorException {
@@ -85,8 +91,8 @@ public class userClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
-    public <T> T updateQuantity(Class<T> responseType, String cartId, String prodId, String qty) throws ClientErrorException {
-        return webTarget.path(java.text.MessageFormat.format("updateincqty/{0}/{1}/{2}", new Object[]{cartId, prodId, qty})).request().post(null, responseType);
+    public <T> T updateQuantity(Class<T> responseType, String cartId, String prodId, String qty, String userId) throws ClientErrorException {
+        return webTarget.path(java.text.MessageFormat.format("updateincqty/{0}/{1}/{2}/{3}", new Object[]{cartId, prodId, qty, userId})).request().post(null, responseType);
     }
 
     public <T> T getAllSellingProducts(Class<T> responseType) throws ClientErrorException {
@@ -102,6 +108,12 @@ public class userClient {
     public <T> T getAllFeedback(Class<T> responseType) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path("displayallfeedback");
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
+    public <T> T getAllProductForUser(Class<T> responseType) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path("gelallproductforuser");
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 

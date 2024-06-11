@@ -51,6 +51,8 @@ public class companyCDIBean {
     ProductDetails prodetail = new ProductDetails();
     CategoryDetails cdetail = new CategoryDetails();
     CompanyProductStock cpsdetails = new CompanyProductStock();
+    String productStocks;
+    Integer productId;
     
     RestClientPackage.companyClient cc;
     private String email, password;
@@ -501,5 +503,37 @@ public class companyCDIBean {
 
     public void setStoreOrderCount(Integer storeOrderCount) {
         this.storeOrderCount = storeOrderCount;
+    }
+
+    public String getProductStocks() {
+        return productStocks;
+    }
+
+    public void setProductStocks(String productStocks) {
+        this.productStocks = productStocks;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
+    
+    // edit Product stock form
+    public String editProductStockForm(CompanyProductStock prodStock)
+    {
+        this.cpsdetails = prodStock;
+        this.productId = prodStock.getProductId().getProductId();
+        return "editProductStock";
+    }
+    
+    // edit company product stock
+    public String editCompanyProductStock()
+    {
+        cc.editComapnyProductStock(String.valueOf(productId), productStocks);
+        succesMessage = "Product Stock Successfully Added";
+        return "displayProductStock";
     }
 }

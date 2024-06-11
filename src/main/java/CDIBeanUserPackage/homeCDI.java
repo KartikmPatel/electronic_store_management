@@ -7,6 +7,7 @@ package CDIBeanUserPackage;
 import CDIBeanPackage.LoginBean;
 import EntityPackage.ElectronicStoreFestival;
 import EntityPackage.ElectronicStoreSellingProduct;
+import EntityPackage.ProductDetails;
 import EntityPackage.UserCartDetails;
 import EntityPackage.UserDetails;
 import RestClientPackage.userClient;
@@ -77,6 +78,11 @@ public class homeCDI {
     Collection<ElectronicStoreFestival> storeFestivals;
     GenericType<Collection<ElectronicStoreFestival>> gstoreFestivals;
 
+    Collection<ProductDetails> productDetailses;
+    GenericType<Collection<ProductDetails>> gproductDetailses;
+    String prodId;
+    Integer sellingProdId;
+
     UserDetails ud = new UserDetails();
 
     userGroupClient ugc;
@@ -102,6 +108,10 @@ public class homeCDI {
 
         storeFestivals = new ArrayList<>();
         gstoreFestivals = new GenericType<Collection<ElectronicStoreFestival>>() {
+        };
+
+        productDetailses = new ArrayList<>();
+        gproductDetailses = new GenericType<Collection<ProductDetails>>() {
         };
 
         errormessage = null;
@@ -133,10 +143,45 @@ public class homeCDI {
         this.succesProfilemsg = succesProfilemsg;
     }
 
+    public String getProdId() {
+        return prodId;
+    }
+
+    public void setProdId(String prodId) {
+        this.prodId = prodId;
+    }
+
+    public Collection<ProductDetails> getProductDetailses() {
+        rs = uc.getAllProductForUser(Response.class);
+        productDetailses = rs.readEntity(gproductDetailses);
+        return productDetailses;
+    }
+
+    public void setProductDetailses(Collection<ProductDetails> productDetailses) {
+        this.productDetailses = productDetailses;
+    }
+
+    public Integer getSellingProdId() {
+        return sellingProdId;
+    }
+
+    public void setSellingProdId(Integer sellingProdId) {
+        this.sellingProdId = sellingProdId;
+    }
+
     public Collection<ElectronicStoreSellingProduct> getSellingProducts() {
-        rs = uc.getAllSellingProducts(Response.class);
-        sellingProducts = rs.readEntity(gsellingProducts);
-        return sellingProducts;
+        if (prodId != null) {
+            rs = uc.getSearchSellingProducts(Response.class, prodId);
+            sellingProducts = rs.readEntity(gsellingProducts);
+            for (ElectronicStoreSellingProduct selProd : sellingProducts) {
+                sellingProdId = selProd.getSellingProductId();
+            }
+            return sellingProducts;
+        } else {
+            rs = uc.getAllSellingProducts(Response.class);
+            sellingProducts = rs.readEntity(gsellingProducts);
+            return sellingProducts;
+        }
     }
 
     public void setSellingProducts(Collection<ElectronicStoreSellingProduct> sellingProducts) {
@@ -166,7 +211,7 @@ public class homeCDI {
         }
         return fileName;
     }
-    
+
     public void sendConfirmationEmail(String name, String recipientEmail, String cno, String pass, String dat, String gender, String logoPath, String address, String country) {
         final String username = "pnaitik504@gmail.com"; // Your email
         final String password = "qnpqwcohvtazvehb"; // Your password
@@ -178,11 +223,11 @@ public class homeCDI {
         props.put("mail.smtp.port", "587");
 
         Session session = Session.getInstance(props,
-            new javax.mail.Authenticator() {
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(username, password);
-                }
-            });
+                new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
 
         try {
             Message message = new MimeMessage(session);
@@ -254,7 +299,6 @@ public class homeCDI {
         }
     }
 
-
     public String userRegister() {
         String fileName = uploadImage();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -274,7 +318,6 @@ public class homeCDI {
         }
         return null;
     }
-
 
     public String editUserForm() {
         this.ud = uc.getUserById(UserDetails.class, lb.getComId().toString());
@@ -297,7 +340,12 @@ public class homeCDI {
 
     // add data in the cart table
     public void addCartDetails(Integer selprodid) {
-        uc.addCartDetails("1", String.valueOf(selprodid), String.valueOf(lb.getComId()));
+        System.out.println(sellingProdId);
+        if (sellingProdId != null) {
+            uc.addCartDetails("1", String.valueOf(sellingProdId), String.valueOf(lb.getComId()));
+        } else {
+            uc.addCartDetails("1", String.valueOf(selprodid), String.valueOf(lb.getComId()));
+        }
     }
 
     // display festival offers
@@ -384,7 +432,6 @@ public class homeCDI {
 //            uc.decreaseQuantity(String.valueOf(cid));
 //        }
 //    }
-
 //    public void increseQty(Integer cid, Integer qty, Integer pid) {
 //        rs = uc.getStoreStock(Response.class, String.valueOf(pid));
 //        Integer stock = rs.readEntity(Integer.class);
@@ -394,13 +441,11 @@ public class homeCDI {
 //            uc.increaseQuantity(String.valueOf(cid));
 //        }
 //    }
-
     // remove cart item
 //    public String removeCartItem(Integer cartId) {
 //        uc.removeCartItem(String.valueOf(cartId));
 //        return "userCart";
 //    }
-
     // add user order
     public String addUserOrder() throws IOException {
         LocalDate currentDate = LocalDate.now();

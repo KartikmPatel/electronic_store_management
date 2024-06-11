@@ -88,6 +88,12 @@ public class storeClient {
         return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
     }
 
+    public <T> T calculateTotalPrice(Class<T> responseType, String qty, String price) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("calculatetotalprice/{0}/{1}", new Object[]{qty, price}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
     public <T> T getProductById(Class<T> responseType, String prodid) throws ClientErrorException {
         WebTarget resource = webTarget;
         resource = resource.path(java.text.MessageFormat.format("getptoductbyid/{0}", new Object[]{prodid}));

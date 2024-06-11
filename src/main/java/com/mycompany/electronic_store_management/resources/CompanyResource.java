@@ -355,4 +355,13 @@ public class CompanyResource {
     {
         cpsobj.addElectronicStoreProductStock(prodid, qty);
     }
+    
+    // edit company product stock
+    @POST
+    @Path("editcompanyproductstock/{prodid}/{qty}")
+    @RolesAllowed("Company")
+    public void editComapnyProductStock(@PathParam("prodid") Integer prodid,@PathParam("qty") Integer qty)
+    {
+        cpsobj.editComapnyProductStock(prodid, qty);
+    }
 }

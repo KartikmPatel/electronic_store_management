@@ -111,4 +111,13 @@ public class companyProductStockEJB {
         }
     }
 
+    // edit company product stock
+    public void editComapnyProductStock(Integer prodId,Integer qty)
+    {
+        ProductDetails pd = (ProductDetails) em.find(ProductDetails.class, prodId);
+        CompanyProductStock productStock = (CompanyProductStock) em.createQuery("SELECT c FROM CompanyProductStock c WHERE c.productId = :productId",CompanyProductStock.class).setParameter("productId", pd).getSingleResult();
+        Integer newStock = productStock.getQuantity() + qty;
+        productStock.setQuantity(newStock);
+        em.merge(productStock);
+    }
 }
