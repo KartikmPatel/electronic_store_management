@@ -46,6 +46,8 @@ public class electronicProductCDI {
     
     ElectronicStoreDetails esd = new ElectronicStoreDetails();
 
+    private String proflogo;
+    
     ProductDetails prod = new ProductDetails();
     Integer quantity;
     Integer totalPrice;
@@ -64,6 +66,16 @@ public class electronicProductCDI {
         };
         succesMessage = null;
         errorMessage = null;
+    }
+
+    public String getProflogo() {
+        this.esd = sc.getStoreById(ElectronicStoreDetails.class);
+        proflogo = esd.getStoreLogo();
+        return proflogo;
+    }
+
+    public void setProflogo(String proflogo) {
+        this.proflogo = proflogo;
     }
 
     public ElectronicStoreDetails getEsd() {
@@ -234,6 +246,6 @@ public class electronicProductCDI {
         }
         ugc.changePassword(esd.getEmail(), esd.getPassword());
         succesMessage = "Profile Successfully Edited";
-        return "storeDashboard";
+        return "storeDashboard?faces-redirect=true";
     }
 }

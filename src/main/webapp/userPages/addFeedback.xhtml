@@ -7,6 +7,12 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>Facelet Title</title>
+        <style>
+            .form-group label {
+                display: block;
+                padding-bottom: 10px;
+            }
+        </style>
     </h:head>
     <h:body>
         <ui:include src="userHeader.xhtml" />
@@ -35,14 +41,14 @@
                         <h:form>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">${msgs.feedbackmessage}</label>
+                                    <label for="exampleInputEmail1">Feedback</label>
                                     <p:inputTextarea id="reviewEditor" value="#{userOrderDetailsCDI.ufd.message}" style="height: 500px;width: 600px;"/>
                                 </div>
                             </div>
                             <!-- /.card-body -->
 
                             <div class="card-footer">
-                                <h:commandButton class="btn btn-primary" style="background:#808080" action="#{userOrderDetailsCDI.addUserFeedback()}" value="${msgs.addfeedbackbutton}"/>
+                                <h:commandButton class="btn btn-primary" style="background:#808080" action="#{userOrderDetailsCDI.addUserFeedback()}" value="Submit"/>
                             </div>
                         </h:form>
                     </div>

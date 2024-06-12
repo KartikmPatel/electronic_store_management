@@ -89,6 +89,8 @@ public class homeCDI {
     UploadedFile file;
     @Inject
     LoginBean lb;
+    
+    private String proflogo;
 
     Integer totalPrice;
     String errormessage;
@@ -117,6 +119,16 @@ public class homeCDI {
         errormessage = null;
         succesMessage = null;
         succesProfilemsg = null;
+    }
+    
+    public String getProflogo() {
+        this.ud = uc.getUserById(UserDetails.class, lb.getComId().toString());
+        proflogo = ud.getProfilePic();
+        return proflogo;
+    }
+
+    public void setProflogo(String proflogo) {
+        this.proflogo = proflogo;
     }
 
     public UserDetails getUd() {
@@ -335,7 +347,7 @@ public class homeCDI {
         }
         ugc.changePassword(ud.getEmail(), ud.getPassword());
         succesProfilemsg = "Profile Successfully Edited";
-        return "userDashboard";
+        return "userDashboard?faces-redirect=true";
     }
 
     // add data in the cart table

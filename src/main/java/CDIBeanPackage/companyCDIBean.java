@@ -71,6 +71,8 @@ public class companyCDIBean {
     Collection<CategoryDetails> catdt;
     GenericType<Collection<CategoryDetails>> gcatdt;
     
+    private String proflogo;
+    
     // Variables for counting category,product,stocks
     Integer catCount;
     Integer prodCount;
@@ -97,6 +99,16 @@ public class companyCDIBean {
         
         succesMessage = null;
         errorMessage = null;
+    }
+    
+    public String getProflogo() {
+        this.cd = cc.getCompanyById(CompanyDetails.class, lb.getComId().toString());
+        proflogo = cd.getCompanyLogo();
+        return proflogo;
+    }
+
+    public void setProflogo(String proflogo) {
+        this.proflogo = proflogo;
     }
 
     public ProductDetails getProdetail() {
@@ -411,7 +423,7 @@ public class companyCDIBean {
         }
         ugc.changePassword(cd.getEmail(), cd.getPassword());
         succesMessage = "Profile Successfully Edited";
-        return "companyDashboard";
+        return "companyDashboard?faces-redirect=true";
     }
 
     // Add Category
