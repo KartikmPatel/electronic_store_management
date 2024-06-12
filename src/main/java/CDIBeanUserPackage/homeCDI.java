@@ -78,8 +78,8 @@ public class homeCDI {
     Collection<ElectronicStoreFestival> storeFestivals;
     GenericType<Collection<ElectronicStoreFestival>> gstoreFestivals;
 
-    Collection<ProductDetails> productDetailses;
-    GenericType<Collection<ProductDetails>> gproductDetailses;
+    Collection<ElectronicStoreSellingProduct> productfordropdown;
+    GenericType<Collection<ElectronicStoreSellingProduct>> gproductfordropdown;
     String prodId;
     Integer sellingProdId;
 
@@ -89,7 +89,7 @@ public class homeCDI {
     UploadedFile file;
     @Inject
     LoginBean lb;
-    
+
     private String proflogo;
 
     Integer totalPrice;
@@ -112,15 +112,15 @@ public class homeCDI {
         gstoreFestivals = new GenericType<Collection<ElectronicStoreFestival>>() {
         };
 
-        productDetailses = new ArrayList<>();
-        gproductDetailses = new GenericType<Collection<ProductDetails>>() {
+        productfordropdown = new ArrayList<>();
+        gproductfordropdown = new GenericType<Collection<ElectronicStoreSellingProduct>>() {
         };
 
         errormessage = null;
         succesMessage = null;
         succesProfilemsg = null;
     }
-    
+
     public String getProflogo() {
         this.ud = uc.getUserById(UserDetails.class, lb.getComId().toString());
         proflogo = ud.getProfilePic();
@@ -163,22 +163,23 @@ public class homeCDI {
         this.prodId = prodId;
     }
 
-    public Collection<ProductDetails> getProductDetailses() {
-        rs = uc.getAllProductForUser(Response.class);
-        productDetailses = rs.readEntity(gproductDetailses);
-        return productDetailses;
-    }
-
-    public void setProductDetailses(Collection<ProductDetails> productDetailses) {
-        this.productDetailses = productDetailses;
-    }
-
     public Integer getSellingProdId() {
         return sellingProdId;
     }
 
     public void setSellingProdId(Integer sellingProdId) {
         this.sellingProdId = sellingProdId;
+    }
+    
+    // load selling product into the dropdown
+    public Collection<ElectronicStoreSellingProduct> getProductfordropdown() {
+        rs = uc.getAllSellingProducts(Response.class);
+        productfordropdown = rs.readEntity(gproductfordropdown);
+        return productfordropdown;
+    }
+
+    public void setProductfordropdown(Collection<ElectronicStoreSellingProduct> productfordropdown) {
+        this.productfordropdown = productfordropdown;
     }
 
     public Collection<ElectronicStoreSellingProduct> getSellingProducts() {
@@ -206,7 +207,7 @@ public class homeCDI {
         if (file != null) {
             try (InputStream input = file.getInputStream()) {
                 fileName = file.getFileName();
-                OutputStream output = new FileOutputStream("C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
+                OutputStream output = new FileOutputStream("C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
                 try {
                     byte[] buffer = new byte[1024];
                     int bytesRead;
@@ -352,9 +353,9 @@ public class homeCDI {
 
     // add data in the cart table
     public void addCartDetails(Integer selprodid) {
-        System.out.println(sellingProdId);
         if (sellingProdId != null) {
             uc.addCartDetails("1", String.valueOf(sellingProdId), String.valueOf(lb.getComId()));
+            sellingProdId = null;
         } else {
             uc.addCartDetails("1", String.valueOf(selprodid), String.valueOf(lb.getComId()));
         }

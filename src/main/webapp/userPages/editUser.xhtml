@@ -10,66 +10,66 @@
     </h:head>
     <h:body>
         <ui:include src="userHeader.xhtml" />
-        
+
         <div class="content-wrapper">
-        <div class="container">
-            <!--<div class="container-fluid">-->
+            <div class="container">
+                <!--<div class="container-fluid">-->
                 <!--<div class="row">-->
-                    <!-- left column -->
-                    <div class="col-md-8" style="padding-top: 2%;">
-                        <div class="card card-primary">
-                            <div class="card-header bg-gray">
-                                <h3 class="card-title">Edit User</h3>
-                            </div>
-                            <!-- /.card-header -->
-                            <!-- form start -->
-                            <h:form enctype="multipart/form-data">
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <h:inputHidden value="#{homeCDI.ud.userId}"/>
-                                        <h:inputHidden value="#{homeCDI.ud.profilePic}"/>
-                                        <h:inputHidden value="#{homeCDI.ud.email}" />
-                                        <label for="exampleInputUser">User Name</label>
-                                        <p:inputText class="form-control" placeholder="Enter the User name" value="#{homeCDI.ud.username}"/>
-
-                                        <label for="exampleInputEmail">Email</label>
-                                        <p:inputText class="form-control" placeholder="Enter the email" value="#{homeCDI.ud.email}" readonly="true"/>
-                                        
-                                        <label for="exampleInputContactNo">Contact No</label>
-                                        <p:inputText class="form-control" placeholder="Enter the number" value="#{homeCDI.ud.contactNo}"/>
-                                        
-                                        <label for="exampleInputPassword">Password</label>
-                                        <p:inputText class="form-control" placeholder="Enter the password" value="#{homeCDI.ud.password}"/>
-                                        
-                                        <label for="exampleInputImage">Profile Pic</label>
-                                        <img src="#{request.contextPath}/public/uploads/#{homeCDI.ud.profilePic}" height="55px" width="55px;"/>
-                                        <p:fileUpload class="form-control" id="logo" value="#{homeCDI.file}" mode="simple" />
-
-                                        <label for="exampleInputDate">DOB</label>
-                                        <p:calendar id="exampleInputDate" value="#{homeCDI.ud.dob}" placeholder="Enter the DOB" /><br></br>
-                                        
-                                        <label for="exampleInputGender">Gender</label>
-                                        <p:selectOneRadio id="exampleInputGender" value="#{homeCDI.ud.gender}">
-                                            <f:selectItem itemLabel="Male" itemValue="Male"/>
-                                            <f:selectItem itemLabel="Female" itemValue="Female"/>
-                                            <f:selectItem itemLabel="Other" itemValue="Other"/>
-                                        </p:selectOneRadio> <br></br>
-                                        
-                                        <label for="exampleInputCountry">Address</label>
-                                        <p:inputText class="form-control" placeholder="Enter the Address" value="#{homeCDI.ud.address}" />
-
-                                        <label for="exampleInputCountry">Country</label>
-                                        <p:inputText class="form-control" placeholder="Enter the Country" value="#{homeCDI.ud.country}" />
-                                    </div>
-                                </div>
-
-                                <div class="card-footer">
-                                    <h:commandButton class="btn btn-primary" action="#{homeCDI.editUser()}" style="background:#808080" value="Edit User"/>
-                                </div>
-                            </h:form>
+                <!-- left column -->
+                <div class="col-md-8" style="padding-top: 2%;">
+                    <div class="card card-primary">
+                        <div class="card-header bg-gray">
+                            <h3 class="card-title">#{msgs.edituserlbl}</h3>
                         </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <h:form enctype="multipart/form-data">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <h:inputHidden value="#{homeCDI.ud.userId}"/>
+                                    <h:inputHidden value="#{homeCDI.ud.profilePic}"/>
+                                    <h:inputHidden value="#{homeCDI.ud.email}" />
+                                    <label for="exampleInputUser">#{msgs.usernamelbl}</label>
+                                    <p:inputText class="form-control" placeholder="Enter the User name" value="#{homeCDI.ud.username}"/>
+
+                                    <label for="exampleInputEmail">#{msgs.emaillbl}</label>
+                                    <p:inputText class="form-control" placeholder="Enter the email" value="#{homeCDI.ud.email}" readonly="true"/>
+
+                                    <label for="exampleInputContactNo">#{msgs.cnumberlbl}</label>
+                                    <p:inputText class="form-control" placeholder="Enter the number" value="#{homeCDI.ud.contactNo}"/>
+
+                                    <label for="exampleInputPassword">#{msgs.passwordlbl}</label>
+                                    <p:inputText class="form-control" placeholder="Enter the password" value="#{homeCDI.ud.password}"/>
+
+                                    <label for="exampleInputImage">#{msgs.profileimglbl}</label>
+                                    <img src="#{request.contextPath}/public/uploads/#{homeCDI.ud.profilePic}" height="55px" width="55px;"/>
+                                    <p:fileUpload class="form-control" id="logo" value="#{homeCDI.file}" mode="simple" />
+
+                                    <label for="exampleInputDate" style="margin-top: 30px;">#{msgs.doblbl}</label>
+                                    <p:calendar id="exampleInputDate" value="#{homeCDI.ud.dob}" placeholder="Enter the DOB" /><br></br>
+
+                                    <label for="exampleInputGender">#{msgs.genderlbl}</label>
+                                    <p:selectOneRadio id="exampleInputGender" value="#{homeCDI.ud.gender}">
+                                        <f:selectItem itemLabel="#{msgs.malelbl}" itemValue="Male"/>
+                                        <f:selectItem itemLabel="#{msgs.femalelbl}" itemValue="Female"/>
+                                        <f:selectItem itemLabel="#{msgs.otherlbl}" itemValue="Other"/>
+                                    </p:selectOneRadio> <br></br>
+
+                                    <label for="exampleInputCountry">#{msgs.addresslbl}</label>
+                                    <p:inputText class="form-control" placeholder="Enter the Address" value="#{homeCDI.ud.address}" />
+
+                                    <label for="exampleInputCountry">#{msgs.countrylbl}</label>
+                                    <p:inputText class="form-control" placeholder="Enter the Country" value="#{homeCDI.ud.country}" />
+                                </div>
+                            </div>
+
+                            <div class="card-footer">
+                                <h:commandButton class="btn btn-primary" action="#{homeCDI.editUser()}" style="background:#808080" value="#{msgs.edituserbuttonlbl}"/>
+                            </div>
+                        </h:form>
                     </div>
                 </div>
+            </div>
             <!--</div>-->
         </div>
     </h:body>

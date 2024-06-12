@@ -28,28 +28,34 @@
                                     <div class="form-group">
                                         <h:inputHidden value="#{companyCDIBean.prodetail.productId}"/>
                                         <h:inputHidden value="#{companyCDIBean.prodetail.productImage}"/>
+                                        
                                         <label for="exampleInputPoduct">Product Name</label>
-                                        <p:inputText class="form-control" id="exampleInputProduct" value="#{companyCDIBean.prodetail.productName}" placeholder="Enter the Product Name" />
+                                        <p:inputText class="form-control" id="exampleInputProduct" value="#{companyCDIBean.prodetail.productName}" placeholder="Enter the Product Name" required="true" requiredMessage="Product Name is required"/>
+                                        <h:message for="exampleInputProduct" style="color: red; margin-left: 10px;" /><br/>
                                         
                                         <label for="exampleInputDiscount">Discount</label>
-                                        <p:inputText class="form-control" id="exampleInputDiscount" value="#{companyCDIBean.prodetail.discount}" placeholder="Enter the Discount" />
+                                        <p:inputText class="form-control" id="exampleInputDiscount" value="#{companyCDIBean.prodetail.discount}" placeholder="Enter the Discount" required="true" requiredMessage="Discount is required"/>
+                                        <h:message for="exampleInputDiscount" style="color: red; margin-left: 10px;" /><br/>
                                         
                                         <label for="exampleInputPrice">Price</label>
-                                        <p:inputText class="form-control" id="exampleInputPrice" value="#{companyCDIBean.prodetail.price}" placeholder="Enter the Price" />
+                                        <p:inputText class="form-control" id="exampleInputPrice" value="#{companyCDIBean.prodetail.price}" placeholder="Enter the Price" required="true" requiredMessage="Price is required"/>
+                                        <h:message for="exampleInputPrice" style="color: red; margin-left: 10px;" /><br/>
                                         
                                         <label for="exampleInputImage">Image</label>
-                                        <img src="#{request.contextPath}/public/uploads/#{companyCDIBean.prodetail.productImage}" height="55px" width="55px;"/>
-                                        <p:fileUpload class="form-control" id="logo" value="#{companyCDIBean.file}" required="false" mode="simple" />
+                                        <img src="#{request.contextPath}/public/uploads/#{companyCDIBean.prodetail.productImage}" height="55px" width="55px"/>
+                                        <p:fileUpload class="form-control" id="logo" value="#{companyCDIBean.file}" mode="simple"/>
                                         
-                                        <label for="exampleInputDate">Manufacture Date </label>
-                                        <p:calendar id="exampleInputDate" value="#{companyCDIBean.prodetail.mfgDate}" placeholder="Enter the Manufacture Date" /><br></br>
+                                        <label for="exampleInputDate" style="margin-top: 30px;">Manufacture Date</label>
+                                        <p:calendar id="exampleInputDate" value="#{companyCDIBean.prodetail.mfgDate}" placeholder="Enter the Manufacture Date" required="true" requiredMessage="Manufacture Date is required"/><br/>
+                                        <h:message for="exampleInputDate" style="color: red; margin-left: 10px;" /><br/>
                                         
                                         <label for="exampleInputWarranty">Warranty</label>
-                                        <p:inputText class="form-control" id="exampleInputWarranty" value="#{companyCDIBean.prodetail.warranty}" placeholder="Enter the Warranty" /><br/>
+                                        <p:inputText class="form-control" id="exampleInputWarranty" value="#{companyCDIBean.prodetail.warranty}" placeholder="Enter the Warranty" required="true" requiredMessage="Warranty is required"/>
+                                        <h:message for="exampleInputWarranty" style="color: red; margin-left: 10px;" /><br/>
                                         
-                                        <label for="exampleInputWarranty">Category </label>
+                                        <label for="exampleInputWarranty">Category</label>
                                         <p:selectOneMenu value="#{companyCDIBean.addCategoryToProduct}">
-                                            <f:selectItems value="#{companyCDIBean.catdt}" var="c" itemLabel="#{c.categoryName}" itemValue="#{c.categoryId}"></f:selectItems>
+                                            <f:selectItems value="#{companyCDIBean.catdt}" var="c" itemLabel="#{c.categoryName}" itemValue="#{c.categoryId}"/>
                                         </p:selectOneMenu>
                                     </div>
                                 </div>

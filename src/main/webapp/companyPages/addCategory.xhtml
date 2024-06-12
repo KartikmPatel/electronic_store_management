@@ -7,10 +7,11 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
+        <!-- Include jQuery -->
     </h:head>
     <h:body>
         <ui:include src="../companyPages/companyHeader.xhtml" />
-        <script type="text/javascript" src="#{request.contextPath}/public/js/captcha.js"/>
+        <script type="text/javascript" src="#{request.contextPath}/public/js/captcha.js"></script>
         <div class="content-wrapper">
             <div class="container">
                 <!--<div class="container-fluid">-->
@@ -21,28 +22,28 @@
                         <div class="card-header" style="background:#17a2b8;">
                             <h3 class="card-title">Add Category</h3>
                         </div>
-                        <span id="catErr"></span>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <h:form onsubmit="return validateCategoryForm();">
+                        <h:form>
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Category Name</label>
-                                    <p:inputText id="catname" value="#{companyCDIBean.cdetail.categoryName}"/>
+                                    <p:inputText id="catname" value="#{companyCDIBean.cdetail.categoryName}" required="true" requiredMessage="Category Name is Required"/><br/>
+                                    <h:message for="catname" id="catErr" style="color: red;margin-left: 105px;" />
                                 </div>
                             </div>
                             <!-- /.card-body -->
 
                             <div class="card-footer">
                                 <h:commandButton class="btn btn-primary" action="#{companyCDIBean.addCategory()}" 
-                                                 style="background:#17a2b8" value="Add Category" onclick="validateCategoryForm()"/>
+                                                 style="background:#17a2b8" value="Add Category"/>
                             </div>
-                            <p:messages />
                         </h:form>
                     </div>
                 </div>
                 <!--</div>-->
             </div>
         </div>
+        
     </h:body>
 </html>

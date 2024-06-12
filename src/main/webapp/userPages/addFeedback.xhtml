@@ -41,14 +41,15 @@
                         <h:form>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">Feedback</label>
-                                    <p:inputTextarea id="reviewEditor" value="#{userOrderDetailsCDI.ufd.message}" style="height: 500px;width: 600px;"/>
+                                    <label for="exampleInputEmail1">${msgs.feedbackmessage}</label>
+                                    <p:inputTextarea id="reviewEditor" value="#{userOrderDetailsCDI.ufd.message}" style="height: 500px;width: 600px;" required="true" requiredMessage="#{msgs.feedbackerrormsg}"/><br/>
+                                    <h:message for="reviewEditor" style="color: red;" />
                                 </div>
                             </div>
                             <!-- /.card-body -->
 
                             <div class="card-footer">
-                                <h:commandButton class="btn btn-primary" style="background:#808080" action="#{userOrderDetailsCDI.addUserFeedback()}" value="Submit"/>
+                                <h:commandButton class="btn btn-primary" style="background:#808080" action="#{userOrderDetailsCDI.addUserFeedback()}" value="#{msgs.addfeedbackbutton}"/>
                             </div>
                         </h:form>
                     </div>

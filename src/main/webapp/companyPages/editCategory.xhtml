@@ -11,34 +11,35 @@
         <ui:include src="../companyPages/companyHeader.xhtml" />
 
         <div class="content-wrapper">
-        <div class="container">
-            <!--<div class="container-fluid">-->
-            <!--<div class="row">-->
-            <!-- left column -->
-            <div class="col-md-8" style="padding-top: 2%;">
-                <div class="card card-primary">
-                    <div class="card-header" style="background:#17a2b8">
-                        <h3 class="card-title">Edit Category</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <!-- form start -->
-                    <h:form>
-                        <h:inputHidden value="#{companyCDIBean.cdetail.categoryId}"/>
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Category Name</label>
-                                <p:inputText class="form-control" id="exampleInputEmail1" value="#{companyCDIBean.cdetail.categoryName}" placeholder="Enter the Category Name" />
+            <div class="container">
+                <!--<div class="container-fluid">-->
+                <!--<div class="row">-->
+                <!-- left column -->
+                <div class="col-md-8" style="padding-top: 2%;">
+                    <div class="card card-primary">
+                        <div class="card-header" style="background:#17a2b8">
+                            <h3 class="card-title">Edit Category</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <h:form>
+                            <h:inputHidden value="#{companyCDIBean.cdetail.categoryId}"/>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Category Name</label>
+                                    <p:inputText class="form-control" id="exampleInputEmail1" value="#{companyCDIBean.cdetail.categoryName}" required="true" requiredMessage="Category Name is required" placeholder="Enter the Category Name" />
+                                    <h:message for="exampleInputEmail1" style="color: red; margin-left: 10px;" />
+                                </div>
                             </div>
-                        </div>
-                        <!-- /.card-body -->
+                            <!-- /.card-body -->
 
-                        <div class="card-footer">
-                            <h:commandButton class="btn btn-primary" action="#{companyCDIBean.editCategory()}" style="background:#17a2b8" value="Edit Category"/>
-                        </div>
-                    </h:form>
+                            <div class="card-footer">
+                                <h:commandButton class="btn btn-primary" action="#{companyCDIBean.editCategory()}" style="background:#17a2b8" value="Edit Category"/>
+                            </div>
+                        </h:form>
+                    </div>
                 </div>
-            </div>
-            <!--</div>-->
+                <!--</div>-->
             </div>
         </div>
     </h:body>

@@ -43,9 +43,10 @@ import org.primefaces.model.file.UploadedFile;
 @RequestScoped
 public class companyCDIBean {
 //    String captchaCode; // Change to String
-    
+
     userGroupClient ugc;
-    @Inject LoginBean lb;
+    @Inject
+    LoginBean lb;
 
     CompanyDetails cd = new CompanyDetails();
     ProductDetails prodetail = new ProductDetails();
@@ -53,7 +54,7 @@ public class companyCDIBean {
     CompanyProductStock cpsdetails = new CompanyProductStock();
     String productStocks;
     Integer productId;
-    
+
     RestClientPackage.companyClient cc;
     private String email, password;
     UploadedFile file;
@@ -63,44 +64,47 @@ public class companyCDIBean {
 
     Collection<ProductDetails> prodt;
     GenericType<Collection<ProductDetails>> gprodt;
-    
+
     Collection<CompanyProductStock> cpsdt;
     GenericType<Collection<CompanyProductStock>> gcpsdt;
-    
+
     Response rs;
     Collection<CategoryDetails> catdt;
     GenericType<Collection<CategoryDetails>> gcatdt;
-    
+
     private String proflogo;
-    
+
     // Variables for counting category,product,stocks
     Integer catCount;
     Integer prodCount;
     Integer stockCount;
     Integer storeOrderCount;
-    
+
     // for Error Message
     String succesMessage, errorMessage;
-    
+
     public companyCDIBean() {
         cc = new companyClient();
         ugc = new userGroupClient();
-        
+
         this.errorStatus = "";
 //        generateCaptcha();
         catdt = new ArrayList<>();
-        gcatdt = new GenericType<Collection<CategoryDetails>>() {};
+        gcatdt = new GenericType<Collection<CategoryDetails>>() {
+        };
 
         prodt = new ArrayList<>();
-        gprodt = new GenericType<Collection<ProductDetails>>() {};
-        
+        gprodt = new GenericType<Collection<ProductDetails>>() {
+        };
+
         cpsdt = new ArrayList<>();
-        gcpsdt = new GenericType<Collection<CompanyProductStock>>() {};
-        
+        gcpsdt = new GenericType<Collection<CompanyProductStock>>() {
+        };
+
         succesMessage = null;
         errorMessage = null;
     }
-    
+
     public String getProflogo() {
         this.cd = cc.getCompanyById(CompanyDetails.class, lb.getComId().toString());
         proflogo = cd.getCompanyLogo();
@@ -213,15 +217,14 @@ public class companyCDIBean {
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
     }
-    
-    
+
     // file uploading function
     private String uploadImage() {
         String fileName = "";
         if (file != null) {
             try (InputStream input = file.getInputStream()) {
                 fileName = file.getFileName();
-                OutputStream output = new FileOutputStream("C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
+                OutputStream output = new FileOutputStream("C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
                 try {
                     byte[] buffer = new byte[1024];
                     int bytesRead;
@@ -250,11 +253,11 @@ public class companyCDIBean {
         props.put("mail.smtp.port", "587");
 
         Session session = Session.getInstance(props,
-            new javax.mail.Authenticator() {
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(username, password);
-                }
-            });
+                new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password);
+            }
+        });
 
         try {
             Message message = new MimeMessage(session);
@@ -330,7 +333,7 @@ public class companyCDIBean {
         ugc.addUser(cd.getEmail(), cd.getPassword());
         ugc.addGroup("Company", cd.getEmail());
 
-        sendConfirmationEmail( cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), "C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + logoFileName, cd.getPassword(), cd.getCountry());
+        sendConfirmationEmail(cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), "C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + logoFileName, cd.getPassword(), cd.getCountry());
 
         FacesContext context = FacesContext.getCurrentInstance();
         try {
@@ -393,8 +396,9 @@ public class companyCDIBean {
     public String addProduct() {
         String fileName = uploadImage();
         ProductDetails pd1 = new ProductDetails();
-        GenericType<ProductDetails> gpd1 = new GenericType<ProductDetails>(){};
-        
+        GenericType<ProductDetails> gpd1 = new GenericType<ProductDetails>() {
+        };
+
         succesMessage = "Product Successfully Inserted";
 //        Integer companyId = (Integer) session.getAttribute("comId");
 
@@ -403,17 +407,17 @@ public class companyCDIBean {
         String formattedDate = dateFormat.format(prodetail.getMfgDate());
 
         cc.addProduct(prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), fileName, formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, String.valueOf(lb.getComId()));
-        rs = cc.getProdIdByNameAndComId(Response.class,prodetail.getProductName(), String.valueOf(lb.getComId()));
+        rs = cc.getProdIdByNameAndComId(Response.class, prodetail.getProductName(), String.valueOf(lb.getComId()));
         pd1 = rs.readEntity(gpd1);
-        cc.addCompanyProductStock(String.valueOf(cpsdetails.getQuantity()),pd1.getProductId().toString());
+        cc.addCompanyProductStock(String.valueOf(cpsdetails.getQuantity()), pd1.getProductId().toString());
         return "displayProduct";
     }
-    
-    public String editCompanyForm(){
+
+    public String editCompanyForm() {
         this.cd = cc.getCompanyById(CompanyDetails.class, lb.getComId().toString());
         return "editCompany";
     }
-    
+
     public String editCompany() {
         String fileName = uploadImage();
         if (fileName.isEmpty()) {
@@ -443,15 +447,15 @@ public class companyCDIBean {
     // Update or Edit Product
     public String editProduct() {
         String fileName = uploadImage();
-        
+
         succesMessage = "Product Successfully Edited";
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = dateFormat.format(prodetail.getMfgDate());
-        
-        if(fileName.isEmpty()){
+
+        if (fileName.isEmpty()) {
             cc.updateProduct(prodetail.getProductId().toString(), prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), prodetail.getProductImage(), formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, String.valueOf(lb.getComId()));
-        }else{
+        } else {
             cc.updateProduct(prodetail.getProductId().toString(), prodetail.getProductName(), String.valueOf(prodetail.getDiscount()), String.valueOf(prodetail.getPrice()), fileName, formattedDate, String.valueOf(prodetail.getWarranty()), addCategoryToProduct, String.valueOf(lb.getComId()));
         }
         return "displayProduct";
@@ -482,7 +486,7 @@ public class companyCDIBean {
     public void setCatCount(Integer catCount) {
         this.catCount = catCount;
     }
-    
+
     // get Product Count
     public Integer getProdCount() {
 //        Integer companyId = (Integer) session.getAttribute("comId");
@@ -494,7 +498,7 @@ public class companyCDIBean {
     public void setProdCount(Integer prodCount) {
         this.prodCount = prodCount;
     }
-    
+
     // get company product stock count
     public Integer getStockCount() {
 //        Integer companyId = (Integer) session.getAttribute("comId");
@@ -532,19 +536,21 @@ public class companyCDIBean {
     public void setProductId(Integer productId) {
         this.productId = productId;
     }
-    
+
     // edit Product stock form
-    public String editProductStockForm(CompanyProductStock prodStock)
-    {
+    public String editProductStockForm(CompanyProductStock prodStock) {
         this.cpsdetails = prodStock;
         this.productId = prodStock.getProductId().getProductId();
         return "editProductStock";
     }
-    
+
     // edit company product stock
-    public String editCompanyProductStock()
-    {
-        cc.editComapnyProductStock(String.valueOf(productId), productStocks);
+    public String editCompanyProductStock() {
+        if (productStocks == null) {
+            cc.editComapnyProductStock(String.valueOf(productId), String.valueOf(0));
+        }else{
+            cc.editComapnyProductStock(String.valueOf(productId), productStocks);
+        }
         succesMessage = "Product Stock Successfully Added";
         return "displayProductStock";
     }

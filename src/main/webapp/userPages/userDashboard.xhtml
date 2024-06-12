@@ -97,8 +97,8 @@
             <div class="dropdown-container">
                 <h:form class="full-width-dropdown">
                     <p:selectOneMenu value="#{homeCDI.prodId}" styleClass="full-width-dropdown" onchange="submit()">
-                        <f:selectItem itemLabel="-- Select The Product Name --" />
-                        <f:selectItems value="#{homeCDI.productDetailses}" var="p" itemLabel="#{p.productName}" itemValue="#{p.productId}"/>
+                        <f:selectItem itemLabel="#{msgs.productsearchmsg}" />
+                        <f:selectItems value="#{homeCDI.productfordropdown}" var="sel" itemLabel="#{sel.productId.productName}" itemValue="#{sel.productId.productId}"/>
                     </p:selectOneMenu>
                 </h:form>
             </div>

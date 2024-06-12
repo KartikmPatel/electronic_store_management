@@ -26,14 +26,17 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <h:inputHidden value="#{companyCDIBean.productId}" />
+                                    
                                     <label for="exampleInputCompany">Product Name</label>
-                                    <p:inputText class="form-control" value="#{companyCDIBean.cpsdetails.productId.productName}" readonly="true"/>
+                                    <p:inputText class="form-control" id="productName" value="#{companyCDIBean.cpsdetails.productId.productName}" readonly="true"/>
+                                    <h:messages for="productName" style="color: red;" />
 
                                     <label for="exampleInputEmail">Current Stock</label>
-                                    <p:inputText class="form-control" value="#{companyCDIBean.cpsdetails.quantity}" readonly="true"/>
+                                    <p:inputText class="form-control" id="currentStock" value="#{companyCDIBean.cpsdetails.quantity}" readonly="true"/>
+                                    <h:messages for="currentStock" style="color: red;" />
 
                                     <label for="exampleInputContactNo">Quantity</label>
-                                    <p:inputText class="form-control" placeholder="Enter the quantity for stock " value="#{companyCDIBean.productStocks}"/>
+                                    <p:inputText class="form-control" id="quantity" placeholder="Enter the quantity for stock" value="#{companyCDIBean.productStocks}"/>
                                 </div>
                             </div>
 
