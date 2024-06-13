@@ -59,6 +59,7 @@ public class companyCDIBean {
     private String email, password;
     UploadedFile file;
     String errorStatus;
+    String confirmPassword;
 
     private String addCategoryToProduct;
 
@@ -326,20 +327,33 @@ public class companyCDIBean {
         }
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     // Register Company
     public String addCompany() {
-        String logoFileName = uploadImage();
-        cc.addCompany(cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), cd.getPassword(), logoFileName, cd.getCountry());
-        ugc.addUser(cd.getEmail(), cd.getPassword());
-        ugc.addGroup("Company", cd.getEmail());
+        if (cd.getPassword().equals(confirmPassword)) {
+            String logoFileName = uploadImage();
+            cc.addCompany(cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), cd.getPassword(), logoFileName, cd.getCountry());
+            ugc.addUser(cd.getEmail(), cd.getPassword());
+            ugc.addGroup("Company", cd.getEmail());
 
-        sendConfirmationEmail(cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), "C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + logoFileName, cd.getPassword(), cd.getCountry());
+            sendConfirmationEmail(cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), "C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + logoFileName, cd.getPassword(), cd.getCountry());
 
-        FacesContext context = FacesContext.getCurrentInstance();
-        try {
-            context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/login.jsf");
-        } catch (IOException e) {
-            e.printStackTrace();
+            FacesContext context = FacesContext.getCurrentInstance();
+            try {
+                context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/login.jsf");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else {
+            succesMessage = "Password and Confirm Password Does Not Match";
+            return "companyRegister";
         }
         return null;
     }
@@ -427,7 +441,7 @@ public class companyCDIBean {
         }
         ugc.changePassword(cd.getEmail(), cd.getPassword());
         succesMessage = "Profile Successfully Edited";
-        return "companyDashboard?faces-redirect=true";
+        return "companyDashboard";
     }
 
     // Add Category
@@ -548,7 +562,7 @@ public class companyCDIBean {
     public String editCompanyProductStock() {
         if (productStocks == null) {
             cc.editComapnyProductStock(String.valueOf(productId), String.valueOf(0));
-        }else{
+        } else {
             cc.editComapnyProductStock(String.valueOf(productId), productStocks);
         }
         succesMessage = "Product Stock Successfully Added";

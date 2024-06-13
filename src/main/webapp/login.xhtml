@@ -289,7 +289,7 @@
                         <h:messages id="resetMsg" style="color: green; margin-top: 10px;"/>
                         <h:form>
                             <p>
-                                <p:inputText type="text" placeholder="Username" value="#{loginBean.username}" />
+                                <p:inputText type="text" placeholder="Email" value="#{loginBean.username}" />
                             </p>
                             <p>
                                 <p:inputText type="password" placeholder="Password" value="#{loginBean.password}" />
@@ -313,10 +313,10 @@
             </div>
             <div class="card-overlay" id="cardOverlay"></div>
             <div class="card" id="card">
-                <h2>Reset Password</h2>
+                <h2>Forget Password</h2>
                 <h:form>
                     <h:outputLabel value="Email:"></h:outputLabel>
-                    <p:inputText type="text" placeholder="Username" value="#{registerBean.forgEmail}" required="true"/>
+                    <p:inputText type="text" placeholder="Email" value="#{registerBean.forgEmail}" required="true"/>
                     <h:commandButton class="btn" action="#{registerBean.forgetPassword()}" value="Submit"/>
                     <h:messages id="resetMsg" style="color: green; margin-top: 10px;"/>
                 </h:form>

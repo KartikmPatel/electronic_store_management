@@ -28,38 +28,49 @@
                                 <div class="form-group">
                                     <h:inputHidden value="#{homeCDI.ud.userId}"/>
                                     <h:inputHidden value="#{homeCDI.ud.profilePic}"/>
-                                    <h:inputHidden value="#{homeCDI.ud.email}" />
+                                    <h:inputHidden value="#{homeCDI.ud.email}"/>
+
                                     <label for="exampleInputUser">#{msgs.usernamelbl}</label>
-                                    <p:inputText class="form-control" placeholder="Enter the User name" value="#{homeCDI.ud.username}"/>
+                                    <p:inputText id="username" class="form-control" placeholder="Enter the User name" value="#{homeCDI.ud.username}" required="true" requiredMessage="Username is Required"/>
+                                    <h:message for="username" style="color: red;" /><br/>
 
                                     <label for="exampleInputEmail">#{msgs.emaillbl}</label>
-                                    <p:inputText class="form-control" placeholder="Enter the email" value="#{homeCDI.ud.email}" readonly="true"/>
+                                    <p:inputText id="email" class="form-control" placeholder="Enter the email" value="#{homeCDI.ud.email}" readonly="true" validatorMessage="Email is required and must be in a valid format">
+                                        <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$"/>
+                                    </p:inputText>
+                                    <h:message for="email" style="color: red;" /><br/>
 
                                     <label for="exampleInputContactNo">#{msgs.cnumberlbl}</label>
-                                    <p:inputText class="form-control" placeholder="Enter the number" value="#{homeCDI.ud.contactNo}"/>
+                                    <p:inputText id="contactNo" class="form-control" placeholder="Enter the number" value="#{homeCDI.ud.contactNo}" required="true" requiredMessage="Phone Number is Required"/>
+                                    <h:message for="contactNo" style="color: red;" /><br/>
 
                                     <label for="exampleInputPassword">#{msgs.passwordlbl}</label>
-                                    <p:inputText class="form-control" placeholder="Enter the password" value="#{homeCDI.ud.password}"/>
+                                    <p:inputText id="password" class="form-control" placeholder="Enter the password" value="#{homeCDI.ud.password}" required="true" requiredMessage="Password is Required"/>
+                                    <h:message for="password" style="color: red;" /><br/>
 
                                     <label for="exampleInputImage">#{msgs.profileimglbl}</label>
                                     <img src="#{request.contextPath}/public/uploads/#{homeCDI.ud.profilePic}" height="55px" width="55px;"/>
-                                    <p:fileUpload class="form-control" id="logo" value="#{homeCDI.file}" mode="simple" />
+                                    <p:fileUpload class="form-control" id="logo" value="#{homeCDI.file}" mode="simple"/>
 
                                     <label for="exampleInputDate" style="margin-top: 30px;">#{msgs.doblbl}</label>
-                                    <p:calendar id="exampleInputDate" value="#{homeCDI.ud.dob}" placeholder="Enter the DOB" /><br></br>
+                                    <p:calendar id="exampleInputDate" value="#{homeCDI.ud.dob}" placeholder="Enter the DOB" required="true" requiredMessage="DOB is Required"/><br></br>
+                                    <h:message for="exampleInputDate" style="color: red;" /><br/>
 
                                     <label for="exampleInputGender">#{msgs.genderlbl}</label>
-                                    <p:selectOneRadio id="exampleInputGender" value="#{homeCDI.ud.gender}">
+                                    <p:selectOneRadio id="exampleInputGender" value="#{homeCDI.ud.gender}" required="true" requiredMessage="Gender is Required">
                                         <f:selectItem itemLabel="#{msgs.malelbl}" itemValue="Male"/>
                                         <f:selectItem itemLabel="#{msgs.femalelbl}" itemValue="Female"/>
                                         <f:selectItem itemLabel="#{msgs.otherlbl}" itemValue="Other"/>
-                                    </p:selectOneRadio> <br></br>
+                                    </p:selectOneRadio><br></br>
+                                    <h:message for="exampleInputGender" style="color: red;" /><br/>
 
-                                    <label for="exampleInputCountry">#{msgs.addresslbl}</label>
-                                    <p:inputText class="form-control" placeholder="Enter the Address" value="#{homeCDI.ud.address}" />
+                                    <label for="exampleInputAddress">#{msgs.addresslbl}</label>
+                                    <p:inputText id="address" class="form-control" placeholder="Enter the Address" value="#{homeCDI.ud.address}" required="true" requiredMessage="Address is Required"/>
+                                    <h:message for="address" style="color: red;" /><br/>
 
                                     <label for="exampleInputCountry">#{msgs.countrylbl}</label>
-                                    <p:inputText class="form-control" placeholder="Enter the Country" value="#{homeCDI.ud.country}" />
+                                    <p:inputText id="country" class="form-control" placeholder="Enter the Country" value="#{homeCDI.ud.country}" required="true" requiredMessage="Country is Required"/>
+                                    <h:message for="country" style="color: red;" /><br/>
                                 </div>
                             </div>
 

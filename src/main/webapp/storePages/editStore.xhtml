@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
@@ -11,55 +12,64 @@
         <ui:include src="storeHeader.xhtml" />
         
         <div class="content-wrapper">
-        <div class="container">
-            <!--<div class="container-fluid">-->
-                <!--<div class="row">-->
-                    <!-- left column -->
-                    <div class="col-md-8" style="padding-top: 2%;">
-                        <div class="card card-primary">
-                            <div class="card-header" style="background:#20c997">
-                                <h3 class="card-title">Edit Store</h3>
-                            </div>
-                            <!-- /.card-header -->
-                            <!-- form start -->
-                            <h:form enctype="multipart/form-data">
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <h:inputHidden value="#{electronicProductCDI.esd.storeId}"/>
-                                        <h:inputHidden value="#{electronicProductCDI.esd.storeLogo}"/>
-                                        <h:inputHidden value="#{electronicProductCDI.esd.email}" />
-                                        <label for="exampleInputStore">Store Name</label>
-                                        <p:inputText class="form-control" placeholder="Enter the store name" value="#{electronicProductCDI.esd.storeName}"/>
+            <div class="container">
+                <!--<div class="container-fluid">-->
+                    <!--<div class="row">-->
+                        <!-- left column -->
+                        <div class="col-md-8" style="padding-top: 2%;">
+                            <div class="card card-primary">
+                                <div class="card-header" style="background:#20c997">
+                                    <h3 class="card-title">Edit Store</h3>
+                                </div>
+                                <!-- /.card-header -->
+                                <!-- form start -->
+                                <h:form enctype="multipart/form-data">
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <h:inputHidden value="#{electronicProductCDI.esd.storeId}"/>
+                                            <h:inputHidden value="#{electronicProductCDI.esd.storeLogo}"/>
+                                            <h:inputHidden value="#{electronicProductCDI.esd.email}"/>
+                                            
+                                            <label for="exampleInputStore">Store Name</label>
+                                            <p:inputText id="storeName" class="form-control" placeholder="Enter the store name" value="#{electronicProductCDI.esd.storeName}" required="true" requiredMessage="Store Name is Required"/>
+                                            <h:message for="storeName" style="color: red;" /><br/>
 
-                                        <label for="exampleInputEmail">Email</label>
-                                        <p:inputText class="form-control" placeholder="Enter the email" value="#{electronicProductCDI.esd.email}" readonly="true"/>
+                                            <label for="exampleInputEmail">Email</label>
+                                            <p:inputText id="email" class="form-control" placeholder="Enter the email" value="#{electronicProductCDI.esd.email}" readonly="true" validatorMessage="Email is required and must be in a valid format">
+                                                <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$" />
+                                            </p:inputText>
+                                            <h:message for="email" style="color: red;" /><br/>
 
-                                        <label for="exampleInputContactNo">Contact No</label>
-                                        <p:inputText class="form-control" placeholder="Enter the number" value="#{electronicProductCDI.esd.contactNo}"/>
+                                            <label for="exampleInputContactNo">Contact No</label>
+                                            <p:inputText id="contactNo" class="form-control" placeholder="Enter the number" value="#{electronicProductCDI.esd.contactNo}" required="true" requiredMessage="Phone Number is Required"/>
+                                            <h:message for="contactNo" style="color: red;" /><br/>
 
-                                        <label for="exampleInputPassword">Password</label>
-                                        <p:inputText class="form-control" placeholder="Enter the password" value="#{electronicProductCDI.esd.password}"/>
-                                        
-                                        <label for="exampleInputImage">Logo</label>
-                                        <img src="#{request.contextPath}/public/uploads/#{electronicProductCDI.esd.storeLogo}" height="55px" width="55px;"/>
-                                        <p:fileUpload class="form-control" id="logo" value="#{electronicProductCDI.file}" mode="simple" />
+                                            <label for="exampleInputPassword">Password</label>
+                                            <p:inputText id="password" class="form-control" placeholder="Enter the password" value="#{electronicProductCDI.esd.password}" required="true" requiredMessage="Password is Required"/>
+                                            <h:message for="password" style="color: red;" /><br/>
+                                            
+                                            <label for="exampleInputImage">Logo</label>
+                                            <img src="#{request.contextPath}/public/uploads/#{electronicProductCDI.esd.storeLogo}" height="55px" width="55px;"/>
+                                            <p:fileUpload class="form-control" id="logo" value="#{electronicProductCDI.file}" mode="simple"/>
 
-                                        <label for="exampleInputAddress">Address</label>
-                                        <p:inputText class="form-control" placeholder="Enter the Address" value="#{electronicProductCDI.esd.address}" />
-                                        
-                                        <label for="exampleInputCountry">Country</label>
-                                        <p:inputText class="form-control" placeholder="Enter the Country" value="#{electronicProductCDI.esd.country}" />
+                                            <label for="exampleInputAddress">Address</label>
+                                            <p:inputText id="address" class="form-control" placeholder="Enter the Address" value="#{electronicProductCDI.esd.address}" required="true" requiredMessage="Address is Required"/>
+                                            <h:message for="address" style="color: red;" /><br/>
+
+                                            <label for="exampleInputCountry">Country</label>
+                                            <p:inputText id="country" class="form-control" placeholder="Enter the Country" value="#{electronicProductCDI.esd.country}" required="true" requiredMessage="Country is Required"/>
+                                            <h:message for="country" style="color: red;" /><br/>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="card-footer">
-                                    <h:commandButton class="btn btn-primary" action="#{electronicProductCDI.editStore()}" style="background:#20c997" value="Edit Store"/>
-                                </div>
-                            </h:form>
+                                    <div class="card-footer">
+                                        <h:commandButton class="btn btn-primary" action="#{electronicProductCDI.editStore()}" style="background:#20c997" value="Edit Store"/>
+                                    </div>
+                                </h:form>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <!--</div>-->
-        </div>
+                <!--</div>-->
+            </div>
     </h:body>
 </html>

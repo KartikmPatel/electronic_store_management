@@ -82,6 +82,7 @@ public class homeCDI {
     GenericType<Collection<ElectronicStoreSellingProduct>> gproductfordropdown;
     String prodId;
     Integer sellingProdId;
+    String confirmPassword;
 
     UserDetails ud = new UserDetails();
 
@@ -170,7 +171,7 @@ public class homeCDI {
     public void setSellingProdId(Integer sellingProdId) {
         this.sellingProdId = sellingProdId;
     }
-    
+
     // load selling product into the dropdown
     public Collection<ElectronicStoreSellingProduct> getProductfordropdown() {
         rs = uc.getAllSellingProducts(Response.class);
@@ -312,22 +313,35 @@ public class homeCDI {
         }
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     public String userRegister() {
-        String fileName = uploadImage();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String formattedDate = dateFormat.format(ud.getDob());
-        uc.addUserDetails(ud.getUsername(), ud.getEmail(), String.valueOf(ud.getContactNo()), ud.getPassword(), formattedDate, ud.getGender(), fileName, ud.getAddress(), ud.getCountry());
-        ugc.addUser(ud.getEmail(), ud.getPassword());
-        ugc.addGroup("User", ud.getEmail());
+        if (ud.getPassword().equals(confirmPassword)) {
+            String fileName = uploadImage();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String formattedDate = dateFormat.format(ud.getDob());
+            uc.addUserDetails(ud.getUsername(), ud.getEmail(), String.valueOf(ud.getContactNo()), ud.getPassword(), formattedDate, ud.getGender(), fileName, ud.getAddress(), ud.getCountry());
+            ugc.addUser(ud.getEmail(), ud.getPassword());
+            ugc.addGroup("User", ud.getEmail());
 
-        // Call sendConfirmationEmail to send the email after user registration
-        sendConfirmationEmail(ud.getUsername(), ud.getEmail(), String.valueOf(ud.getContactNo()), ud.getPassword(), formattedDate, ud.getGender(), "C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName, ud.getAddress(), ud.getCountry());
+            // Call sendConfirmationEmail to send the email after user registration
+            sendConfirmationEmail(ud.getUsername(), ud.getEmail(), String.valueOf(ud.getContactNo()), ud.getPassword(), formattedDate, ud.getGender(), "C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName, ud.getAddress(), ud.getCountry());
 
-        FacesContext context = FacesContext.getCurrentInstance();
-        try {
-            context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/login.jsf");
-        } catch (IOException e) {
-            e.printStackTrace();
+            FacesContext context = FacesContext.getCurrentInstance();
+            try {
+                context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/login.jsf");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            succesMessage = "Password and Confirm Password Does Not Match";
+            return "userRegister";
         }
         return null;
     }
@@ -348,7 +362,7 @@ public class homeCDI {
         }
         ugc.changePassword(ud.getEmail(), ud.getPassword());
         succesProfilemsg = "Profile Successfully Edited";
-        return "userDashboard?faces-redirect=true";
+        return "userDashboard";
     }
 
     // add data in the cart table

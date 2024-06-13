@@ -2,7 +2,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <link rel="stylesheet" type="text/css" href="#{request.contextPath}/public/css/companyRegisterDesign.css" />
     </h:head>
@@ -11,41 +13,52 @@
             <div class="title">
                 <p>Company Registration</p>
             </div>
-            <h:form enctype="multipart/form-data" onsubmit="return validateCaptcha()">
+            <c:if test="${not empty companyCDIBean.succesMessage}">
+                <div style="color: red;margin-left: 25px;font-size: 20px;">
+                    ${companyCDIBean.succesMessage}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <!--<span aria-hidden="true">&times;</span>-->
+                    </button>
+                </div>
+            </c:if>
+            <h:form enctype="multipart/form-data">
                 <div class="user_details">
                     <div class="input_box">
                         <h:outputLabel value="Company Name" />
-                        <p:inputText placeholder="Enter the company name" value="#{companyCDIBean.cd.companyName}" />
+                        <p:inputText id="companyName" placeholder="Enter the company name" value="#{companyCDIBean.cd.companyName}" required="true" requiredMessage="Company Name is Required"/>
+                        <h:message for="companyName" style="color: red;" />
                     </div>
                     <div class="input_box">
                         <h:outputLabel value="Email" />
-                        <p:inputText placeholder="Enter the Email Address" value="#{companyCDIBean.cd.email}"/>
+                        <p:inputText id="email" placeholder="Enter the Email Address" value="#{companyCDIBean.cd.email}" validatorMessage="Email is required and must be in a valid format">
+                            <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$" />
+                        </p:inputText>
+                        <h:message for="email" style="color: red;" />
                     </div>
                     <div class="input_box">
                         <h:outputLabel value="Phone Number" />
-                        <p:inputText placeholder="Enter the number" value="#{companyCDIBean.cd.contactNo}"/>
+                        <p:inputText id="phone" placeholder="Enter the number" value="#{companyCDIBean.cd.contactNo}" required="true" requiredMessage="Phone Number is Required"/>
+                        <h:message for="phone" style="color: red;" />
                     </div>
                     <div class="input_box">
                         <h:outputLabel value="Logo" />
-                        <p:fileUpload id="logo" value="#{companyCDIBean.file}" mode="simple" />
+                        <p:fileUpload id="logo" value="#{companyCDIBean.file}" mode="simple"/>
                     </div>
                     <div class="input_box">
                         <h:outputLabel value="Password" />
-                        <p:inputText placeholder="Enter the password" value="#{companyCDIBean.cd.password}"/>
+                        <p:password id="password" placeholder="Enter the password" value="#{companyCDIBean.cd.password}" required="true" requiredMessage="Password is Required"/>
+                        <h:message for="password" style="color: red;" />
+                    </div>
+                    <div class="input_box">
+                        <h:outputLabel value="Confirm Password" />
+                        <p:password id="confirmpassword" placeholder="Enter the confirm password" value="#{companyCDIBean.confirmPassword}" required="true" requiredMessage="Confirm Password is Required"/>
+                        <h:message for="confirmpassword" style="color: red;" />
                     </div>
                     <div class="input_box">
                         <h:outputLabel value="Country" />
-                        <p:inputText placeholder="Enter the Country" value="#{companyCDIBean.cd.country}" />
+                        <p:inputText id="country" placeholder="Enter the Country" value="#{companyCDIBean.cd.country}" required="true" requiredMessage="Country is Required"/>
+                        <h:message for="country" style="color: red;" />
                     </div>
-                    <div class="input_box">
-                        <h:outputLabel value="Captcha" />
-                        <p:inputText id="captcha" readonly="true" />
-                    </div>
-                    <div class="input_box">
-                        <h:outputLabel value="Enter captcha"/>
-                        <p:inputText id="uc" placeholder="Enter the Captcha"/>
-                    </div>
-
                 </div>
 
                 <div class="reg_btn">
@@ -53,5 +66,6 @@
                 </div>
             </h:form>
         </div>
+
     </h:body>
 </html>

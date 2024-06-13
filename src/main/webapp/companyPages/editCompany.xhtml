@@ -10,54 +10,58 @@
     </h:head>
     <h:body>
         <ui:include src="../companyPages/companyHeader.xhtml" />
-        
+
         <div class="content-wrapper">
-        <div class="container">
-            <!--<div class="container-fluid">-->
-                <!--<div class="row">-->
-                    <!-- left column -->
-                    <div class="col-md-8" style="padding-top: 2%;">
-                        <div class="card card-primary">
-                            <div class="card-header" style="background:#17a2b8">
-                                <h3 class="card-title">Edit Company</h3>
-                            </div>
-                            <!-- /.card-header -->
-                            <!-- form start -->
-                            <h:form enctype="multipart/form-data">
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <h:inputHidden value="#{companyCDIBean.cd.companyId}"/>
-                                        <h:inputHidden value="#{companyCDIBean.cd.companyLogo}"/>
-                                        <h:inputHidden value="#{companyCDIBean.cd.email}"/>
-                                        <label for="exampleInputCompany">Company Name</label>
-                                        <p:inputText class="form-control" placeholder="Enter the company name" value="#{companyCDIBean.cd.companyName}"/>
-                                        
-                                        <label for="exampleInputEmail">Email</label>
-                                        <p:inputText class="form-control" placeholder="Enter the email" value="#{companyCDIBean.cd.email}" readonly="true"/>
-
-                                        <label for="exampleInputContactNo">Contact No</label>
-                                        <p:inputText class="form-control" placeholder="Enter the number" value="#{companyCDIBean.cd.contactNo}"/>
-
-                                        <label for="exampleInputPassword">Password</label>
-                                        <p:inputText class="form-control" placeholder="Enter the password" value="#{companyCDIBean.cd.password}"/>
-
-                                        <label for="exampleInputImage">Logo</label>
-                                        <img src="#{request.contextPath}/public/uploads/#{companyCDIBean.cd.companyLogo}" height="55px" width="55px;"/>
-                                        <p:fileUpload class="form-control" id="logo" value="#{companyCDIBean.file}" mode="simple" />
-
-                                        <label for="exampleInputCountry">Country</label>
-                                        <p:inputText class="form-control" placeholder="Enter the Country" value="#{companyCDIBean.cd.country}" />
-                                    </div>
-                                </div>
-
-                                <div class="card-footer">
-                                    <h:commandButton class="btn btn-primary" action="#{companyCDIBean.editCompany}" style="background:#17a2b8" value="Edit Company"/>
-                                </div>
-                            </h:form>
+            <div class="container">
+                <div class="col-md-8" style="padding-top: 2%;">
+                    <div class="card card-primary">
+                        <div class="card-header" style="background:#17a2b8">
+                            <h3 class="card-title">Edit Company</h3>
                         </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <h:form enctype="multipart/form-data">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <h:inputHidden value="#{companyCDIBean.cd.companyId}"/>
+                                    <h:inputHidden value="#{companyCDIBean.cd.companyLogo}"/>
+                                    <h:inputHidden value="#{companyCDIBean.cd.email}"/>
+
+                                    <label for="exampleInputCompany">Company Name</label>
+                                    <p:inputText id="companyName" class="form-control" placeholder="Enter the company name" value="#{companyCDIBean.cd.companyName}" required="true" requiredMessage="Company Name is Required"/>
+                                    <h:message for="companyName" style="color: red;" /><br/>
+
+                                    <label for="exampleInputEmail">Email</label>
+                                    <p:inputText id="email" class="form-control" placeholder="Enter the email" value="#{companyCDIBean.cd.email}" readonly="true" validatorMessage="Email is required and must be in a valid format">
+                                        <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$" />
+                                    </p:inputText>
+                                    <h:message for="email" style="color: red;" /><br/>
+
+                                    <label for="exampleInputContactNo">Contact No</label>
+                                    <p:inputText id="contactNo" class="form-control" placeholder="Enter the number" value="#{companyCDIBean.cd.contactNo}" required="true" requiredMessage="Phone Number is Required"/>
+                                    <h:message for="contactNo" style="color: red;" /><br/>
+
+                                    <label for="exampleInputPassword">Password</label>
+                                    <p:inputText id="password" class="form-control" placeholder="Enter the password" value="#{companyCDIBean.cd.password}" required="true" requiredMessage="Password is Required"/>
+                                    <h:message for="password" style="color: red;" /><br/>
+
+                                    <label for="exampleInputImage">Logo</label>
+                                    <img src="#{request.contextPath}/public/uploads/#{companyCDIBean.cd.companyLogo}" height="55px" width="55px;"/>
+                                    <p:fileUpload class="form-control" id="logo" value="#{companyCDIBean.file}" mode="simple"/>
+
+                                    <label for="exampleInputCountry">Country</label>
+                                    <p:inputText id="country" class="form-control" placeholder="Enter the Country" value="#{companyCDIBean.cd.country}" required="true" requiredMessage="Country is Required"/>
+                                    <h:message for="country" style="color: red;" /><br/>
+                                </div>
+                            </div>
+
+                            <div class="card-footer">
+                                <h:commandButton class="btn btn-primary" action="#{companyCDIBean.editCompany}" style="background:#17a2b8" value="Edit Company"/>
+                            </div>
+                        </h:form>
                     </div>
                 </div>
-            <!--</div>-->
+            </div>
         </div>
     </h:body>
 </html>

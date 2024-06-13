@@ -246,6 +246,6 @@ public class electronicProductCDI {
         }
         ugc.changePassword(esd.getEmail(), esd.getPassword());
         succesMessage = "Profile Successfully Edited";
-        return "storeDashboard?faces-redirect=true";
+        return "storeDashboard";
     }
 }

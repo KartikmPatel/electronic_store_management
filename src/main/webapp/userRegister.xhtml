@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <link rel="stylesheet" type="text/css" href="#{request.contextPath}/public/css/companyRegisterDesign.css" />
     </h:head>
@@ -12,35 +13,59 @@
             <div class="title">
                 <p>User Registration</p>
             </div>
-            <h:form enctype="multipart/form-data" onsubmit="return validateCaptcha()">
+            <c:if test="${not empty homeCDI.succesMessage}">
+                <div style="color: red;margin-left: 25px;font-size: 20px;">
+                    ${homeCDI.succesMessage}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <!--<span aria-hidden="true">&times;</span>-->
+                    </button>
+                </div>
+            </c:if>
+            <h:form enctype="multipart/form-data">
                 <div class="user_details">
                     <div class="input_box">
                         <h:outputLabel value="User Name" />
-                        <p:inputText placeholder="Enter the User name" value="#{homeCDI.ud.username}" />
+                        <p:inputText id="username" placeholder="Enter the User name" value="#{homeCDI.ud.username}" required="true" requiredMessage="Username is Required"/>
+                        <h:message for="username" style="color: red;" />
                     </div>
                     <div class="input_box">
                         <h:outputLabel value="Email" />
-                        <p:inputText placeholder="Enter the Email Address" value="#{homeCDI.ud.email}"/>
+                        <p:inputText id="email" placeholder="Enter the Email Address" value="#{homeCDI.ud.email}" validatorMessage="Email is required and must be in a valid format">
+                            <f:validateRegex pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$" />
+                        </p:inputText>
+                        <h:message for="email" style="color: red;" />
                     </div>
                     <div class="input_box">
                         <h:outputLabel value="Phone Number" />
-                        <p:inputText placeholder="Enter the number" value="#{homeCDI.ud.contactNo}"/>
+                        <p:inputText id="phone" placeholder="Enter the number" value="#{homeCDI.ud.contactNo}" required="true" requiredMessage="Phone Number is Required">
+                        </p:inputText>
+                        <h:message for="phone" style="color: red;" />
                     </div>
                     <div class="input_box">
                         <h:outputLabel value="Password" />
-                        <p:inputText placeholder="Enter the password" value="#{homeCDI.ud.password}"/>
+                        <p:password id="password" placeholder="Enter the password" value="#{homeCDI.ud.password}" required="true" requiredMessage="Password is Required" />
+                        <h:message for="password" style="color: red;" />
                     </div>
                     <div class="input_box">
                         <h:outputLabel value="DOB" />
-                        <p:calendar id="exampleInputDate" value="#{homeCDI.ud.dob}" placeholder="Enter the DOB" /><br></br>
+                        <p:calendar id="dob" value="#{homeCDI.ud.dob}" pattern="yyyy-MM-dd" placeholder="Enter the DOB" required="true" requiredMessage="DOB is Required"/>
+                        <h:message for="dob" style="color: red;" />
+                    </div>
+                    <div class="input_box">
+                        <h:outputLabel value="Confirm Password" />
+                        <p:password id="confirmPassword" placeholder="Enter the Confirm Password" value="#{homeCDI.confirmPassword}" required="true" requiredMessage="Confirm Password is Required">
+
+                        </p:password>
+                        <h:message for="confirmPassword" style="color: red;" />
                     </div>
                     <div class="input_box">
                         <h:outputLabel value="Gender" />
-                        <p:selectOneRadio value="#{homeCDI.ud.gender}">
-                            <f:selectItem itemLabel="Male" itemValue="Male"></f:selectItem>
-                            <f:selectItem itemLabel="Female" itemValue="Female"></f:selectItem>
-                            <f:selectItem itemLabel="Other" itemValue="Other"></f:selectItem>
+                        <p:selectOneRadio id="gender" value="#{homeCDI.ud.gender}" required="true" requiredMessage="Gender is Required">
+                            <f:selectItem itemLabel="Male" itemValue="Male" />
+                            <f:selectItem itemLabel="Female" itemValue="Female" />
+                            <f:selectItem itemLabel="Other" itemValue="Other" />
                         </p:selectOneRadio>
+                        <h:message for="gender" style="color: red;" />
                     </div>
                     <div class="input_box">
                         <h:outputLabel value="Profile Pic" />
@@ -48,16 +73,18 @@
                     </div>
                     <div class="input_box">
                         <h:outputLabel value="Address" />
-                        <p:inputText placeholder="Enter the address" value="#{homeCDI.ud.address}"/>
+                        <p:inputText id="address" placeholder="Enter the address" value="#{homeCDI.ud.address}" required="true" requiredMessage="Address is Required" />
+                        <h:message for="address" style="color: red;" />
                     </div>
                     <div class="input_box">
                         <h:outputLabel value="Country" />
-                        <p:inputText placeholder="Enter the Country" value="#{homeCDI.ud.country}" />
+                        <p:inputText id="country" placeholder="Enter the Country" value="#{homeCDI.ud.country}" required="true" requiredMessage="Country is Required" />
+                        <h:message for="country" style="color: red;" />
                     </div>
                 </div>
 
                 <div class="reg_btn">
-                    <h:commandButton value="Register" action="#{homeCDI.userRegister()}"/>
+                    <h:commandButton value="Register" action="#{homeCDI.userRegister()}" />
                 </div>
             </h:form>
         </div>
