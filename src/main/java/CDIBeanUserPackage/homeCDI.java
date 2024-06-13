@@ -12,6 +12,7 @@ import EntityPackage.UserCartDetails;
 import EntityPackage.UserDetails;
 import RestClientPackage.userClient;
 import RestClientPackage.userGroupClient;
+import com.itextpdf.io.image.ImageData;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
@@ -60,6 +61,30 @@ import javax.mail.util.ByteArrayDataSource;
 import java.util.Properties;
 import javax.mail.Multipart;
 import javax.mail.Session;
+
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.kernel.colors.ColorConstants;
+import com.itextpdf.kernel.font.PdfFont;
+import com.itextpdf.kernel.font.PdfFontFactory;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.layout.property.UnitValue;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 
 /**
  *
@@ -208,7 +233,7 @@ public class homeCDI {
         if (file != null) {
             try (InputStream input = file.getInputStream()) {
                 fileName = file.getFileName();
-                OutputStream output = new FileOutputStream("C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
+                OutputStream output = new FileOutputStream("C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
                 try {
                     byte[] buffer = new byte[1024];
                     int bytesRead;
@@ -331,7 +356,7 @@ public class homeCDI {
             ugc.addGroup("User", ud.getEmail());
 
             // Call sendConfirmationEmail to send the email after user registration
-            sendConfirmationEmail(ud.getUsername(), ud.getEmail(), String.valueOf(ud.getContactNo()), ud.getPassword(), formattedDate, ud.getGender(), "C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName, ud.getAddress(), ud.getCountry());
+            sendConfirmationEmail(ud.getUsername(), ud.getEmail(), String.valueOf(ud.getContactNo()), ud.getPassword(), formattedDate, ud.getGender(), "C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName, ud.getAddress(), ud.getCountry());
 
             FacesContext context = FacesContext.getCurrentInstance();
             try {
@@ -477,7 +502,7 @@ public class homeCDI {
     public String addUserOrder() throws IOException {
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String dateString = currentDate.format(formatter); // Convert LocalDate to String
+        String dateString = currentDate.format(formatter);
 
         Collection<UserCartDetails> ucd = ucart;
         Collection<ElectronicStoreFestival> festivals = storeFestivals;
@@ -485,106 +510,128 @@ public class homeCDI {
         for (UserCartDetails cd : ucd) {
             boolean festivalDiscountApplied = false;
             for (ElectronicStoreFestival f : festivals) {
-                // Format the festival date to match the current date format
                 String festivalDate = new SimpleDateFormat("EEE MMM dd 00:00:00 zzz yyyy").format(f.getFestivalDate());
 
                 if (festivalDate.equals(getCurrentDate())) {
-                    uc.addUserOrder(String.valueOf(cd.getQuantity()), String.valueOf(cd.getQuantity() * (cd.getSellingProductId().getPrice() - (cd.getSellingProductId().getPrice() * f.getFestivalDiscount() + cd.getSellingProductId().getProductId().getDiscount()) / 100)), dateString, String.valueOf(cd.getSellingProductId().getSellingProductId()), String.valueOf(lb.getComId()));
+                    uc.addUserOrder(String.valueOf(cd.getQuantity()),
+                            String.valueOf(cd.getQuantity() * (cd.getSellingProductId().getPrice() -
+                                    (cd.getSellingProductId().getPrice() * f.getFestivalDiscount() + cd.getSellingProductId().getProductId().getDiscount()) / 100)),
+                            dateString, String.valueOf(cd.getSellingProductId().getSellingProductId()), String.valueOf(lb.getComId()));
                     festivalDiscountApplied = true;
                     break;
                 }
             }
             if (!festivalDiscountApplied) {
-                uc.addUserOrder(String.valueOf(cd.getQuantity()), String.valueOf(cd.getQuantity() * (cd.getSellingProductId().getPrice() - (cd.getSellingProductId().getPrice() * cd.getSellingProductId().getProductId().getDiscount()) / 100)), dateString, String.valueOf(cd.getSellingProductId().getSellingProductId()), String.valueOf(lb.getComId()));
+                uc.addUserOrder(String.valueOf(cd.getQuantity()),
+                        String.valueOf(cd.getQuantity() * (cd.getSellingProductId().getPrice() -
+                                (cd.getSellingProductId().getPrice() * cd.getSellingProductId().getProductId().getDiscount()) / 100)),
+                        dateString, String.valueOf(cd.getSellingProductId().getSellingProductId()), String.valueOf(lb.getComId()));
             }
         }
 
         uc.removeAllCartItems(String.valueOf(lb.getComId()));
 
-        // pdf generate and download code
-//        FacesContext facesContext = FacesContext.getCurrentInstance();
-//        HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
-//        response.setContentType("application/pdf");
-//        response.setHeader("Content-Disposition", "attachment; filename=\"order_details.pdf\"");
-        // Generate PDF and save to Downloads folder
         String home = System.getProperty("user.home");
         Path downloadsDir = Paths.get(home, "Downloads");
         if (!Files.exists(downloadsDir)) {
             Files.createDirectories(downloadsDir);
         }
         Path pdfPath = downloadsDir.resolve("order_details.pdf");
-//        OutputStream out = response.getOutputStream();
         PdfWriter writer = new PdfWriter(pdfPath.toString());
         PdfDocument pdf = new PdfDocument(writer);
         Document document = new Document(pdf);
 
-        Integer totalAmt = 0;
+        double totalAmt = 0.0;
 
-        // Add title
+        String imagePath = "C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/logo.jpeg";
+        ImageData imageData = ImageDataFactory.create(imagePath);
+        Image logo = new Image(imageData);
+        logo.setWidth(UnitValue.createPercentValue(20))
+                .setTextAlignment(TextAlignment.LEFT);
+        
+
+        // Logo and company info side by side with space
+        Paragraph companyInfo = new Paragraph()
+                .add("Gada Electronic Store\n")
+                .add("5V88 V3C, Aarey Colony, Goregaon\n")
+                .add("Mumbai, Maharashtra 400063\n")
+                .add("Phone: (123) 456-7890\n")
+                .add("Email: gada@electronicstore.com")
+                .setFontColor(ColorConstants.DARK_GRAY)
+                .setFontSize(10)
+                .setTextAlignment(TextAlignment.RIGHT)
+                .setMarginLeft(250);
+
+        Paragraph logoAndCompany = new Paragraph()
+                .add(logo)
+                .add(companyInfo);
+
+        // Add space between logo and company info
+        logoAndCompany.setMarginTop(20); // Adjust margin between logo and company info
+
+        document.add(logoAndCompany);
+
         Paragraph title = new Paragraph("Order Details")
-                .setFontSize(20)
+                .setFontSize(24)
                 .setBold()
                 .setTextAlignment(TextAlignment.CENTER)
-                .setFontColor(ColorConstants.GREEN)
+                .setFontColor(ColorConstants.BLUE)
+                .setMarginTop(30)
                 .setMarginBottom(20);
         document.add(title);
 
-        // Add date
         Paragraph date = new Paragraph("Date: " + LocalDate.now().toString())
+                .setFontSize(12)
                 .setTextAlignment(TextAlignment.RIGHT)
-                .setMarginBottom(10);
+                .setMarginBottom(20);
         document.add(date);
 
-        // Add content to the PDF
-        Collection<UserCartDetails> ucd1 = ucart;
+        float[] columnWidths = {1, 4, 2, 2, 2};
+        Table table = new Table(columnWidths);
+        table.setWidth(UnitValue.createPercentValue(100));
 
-        for (UserCartDetails cd : ucd1) {
-            document.add(new Paragraph("Product Name: " + cd.getSellingProductId().getProductId().getProductName())
-                    .setMarginBottom(5));
-            document.add(new Paragraph("Quantity: " + cd.getQuantity())
-                    .setMarginBottom(5));
+        table.addHeaderCell(new Cell().add(new Paragraph("S.No")).setBold().setBackgroundColor(ColorConstants.LIGHT_GRAY));
+        table.addHeaderCell(new Cell().add(new Paragraph("Product Name")).setBold().setBackgroundColor(ColorConstants.LIGHT_GRAY));
+        table.addHeaderCell(new Cell().add(new Paragraph("Quantity")).setBold().setBackgroundColor(ColorConstants.LIGHT_GRAY));
+        table.addHeaderCell(new Cell().add(new Paragraph("Price")).setBold().setBackgroundColor(ColorConstants.LIGHT_GRAY));
+        table.addHeaderCell(new Cell().add(new Paragraph("Total Price")).setBold().setBackgroundColor(ColorConstants.LIGHT_GRAY));
+
+        int serialNumber = 1;
+
+        for (UserCartDetails cd : ucd) {
             boolean festivalDiscountApplied = false;
+            double price = cd.getSellingProductId().getPrice();
+            double discount = cd.getSellingProductId().getProductId().getDiscount();
             for (ElectronicStoreFestival f : festivals) {
-                // Format the festival date to match the current date format
                 String festivalDate = new SimpleDateFormat("EEE MMM dd 00:00:00 zzz yyyy").format(f.getFestivalDate());
 
                 if (festivalDate.equals(getCurrentDate())) {
-                    document.add(new Paragraph("Price: " + (cd.getSellingProductId().getPrice()
-                            - (cd.getSellingProductId().getPrice() * f.getFestivalDiscount() + cd.getSellingProductId().getProductId().getDiscount()) / 100))
-                            .setMarginBottom(5));
-                    document.add(new Paragraph("Total Price: " + cd.getQuantity() * (cd.getSellingProductId().getPrice()
-                            - (cd.getSellingProductId().getPrice() * f.getFestivalDiscount() + cd.getSellingProductId().getProductId().getDiscount()) / 100))
-                            .setMarginBottom(10));
-
-                    totalAmt += cd.getQuantity() * (cd.getSellingProductId().getPrice()
-                            - (cd.getSellingProductId().getPrice() * f.getFestivalDiscount() + cd.getSellingProductId().getProductId().getDiscount()) / 100);
+                    discount += f.getFestivalDiscount();
                     festivalDiscountApplied = true;
                     break;
                 }
             }
-            if (!festivalDiscountApplied) {
-                document.add(new Paragraph("Price: " + (cd.getSellingProductId().getPrice()
-                        - (cd.getSellingProductId().getPrice() * cd.getSellingProductId().getProductId().getDiscount()) / 100))
-                        .setMarginBottom(5));
-                document.add(new Paragraph("Total Price: " + cd.getQuantity() * (cd.getSellingProductId().getPrice()
-                        - (cd.getSellingProductId().getPrice() * cd.getSellingProductId().getProductId().getDiscount()) / 100))
-                        .setMarginBottom(10));
+            double finalPrice = price - (price * discount / 100);
+            double totalPrice = cd.getQuantity() * finalPrice;
+            totalAmt += totalPrice;
 
-                totalAmt += cd.getQuantity() * (cd.getSellingProductId().getPrice()
-                        - (cd.getSellingProductId().getPrice() * cd.getSellingProductId().getProductId().getDiscount()) / 100);
-
-            }
+            table.addCell(new Cell().add(new Paragraph(String.valueOf(serialNumber++))));
+            table.addCell(new Cell().add(new Paragraph(cd.getSellingProductId().getProductId().getProductName())));
+            table.addCell(new Cell().add(new Paragraph(String.valueOf(cd.getQuantity()))));
+            table.addCell(new Cell().add(new Paragraph(String.format("%.2f", finalPrice))));
+            table.addCell(new Cell().add(new Paragraph(String.format("%.2f", totalPrice))));
         }
 
-        // Add total amount
-        Paragraph total = new Paragraph("Total Amount: " + totalAmt)
+        document.add(table);
+
+        Paragraph total = new Paragraph("Total Amount: " + String.format("%.2f", totalAmt))
                 .setFontSize(14)
                 .setBold()
                 .setTextAlignment(TextAlignment.RIGHT)
                 .setMarginTop(20);
         document.add(total);
 
-        Paragraph status1 = new Paragraph("Order Verified: " + "Pending")
+        Paragraph status1 = new Paragraph("Order Verified: Pending")
                 .setFontSize(10)
                 .setBold()
                 .setTextAlignment(TextAlignment.RIGHT)
@@ -592,9 +639,15 @@ public class homeCDI {
                 .setMarginTop(5);
         document.add(status1);
 
+        Paragraph thankYouNote = new Paragraph("Thank you for shopping with us!\n\nPlease visit us again.")
+                .setFontSize(12)
+                .setTextAlignment(TextAlignment.CENTER)
+                .setMarginTop(20);
+        document.add(thankYouNote);
+
         document.close();
 
-        succesMessage = "Your order has been successfully placed, and the bill has been downloaded";
+        succesMessage = "Your order has been successfully placed and the bill has been downloaded";
         return "userDashboard.jsf";
     }
 }
