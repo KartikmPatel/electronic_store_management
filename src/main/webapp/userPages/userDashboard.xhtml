@@ -7,7 +7,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title>User Dashboard</title>
         <link rel="stylesheet" type="text/css" href="#{request.contextPath}/public/css/userHome.css" />
         <style>
             .festival-banner {
@@ -58,7 +58,7 @@
     <h:body>
         <ui:include src="userHeader.xhtml" />
 
-        <div class="content-wrapper">
+        <div class="content-wrapper" style="padding-top: 3.5%;">
             <c:choose>
                 <c:when test="${not empty homeCDI.succesMessage}">
                     <div class="alert alert-success alert-dismissible fade show" role="alert">

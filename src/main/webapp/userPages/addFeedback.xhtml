@@ -6,7 +6,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Add Feedback</title>
         <style>
             .form-group label {
                 display: block;
@@ -17,7 +17,7 @@
     <h:body>
         <ui:include src="userHeader.xhtml" />
 
-        <div class="content-wrapper">
+        <div class="content-wrapper" style="padding-top: 3.5%;">
             <div class="container">
                 <c:if test="${not empty userOrderDetailsCDI.successMessage}">
                     <div class="alert alert-success alert-dismissible fade show" role="alert">

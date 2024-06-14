@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>About Us</title>
+        <link rel="stylesheet" type="text/css" href="#{request.contextPath}/public/css/AboutUsDesign.css" />
+    </h:head>
+    <h:body>
+        <ui:include src="userHeader.xhtml" />
+
+        <div class="container">
+            <main style="margin-top: 3.5%;">
+                <section class="about">
+                    <h2>${msgs.ourserviceslbl}</h2>
+                    <p>${msgs.ourservices1}</p>
+                    <p>${msgs.ourservices2}</p>
+                    <p>${msgs.ourservices3}</p>
+                </section>
+                <section class="gallery">
+                    <h2>${msgs.ourgallerylbl}</h2>
+                    <div class="gallery-container">
+                        <div class="gallery-item">
+                            <img src="#{request.contextPath}/public/uploads/vivov20.webp" alt="Image 1" />
+                        </div>
+                        <div class="gallery-item">
+                            <img src="#{request.contextPath}/public/uploads/ACimg1.jpg" alt="Image 2" />
+                        </div>
+                        <div class="gallery-item">
+                            <img src="#{request.contextPath}/public/uploads/LGTV1.avif" alt="Image 3" />
+                        </div>
+                        <div class="gallery-item">
+                            <img src="#{request.contextPath}/public/uploads/LGTV2.avif" alt="Image 4" />
+                        </div>
+                        <div class="gallery-item">
+                            <img src="#{request.contextPath}/public/uploads/hpLaptop1.jpg" alt="Image 5" />
+                        </div>
+                        <div class="gallery-item">
+                            <img src="#{request.contextPath}/public/uploads/LGMachine1.avif" alt="Image 6" />
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </h:body>
+</html>
