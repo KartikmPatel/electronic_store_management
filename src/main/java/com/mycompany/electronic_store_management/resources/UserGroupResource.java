@@ -45,4 +45,12 @@ public class UserGroupResource {
     public void changePassword(@PathParam("email") String email,@PathParam("password") String password){
         ugobj.changePassword(email, password);
     }
+    
+    @GET
+    @Path("checkEmail/{email}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean checkEmail(@PathParam("email") String email){
+        return ugobj.emailExists(email);
+    }
 }

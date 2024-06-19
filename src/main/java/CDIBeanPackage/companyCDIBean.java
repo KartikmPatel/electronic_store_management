@@ -225,7 +225,7 @@ public class companyCDIBean {
         if (file != null) {
             try (InputStream input = file.getInputStream()) {
                 fileName = file.getFileName();
-                OutputStream output = new FileOutputStream("C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
+                OutputStream output = new FileOutputStream("C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
                 try {
                     byte[] buffer = new byte[1024];
                     int bytesRead;
@@ -336,14 +336,19 @@ public class companyCDIBean {
     }
 
     // Register Company
-    public String addCompany() {
+    public String addCompany() {        
+        if(ugc.checkEmail(Boolean.class, cd.getEmail())){
+            succesMessage = "Email already in use. Please use a different email.";
+            return "companyRegister";
+        }
+        
         if (cd.getPassword().equals(confirmPassword)) {
             String logoFileName = uploadImage();
             cc.addCompany(cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), cd.getPassword(), logoFileName, cd.getCountry());
             ugc.addUser(cd.getEmail(), cd.getPassword());
             ugc.addGroup("Company", cd.getEmail());
 
-            sendConfirmationEmail(cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), "C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + logoFileName, cd.getPassword(), cd.getCountry());
+            sendConfirmationEmail(cd.getCompanyName(), cd.getEmail(), String.valueOf(cd.getContactNo()), "C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + logoFileName, cd.getPassword(), cd.getCountry());
 
             FacesContext context = FacesContext.getCurrentInstance();
             try {

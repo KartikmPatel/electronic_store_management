@@ -40,6 +40,12 @@ public class userGroupClient {
         webTarget.path(java.text.MessageFormat.format("addGroup/{0}/{1}", new Object[]{groupName, email})).request().post(null);
     }
 
+    public <T> T checkEmail(Class<T> responseType, String email) throws ClientErrorException {
+        WebTarget resource = webTarget;
+        resource = resource.path(java.text.MessageFormat.format("checkEmail/{0}", new Object[]{email}));
+        return resource.request(javax.ws.rs.core.MediaType.APPLICATION_JSON).get(responseType);
+    }
+
     public void changePassword(String email, String password) throws ClientErrorException {
         webTarget.path(java.text.MessageFormat.format("changePassword/{0}/{1}", new Object[]{email, password})).request().post(null);
     }

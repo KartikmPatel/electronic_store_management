@@ -92,4 +92,11 @@ public class userGroupEJB {
             System.out.println("No Users entity found with email: " + email);
         }
     }
+    
+    public boolean emailExists(String email) {
+        List<Users> users = em.createNamedQuery("Users.findByEmail", Users.class)
+                              .setParameter("email", email)
+                              .getResultList();
+        return !users.isEmpty();
+    }
 }

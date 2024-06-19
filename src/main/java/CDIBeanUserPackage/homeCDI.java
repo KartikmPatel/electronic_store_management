@@ -233,7 +233,7 @@ public class homeCDI {
         if (file != null) {
             try (InputStream input = file.getInputStream()) {
                 fileName = file.getFileName();
-                OutputStream output = new FileOutputStream("C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
+                OutputStream output = new FileOutputStream("C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName);
                 try {
                     byte[] buffer = new byte[1024];
                     int bytesRead;
@@ -347,6 +347,11 @@ public class homeCDI {
     }
 
     public String userRegister() {
+        if(ugc.checkEmail(Boolean.class, ud.getEmail())){
+            succesMessage = "Email already in use. Please use a different email.";
+            return "userRegister";
+        }
+        
         if (ud.getPassword().equals(confirmPassword)) {
             String fileName = uploadImage();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -356,7 +361,7 @@ public class homeCDI {
             ugc.addGroup("User", ud.getEmail());
 
             // Call sendConfirmationEmail to send the email after user registration
-            sendConfirmationEmail(ud.getUsername(), ud.getEmail(), String.valueOf(ud.getContactNo()), ud.getPassword(), formattedDate, ud.getGender(), "C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName, ud.getAddress(), ud.getCountry());
+            sendConfirmationEmail(ud.getUsername(), ud.getEmail(), String.valueOf(ud.getContactNo()), ud.getPassword(), formattedDate, ud.getGender(), "C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/" + fileName, ud.getAddress(), ud.getCountry());
 
             FacesContext context = FacesContext.getCurrentInstance();
             try {
@@ -543,7 +548,7 @@ public class homeCDI {
 
         double totalAmt = 0.0;
 
-        String imagePath = "C:/Users/Kartik Patel/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/logo.jpeg";
+        String imagePath = "C:/Users/Admin/Desktop/sem8_Project/electronic_store_management/src/main/webapp/public/uploads/logo.jpeg";
         ImageData imageData = ImageDataFactory.create(imagePath);
         Image logo = new Image(imageData);
         logo.setWidth(UnitValue.createPercentValue(20))
