@@ -10,38 +10,48 @@
     <h:body>
         <ui:include src="userHeader.xhtml" />
 
-        <div class="container">
-            <main>
-                <section class="about">
-                    <h2>${msgs.ourserviceslbl}</h2>
-                    <p>${msgs.ourservices1}</p>
-                    <p>${msgs.ourservices2}</p>
-                    <p>${msgs.ourservices3}</p>
-                </section>
-                <section class="gallery">
-                    <h2>${msgs.ourgallerylbl}</h2>
-                    <div class="gallery-container">
-                        <div class="gallery-item">
-                            <img src="#{request.contextPath}/public/uploads/vivov20.webp" alt="Image 1" />
-                        </div>
-                        <div class="gallery-item">
-                            <img src="#{request.contextPath}/public/uploads/ACimg1.jpg" alt="Image 2" />
-                        </div>
-                        <div class="gallery-item">
-                            <img src="#{request.contextPath}/public/uploads/LGTV1.avif" alt="Image 3" />
-                        </div>
-                        <div class="gallery-item">
-                            <img src="#{request.contextPath}/public/uploads/LGTV2.avif" alt="Image 4" />
-                        </div>
-                        <div class="gallery-item">
-                            <img src="#{request.contextPath}/public/uploads/hpLaptop1.jpg" alt="Image 5" />
-                        </div>
-                        <div class="gallery-item">
-                            <img src="#{request.contextPath}/public/uploads/LGMachine1.avif" alt="Image 6" />
-                        </div>
+        <div class="container bg-white">
+            <section class="hero">
+                <div class="heading">
+                    <h1>${msgs.aboutus}</h1>
+                </div>
+                <div class="conn">
+                    <div class="hero-content">
+                        <h2>${msgs.ourserviceslbl}</h2><br/>
+                        <p>${msgs.ourservices1} ${msgs.ourservices2}</p>
+                        <button class="cta-button" id="bt">${msgs.learnmore}</button>
                     </div>
-                </section>
-            </main>
+                    <div class="hero-image">
+                        <img src="#{request.contextPath}/public/uploads/about.jpg" width="500px" height="500px;" alt="About Us" />
+                    </div>
+                </div>
+            </section>
+            <section class="hero" id="about">
+                <div class="conn">
+                    <div class="hero-content">
+                        <div class="tg">
+                            <p>${msgs.ourservices3}</p>
+
+                        </div>
+                        <!--<p>GlobalTravels is India’s largest online bus ticketing platform that has transformed bus travel in the country by bringing ease and convenience to millions of Indians who travel using buses. Founded in 2023, GlobalTravels is part of India’s leading online travel company. By providing widest choice, superior customer service, lowest prices and unmatched benefits, GlobalTravels has served many customers. GlobalTravels has a global presence with operations across India.</p>-->
+                    </div>
+                    <div class="hero-image">
+                        <img src="#{request.contextPath}/public/uploads/about2.jpg" width="400px" height="400px;" alt="About Us" />
+                    </div>
+                </div>
+            </section>
         </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#about").hide();
+            })
+            $(document).ready(function () {
+                $("#bt").click(function () {
+                    $("#about").toggle();
+                })
+            })
+        </script>
     </h:body>
 </html>
